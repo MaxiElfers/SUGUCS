@@ -3132,13 +3132,13 @@ fieldset:disabled .btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #00818d;
+  border-color: #00818d;;
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+  background-color: #016871;f;
+  border-color: #016871;
 }
 .btn-check:focus + .btn-primary,
 .btn-primary:focus {
@@ -8167,11 +8167,8 @@ fieldset:disabled .btn {
 }
 
 .bg-secondary {
-  --bs-bg-opacity: 1;
-  background-color: rgba(
-    var(--bs-secondary-rgb),
-    var(--bs-bg-opacity)
-  ) !important;
+  --bg-opacity: 50;
+  background-color: #198754;
 }
 
 .bg-success {
@@ -11655,4 +11652,6 @@ fieldset:disabled .btn {
   }
 }
 
-#map { height: 180px; }
+#map {
+  height: 180px;
+}
