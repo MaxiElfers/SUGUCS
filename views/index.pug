@@ -2,8 +2,20 @@ extends layout
 extends map
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  link(rel='stylesheet' href='https://unpkg.com/leaflet@1.9.2/dist/leaflet.css' integrity='sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=' crossorigin='')
+  script(src='https://unpkg.com/leaflet@1.9.2/dist/leaflet.js' integrity='sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=' crossorigin='')
+
+  // Heading Row
+  .row.gx-4.gx-lg-5.align-items-center.my-5
+    .col-lg-7
+      img.img-fluid.rounded.mb-4.mb-lg-0(src="/images/muenster-altstadt.jpg")
+
+    .col-lg-5
+      h1.font-weight-light Business Name or Tagline
+      p
+        | This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!
+      a.btn.btn-primary(href='#!') Call to Action!
 
   // Call to Action
   .card.text-white.bg-secondary.my-5.py-4.text-center
@@ -11,48 +23,32 @@ block content
       p.text-white.m-0
         | This call to action card is a great place to showcase some important information or display a clever tagline!
 
-    // Heading Row
-    .row.gx-4.gx-lg-5.align-items-center.my-5
-      .col-lg-7
-        img.img-fluid.rounded.mb-4.mb-lg-0(src="/images/muenster-altstadt.jpg")
+  // Content Row
+  .row.gx-4.gx-lg-5
+    .col-md-4.mb-5
+      .card.h-100
+        .card-body
+          h2.card-title Die Kalibrierung
+          p.card-text
+            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.
+        .card-footer
+          a.btn.btn-primary.btn-sm zum Kalibrieren
 
-      .col-lg-5
-        h1.font-weight-light Business Name or Tagline
-        p
-          | This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!
-        a.btn.btn-primary(href='#!') Call to Action!
+    .col-md-4.mb-5
+      .card.h-100
+        .card-body
+          h2.card-title Die Messung
+          p.card-text
+            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.
+        .card-footer
+          a.btn.btn-primary.btn-sm(href='#!') zum Messen
 
-    // Call to Action
-    .card.text-white.bg-secondary.my-5.py-4.text-center
-      .card-body
-        p.text-white.m-0
-          | This call to action card is a great place to showcase some important information or display a clever tagline!
+    .col-md-4.mb-5
+      .card.h-100
+        .card-body
+          h2.card-title Open Sense Map
+          p.card-text
+            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.
+        .card-footer
+          a.btn.btn-primary.btn-sm(href='#!') zur Karte
 
-    // Content Row
-    .row.gx-4.gx-lg-5
-      .col-md-4.mb-5
-        .card.h-100
-          .card-body
-            h2.card-title Die Kalibrierung
-            p.card-text
-              | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.
-          .card-footer
-            a.btn.btn-primary.btn-sm zur Kalibrierung
-
-      .col-md-4.mb-5
-        .card.h-100
-          .card-body
-            h2.card-title Die Messung
-            p.card-text
-              | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.
-          .card-footer
-            a.btn.btn-primary.btn-sm(href='#!') zur Messung
-
-      .col-md-4.mb-5
-        .card.h-100
-          .card-body
-            h2.card-title Open Sense Map
-            p.card-text
-              | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.
-          .card-footer
-            a.btn.btn-primary.btn-sm(href='#!') zur Karte
