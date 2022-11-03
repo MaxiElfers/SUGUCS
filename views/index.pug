@@ -1,8 +1,16 @@
 extends layout
 
 block content
-  // Page Content
-  .container.px-4.px-lg-5
+  h1= title
+  p Welcome to #{title}
+    link(rel='stylesheet' href='https://unpkg.com/leaflet@1.9.2/dist/leaflet.css' integrity='sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=' crossorigin='')
+    script(src='https://unpkg.com/leaflet@1.9.2/dist/leaflet.js' integrity='sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=' crossorigin='')
+
+  // Call to Action
+  .card.text-white.bg-secondary.my-5.py-4.text-center
+    .card-body
+      p.text-white.m-0
+        | This call to action card is a great place to showcase some important information or display a clever tagline!
 
     // Heading Row
     .row.gx-4.gx-lg-5.align-items-center.my-5
