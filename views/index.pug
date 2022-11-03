@@ -1,7 +1,8 @@
 extends layout
+extends map
 
 block content
-  
+
   link(rel='stylesheet' href='https://unpkg.com/leaflet@1.9.2/dist/leaflet.css' integrity='sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=' crossorigin='')
   script(src='https://unpkg.com/leaflet@1.9.2/dist/leaflet.js' integrity='sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=' crossorigin='')
 
@@ -27,17 +28,27 @@ block content
     .col-md-4.mb-5
       .card.h-100
         .card-body
-          h2.card-title Card One
+          h2.card-title Die Kalibrierung
           p.card-text
             | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.
         .card-footer
-          a.btn.btn-primary.btn-sm Kalibrierung
+          a.btn.btn-primary.btn-sm zum Kalibrieren
 
     .col-md-4.mb-5
       .card.h-100
         .card-body
-          h2.card-title Card Two
+          h2.card-title Die Messung
           p.card-text
             | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.
         .card-footer
-          a.btn.btn-primary.btn-sm(href='#!') Messung
+          a.btn.btn-primary.btn-sm(href='#!') zum Messen
+
+    .col-md-4.mb-5
+      .card.h-100
+        .card-body
+          h2.card-title Open Sense Map
+          p.card-text
+            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.
+        .card-footer
+          a.btn.btn-primary.btn-sm(href='#!') zur Karte
+
