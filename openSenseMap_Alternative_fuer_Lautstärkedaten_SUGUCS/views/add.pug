@@ -1,0 +1,95 @@
+extends layout
+
+block content
+  h1 Messungen hinzufügen
+  p Auf dieser Seite ist es möglich Messungen entweder durch leaflet draw, oder im GeoJSON Format als Datei oder auch manuell in Textform durch vorgegebene Muster zur Datenbank hinzuzufügen
+  
+  br
+  h3 Marker auf Karte für Standort setzen:
+  #map
+  br
+  br
+  h3 Hinzufügen einer Messung mit mindestens Name, Uhrzeit und Datum, Dauer, Frequenzbewertung, Reaktiosnzeit und Durchschnitt und Ort
+  .row.justify-content-md-center
+    .col-lg-6.col-xs-12.mb-3.justify-content-md-center 
+        .card.text-dark.p-4.border-success.card
+            form(action='/add/leafletmarker' method='post')
+                fieldset
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='name') Name          
+                    .col-sm-6
+                      input#name.form-control(type='text' name="name" placeholder="Name der messenden Person")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='time') Uhrzeit und Datum
+                    .col-sm-6
+                      input#time.form-control(type='text' name="time" placeholder="Uhrzeit und Datum der Messung")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='timespan') Dauer der Messung
+                    .col-sm-6
+                      input#timespan.form-control(type='text' name="timespan" placeholder="Dauer der Messung")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='fre') Frequenzbewertung
+                    .col-sm-6
+                      input#fre.form-control(type='text' name="fre" placeholder="Frequenzbewertung")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='react') Reaktionszeit
+                    .col-sm-6
+                      input#react.form-control(type='text' name="react" placeholder="Reaktionszeit")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='leq') Durchschitt
+                    .col-sm-6
+                      input#leq.form-control(type='text' name="leq" placeholder="Durchschnitt")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='lmin') Minimum
+                    .col-sm-6
+                      input#lmin.form-control(type='text' name="lmin" placeholder="Minimum")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='lmax') Maximum 
+                    .col-sm-6
+                      input#lmax.form-control(type='text' name="lmax" placeholder="Maximum")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='lpeak') Peak
+                    .col-sm-6
+                      input#lpeak.form-control(type='text' name="lpeak" placeholder="Peak")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='long') Längengrad
+                    .col-sm-6
+                      input#long.form-control(type='text' name="long" placeholder="X Koordinate des Ortes der Messungen")
+                      br
+                  .form-group.row
+                    label.col-sm-2.col-form-label(for='lat') Breitengrad
+                    .col-sm-6
+                      input#lat.form-control(type='text' name="lat" placeholder="Y Koordinate des Ortes der Messungen")
+                      br
+                      
+                  button.btn.btn-success(type='submit') Speichern
+                
+    .col-lg-6.col-xs-12.mb-3.justify-content-md-center  
+        .card.text-dark.p-4.border-success.card
+          form(action='/add/textarea' method='post')
+            fieldset
+              .form-group.row 
+                div
+                  textarea.form-control(type='textarea' name="textarea" placeholder='Bitte nur Features im Folgenden Format:\n  {\n    "type": "Feature",\n    "properties": {\n      "name": "Name",\n      "time": "hh:mm:ss DD.MM.YYYY",\n      "timespan": Dauer in Sekunden,\n      "fre:"Frequenzbewertung"\n      "react":"Reaktionszeit"\n      "leq": Durchschnitt,\n      "lmin": Minimum,\n      "lmax": Maximum,\n      "lpeak": Peak\n},\n    "geometry": {\n      "type": "Point",\n      "coordinates": [long, lat]\n    }\n}')#textarea
+              button.btn.btn-success(type='submit') Speichern
+              br
+              br
+              br
+              br
+              br
+              
+            h3 Upload einer .json oder .geojson Datei:
+              br
+              input#upload(type='file')
+              br  
+  
+  script(src="/javascripts/hinzufuegen.js")

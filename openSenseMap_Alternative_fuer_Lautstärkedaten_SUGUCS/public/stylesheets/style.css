@@ -1,0 +1,59 @@
+body {
+  background-color: rgb(221, 220, 220);
+  padding: 50px;
+  font-family: Gill Sans Extrabold, sans-serif;
+  text-align: center;
+}
+h1 {
+  color: rgb(0, 0, 0);
+  font-family: Gill Sans Extrabold, sans-serif;
+  text-align: center;
+}
+h2 {
+  color: rgb(0, 0, 0);
+  font-family: Gill Sans Extrabold, sans-serif;
+  text-align: center;
+}
+h3 {
+  color: rgb(0, 0, 0);
+  font-family: Gill Sans Extrabold, sans-serif;
+  text-align: center;
+}
+h4 {
+  color: rgb(0, 0, 0);
+  font-family: Gill Sans Extrabold, sans-serif;
+  text-align: center;
+}
+p {
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  font-family: Gill Sans Extrabold, sans-serif;
+  text-align: center;
+}
+#map{
+  height: 500px;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#textarea {
+  height: 500px;
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+}
+
+#userlocation {
+  height: 50px;
+  width: 1000px;
+  
+}
+
+#gebirgsTabelle {
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}

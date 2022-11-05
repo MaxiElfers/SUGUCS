@@ -1,0 +1,21 @@
+{
+    "type": "Feature",
+    "properties": {
+    "name": "Jonathan Mader",
+    "time": "12:45:53 03.11.2022",
+    "timespan": 30,
+    "fre": "A",
+    "react": "Schnell",
+    "leq": 67,
+    "lmin": 32,
+    "lmax": 80,
+    "lpeak": 89
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        7.569914167403164,
+        51.975521533248845
+      ]
+    }
+  }
