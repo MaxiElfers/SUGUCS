@@ -1,1 +1,1 @@
-h1 openSensemap Alternative für lautstärkedaten
+OpenSensemap Alternative WebApp für Lautstärkedaten
