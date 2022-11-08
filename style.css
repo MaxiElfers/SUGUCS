@@ -1,0 +1,14 @@
+.header {
+    background-color: #ececf2;
+    text-align: center;
+    padding: 20px;
+  }
+  .body {
+    text-align: center;
+    background-color: white;
+  }
+  .footer {
+    background-color: #F1F1F1;
+    text-align: center;
+    padding: 10px;
+  }
