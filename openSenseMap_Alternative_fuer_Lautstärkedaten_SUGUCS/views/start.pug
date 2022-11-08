@@ -1,0 +1,34 @@
+extends layout
+
+block content
+    br
+    h1 Homepage
+    .row.justify-content-md-center
+        .col-lg-6.col-xs-12.mb-3
+            .card.text-dark.p-4.border-success.card
+                    
+                    p Dies ist unsere WebApp zum hinzufügen von selbst gemessenen Lautstärkewerten als Ersatz der open Sense Map!
+                    p Sie können hier die mit dem (kalibrierten) Handy gemessenen Werte wie Leq, Lmin, Lmax, Lpeak mit der entsprechenden Zeit- und Frequenzbewertung im Zusammenhang mit einem Datum und Uhrzeit eintragen, bearbeiten, löschen und ansehen.
+                    br
+                    p Mit der Navigationsleiste ist es möglich zwischen den Seiten zu wechseln
+                    br
+    h2 Erklärung:
+    .row.justify-content-md-center
+        .col-lg-6.col-xs-12.mb-3
+            .card.text-dark.p-4.border-success.card
+                br
+                h3 Messungen hinzufügen
+                p Unter Messungen hinzufügen, können Messungen entweder durch leaflet draw, oder im GeoJSON Format als Datei oder auch manuell in Textform durch vorgegebene Muster zur Datenbank hinzugefügt werden.
+        
+        .col-lg-6.col-xs-12.mb-3
+            .card.text-dark.p-4.border-success.card
+                h3 Messungen bearbeiten und löschen
+                p Bereits hinzugefügte Messungen können hier durch auswählen auf der Karte bearbeitet oder komplett gelöscht werden!
+                br
+                br
+    .row.justify-content-md-center
+        .col-lg-6.col-xs-12.mb-3
+            .card.text-dark.p-4.border-success.card
+                h3 Messungen ansehen
+                p Alle hinzugefügten und gespeicherten Messungen können hier entweder auf einer Karte und/oder in einer Tabelle angesehen werden und die Informationen ausgelesen werden
+        
