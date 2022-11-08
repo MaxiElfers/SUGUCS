@@ -1,8 +1,5 @@
 let btn_calibration = document.getElementById("btn_Kalibrierung");
 let btn_click = btn_calibration.addEventListener("click", function(){startSystem();});
-let btn_calibration_with_input = document.getElementById("btn_Kalibrierung_mit_Input");
-let btn_click_with_input = btn_calibration_with_input.addEventListener("click", function(){startSystemWithInputData();});
-let input_for_calibration = document.getElementById("input_Array").value;
 
 
 let referenceDaten1 = [10, 40];
@@ -19,18 +16,21 @@ let multiDelta = [];
  */
 function startSystem(){
     // to-do: Wert bekommen
-    
+    console.log("Entgegengenommen Daten", gelieferteDaten1);
+    console.log("Reference Daten", referenceDaten1)
     calibration();
+    console.log("Erstelltes Delta:", singleDelta);
 }
 
 /**
  * function to start the system when data is given from the user
  */
 function startSystemWithInputData() {
-    console.log(gelieferteDaten1)
-    gelieferteDaten1 = input_for_calibration;
-    console.log(gelieferteDaten1)
+    gelieferteDaten1 = input_user.value;
+    console.log("Entgegengenommen Daten", gelieferteDaten1);
+    console.log("Reference Daten", referenceDaten1)
     calibration();
+    console.log("Erstelltes Delta:", singleDelta);
 }
 /**
  * Starts the calibration process
@@ -40,7 +40,7 @@ function startSystemWithInputData() {
 function calibration(){
     let lieferStack = [gelieferteDaten1, gelieferteDaten2, gelieferteDaten3];
     let referStack = [referenceDaten1, referenceDaten2, referenceDaten3];
-    multiReferenceDeltaKali(referStack, lieferStack );
+    oneDeltaKali(referenceDaten1, gelieferteDaten1);
 }
 
 /**
@@ -48,10 +48,12 @@ function calibration(){
  * and the array to calibrate and calculates 
  * one single delte which then will be used to
  * add onto the whole array
+ * @param {Array} 
+ * @param {Array} 
  */
-function oneDeltaKali(){
-    let reference = ArrayAvg(referenceDaten);
-    let geliefert = ArrayAvg(gelieferteDaten);
+function oneDeltaKali(referenceAry, geliefertAry){
+    let reference = ArrayAvg(referenceAry);
+    let geliefert = ArrayAvg(geliefertAry);
 
     singleDelta = reference - geliefert;
 }
@@ -69,6 +71,11 @@ function multiDeltaKali(){
     })
 }
 
+/**
+ * !!!ACHTUNG!!! funktioniert noch nicht
+ * @param {*} referenceStack 
+ * @param {*} geliefertStack 
+ */
 function multiReferenceDeltaKali(referenceStack, geliefertStack){
     let deltaArray = [];
     let hilfsArray = [];
