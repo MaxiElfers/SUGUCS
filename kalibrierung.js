@@ -1,5 +1,9 @@
 let btn_calibration = document.getElementById("btn_Kalibrierung");
 let btn_click = btn_calibration.addEventListener("click", function(){startSystem();});
+let btn_calibration_with_input = document.getElementById("btn_Kalibrierung_mit_Input");
+let btn_click_with_input = btn_calibration_with_input.addEventListener("click", function(){startSystemWithInputData();});
+let input_for_calibration = document.getElementById("input_Array").value;
+
 
 let referenceDaten1 = [10, 40];
 let referenceDaten2 = [4, 7];
@@ -15,11 +19,19 @@ let multiDelta = [];
  */
 function startSystem(){
     // to-do: Wert bekommen
-
+    
     calibration();
-    console.log()
 }
 
+/**
+ * function to start the system when data is given from the user
+ */
+function startSystemWithInputData() {
+    console.log(gelieferteDaten1)
+    gelieferteDaten1 = input_for_calibration;
+    console.log(gelieferteDaten1)
+    calibration();
+}
 /**
  * Starts the calibration process
  * Maybe you can choose the method of the
