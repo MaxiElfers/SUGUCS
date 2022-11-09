@@ -5,10 +5,11 @@ block content
   link(rel='stylesheet' href='https://unpkg.com/leaflet@1.9.2/dist/leaflet.css' integrity='sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=' crossorigin='')
   script(src='https://unpkg.com/leaflet@1.9.2/dist/leaflet.js' integrity='sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=' crossorigin='')
 
+
   // Heading Row
   .row.gx-4.gx-lg-5.align-items-center.my-5
     .col-lg-7
-      img.img-fluid.rounded.mb-4.mb-lg-0(src="/images/muenster-altstadt.jpg")
+      img.img-fluid.rounded.mb-4.mb-lg-0(src="/images/muenster-altstadt.jpg" title="Der Prinzipalmarkt in Münster.© Münsterland e.V./Philipp Fölting")
 
     .col-lg-5
       h1.font-weight-light The Sound of Münster
@@ -20,7 +21,14 @@ block content
   .card.text-white.bg-success(style='--bs-bg-opacity: .75;').my-5.py-4.text-center
     .card-body
       p.text-white.m-0
-        | Schau Dir verschiedene Lärmmessungen in Münster an und füge Deine Eigene hinzu!
+        | Schauen Sie sich verschiedene Lärmmessungen in Münster an und fügen Sie Eigene hinzu!
+
+  // Leaflet
+  .row.gx-4.gx-lg-5
+    .col-md-14.mb-5
+      .card.h-100
+        .card-body
+          #map
 
   // Content Row
   .row.gx-4.gx-lg-5
@@ -29,7 +37,7 @@ block content
         .card-body
           h2.card-title Die Kalibrierung
           p.card-text
-            | Damit vergleichbare Daten erhoben werden, müssen wir die Aufnahmegeräte kalibrieren. Jedes Mikrofon nimmt Lärm anders war und misst dadurch unterschiedliche Lautstärken für das gleiche Geräusch. Das ist ein Problem für eine valide Datengrundlage.
+            | Damit vergleichbare Daten erhoben werden, müssen wir die Aufnahmegeräte kalibrieren. Jedes Mikrofon nimmt Lärm anders wahr und misst dadurch unterschiedliche Lautstärken für das gleiche Geräusch. Das ist ein Problem für eine valide Datengrundlage.
         .card-footer
           a.btn.btn-primary.btn-sm(href='/kalibrierung') zur Kalibrierung
 
@@ -38,7 +46,7 @@ block content
         .card-body
           h2.card-title Die Messung
           p.card-text
-            | Nachdem ihr Mikrofone kalibiert wurde, können Sie mit einer eigenen Messung starten. [Anleitung]
+            | Nachdem ihr Mikrofon kalibiert wurde, können Sie mit einer eigenen Messung starten. [Anleitung]
         .card-footer
           a.btn.btn-primary.btn-sm(href='/messung') zur Messung
 
@@ -50,3 +58,7 @@ block content
             | In der OpenSenseMap können Sie sich schon erhobenen Daten ansehen und erste Auswertungen bestaunen, aber auch selber Daten analysieren. 
         .card-footer
           a.btn.btn-primary.btn-sm(href='/map') zur OpenSenseMap
+
+
+  // Leaflet
+  script(src='/js/leaflet.js')
