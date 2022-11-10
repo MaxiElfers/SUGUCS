@@ -1,37 +1,58 @@
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-analyser.minDecibels = -90;
-analyser.maxDecibels = -10;
+var localDbValues = []; // array to store db values for each loop withing the refresh_rate
+var refresh_rate = 500;
+var color = "green";
+var stream;
+var offset = 30;
+var average = 0;
+var date;
 
-// …
+navigator.mediaDevices
+  .getUserMedia({ audio: true, video: false })
+  .then((stream) => {
+    const context = new AudioContext();
+    const source = context.createMediaStreamSource(stream);
+    const processor = context.createScriptProcessor(2048, 1, 1);
+    const analyser = context.createAnalyser();
 
-analyser.fftSize = 256;
-const bufferLength = analyser.frequencyBinCount;
-console.log(bufferLength);
-const dataArray = new Uint8Array(bufferLength);
+    analyser.smoothingTimeConstant = 0.8;
+    analyser.fftSize = 256;
 
-canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+    source.connect(analyser);
+    analyser.connect(processor);
+    processor.connect(context.destination);
 
-function draw() {
-  drawVisual = requestAnimationFrame(draw);
+    processor.onaudioprocess = () => {
+      var data = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(data);
+      var values = 0;
 
-  analyser.getByteFrequencyData(dataArray);
+      for (var i = 0; i < data.length; i++) {
+        //if (data[i]>130) data[i]=130;
+        values += data[i];
+      }
 
-  canvasCtx.fillStyle = "rgb(0, 0, 0)";
-  canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      offset = parseInt(document.getElementById("offset").value);
+      document.getElementById("offset_value").innerText = offset;
+      average = 20 * Math.log10(values / data.length) + offset;
+      localDbValues.push(average);
+    };
+  });
 
-  const barWidth = (WIDTH / bufferLength) * 2.5;
-  let barHeight;
-  let x = 0;
+// update the volume every refresh_rate m.seconds
+var updateDb = function () {
+  window.clearInterval(interval);
 
-  for (let i = 0; i < bufferLength; i++) {
-    barHeight = dataArray[i];
+  const db = document.getElementById("db");
+  var volume = Math.round(
+    localDbValues.reduce((a, b) => a + b) / localDbValues.length
+  );
+  //var volume = Math.round(Math.max.apply(null, localDbValues));
+  if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
+  db.innerText = volume;
+  localDbValues = []; // clear previous values
+  changeColor(volume);
 
-    canvasCtx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
-    canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
-
-    x += barWidth + 1;
-  }
-}
-
-draw();
+  changeUpdateRate();
+  interval = window.setInterval(updateDb, refresh_rate);
+};
+var interval = window.setInterval(updateDb, refresh_rate);
