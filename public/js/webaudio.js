@@ -6,53 +6,57 @@ var offset = 30;
 var average = 0;
 var date;
 
-navigator.mediaDevices
-  .getUserMedia({ audio: true, video: false })
-  .then((stream) => {
-    const context = new AudioContext();
-    const source = context.createMediaStreamSource(stream);
-    const processor = context.createScriptProcessor(2048, 1, 1);
-    const analyser = context.createAnalyser();
+messungButton = document.getElementById("messung")
+messungButton.addEventListener("click", startMessung)
 
-    analyser.smoothingTimeConstant = 0.8;
-    analyser.fftSize = 256;
+function startMessung() {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then((stream) => {
+      const context = new AudioContext();
+      const source = context.createMediaStreamSource(stream);
+      const processor = context.createScriptProcessor(2048, 1, 1);
+      const analyser = context.createAnalyser();
 
-    source.connect(analyser);
-    analyser.connect(processor);
-    processor.connect(context.destination);
+      analyser.smoothingTimeConstant = 0.8;
+      analyser.fftSize = 256;
 
-    processor.onaudioprocess = () => {
-      var data = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(data);
-      var values = 0;
+      source.connect(analyser);
+      analyser.connect(processor);
+      processor.connect(context.destination);
 
-      for (var i = 0; i < data.length; i++) {
-        //if (data[i]>130) data[i]=130;
-        values += data[i];
-      }
+      processor.onaudioprocess = () => {
+        var data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        var values = 0;
 
-      offset = parseInt(document.getElementById("offset").value);
-      document.getElementById("offset_value").innerText = offset;
-      average = 20 * Math.log10(values / data.length) + offset;
-      localDbValues.push(average);
-    };
-  });
+        for (var i = 0; i < data.length; i++) {
+          //if (data[i]>130) data[i]=130;
+          values += data[i];
+        }
 
-// update the volume every refresh_rate m.seconds
-var updateDb = function () {
-  window.clearInterval(interval);
+        average = 20 * Math.log10(values / data.length);
+        localDbValues.push(average);
+        console.log(localDbValues)
+      };
+    });
 
-  const db = document.getElementById("db");
-  var volume = Math.round(
-    localDbValues.reduce((a, b) => a + b) / localDbValues.length
-  );
-  //var volume = Math.round(Math.max.apply(null, localDbValues));
-  if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
-  db.innerText = volume;
-  localDbValues = []; // clear previous values
-  changeColor(volume);
 
-  changeUpdateRate();
-  interval = window.setInterval(updateDb, refresh_rate);
-};
-var interval = window.setInterval(updateDb, refresh_rate);
+  // update the volume every refresh_rate m.seconds
+  var updateDb = function () {
+    window.clearInterval(interval);
+
+    const db = document.getElementById("db");
+    var volume = Math.round(
+      localDbValues.reduce((a, b) => a + b) / localDbValues.length
+    );
+    //var volume = Math.round(Math.max.apply(null, localDbValues));
+    if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
+    db.innerText = volume;
+    localDbValues = []; // clear previous values
+
+    changeUpdateRate();
+    interval = window.setInterval(updateDb, refresh_rate);
+  };
+  var interval = window.setInterval(updateDb, refresh_rate);
+}
