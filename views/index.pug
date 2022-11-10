@@ -24,11 +24,17 @@ block content
         | Schauen Sie sich verschiedene Lärmmessungen in Münster an und fügen Sie Eigene hinzu!
 
   // Leaflet
-  .row.gx-4.gx-lg-5
-    .col-md-14.mb-5
-      .card.h-100
+  .row.gx-10.gx-lg-3.justify-content-center
+    .col-md-8.mb-3
+      .card.center
         .card-body
           #map
+          div
+            | Click here to read in your personal 
+            span.Eingabe Browser-Coordinates
+            | : 
+            button(onclick='getLocation()') Try It
+          p#demo
 
   // Content Row
   .row.gx-4.gx-lg-5
