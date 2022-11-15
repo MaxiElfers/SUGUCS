@@ -1,5 +1,5 @@
 extends layout
-
+  
 block content
 
   script.
@@ -7,4 +7,15 @@ block content
     document.querySelectorAll(".active")[0].classList.remove("active");
     document.querySelectorAll(".nav-link")[1].classList.add("active");
 
-  div Hier ist die Kalibrierung.
+  div
+    br
+    div.btn.btn-primary#btn_Kalibrierung Click here to start your single Kalibration
+    div#singleAusgabe 
+    br
+    br
+    div.btn.btn-primary#btn_Gruppenkalibrierung Nehme an der nächsten Gruppenkalibrierung teil
+    div#groupAusgabe 
+
+  
+  script(src='/js/kalibrierung.js')
+
