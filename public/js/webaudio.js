@@ -1,10 +1,9 @@
 var localDbValues = []; // array to store db values for each loop withing the refresh_rate
-var refresh_rate = 500;
-var color = "green";
+var refresh_rate = 5000;
 var stream;
-var offset = 30;
 var average = 0;
-var date;
+
+const db = document.getElementById("db");
 
 messungButton = document.getElementById("messung")
 messungButton.addEventListener("click", startMessung)
@@ -36,8 +35,11 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
-        localDbValues.push(average);
-        console.log(localDbValues)
+        if (isFinite(average)){
+          db.innerText = average;
+          localDbValues.push(average);
+        }
+        
       };
     });
 
@@ -46,7 +48,6 @@ function startMessung() {
   var updateDb = function () {
     window.clearInterval(interval);
 
-    const db = document.getElementById("db");
     var volume = Math.round(
       localDbValues.reduce((a, b) => a + b) / localDbValues.length
     );
