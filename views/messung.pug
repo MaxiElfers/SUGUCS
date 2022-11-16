@@ -7,8 +7,8 @@ block content
     document.querySelectorAll(".active")[0].classList.remove("active");
     document.querySelectorAll(".nav-link")[2].classList.add("active");
 
+  div Hier ist die Messung.
   textarea#db(name='db' rows='4' cols='50')
-  a.btn.btn-primary.btn-sm(type='button', id="messung") Messung starten!
-  p 
-  a.btn.btn-primary.btn-sm(type='button', id="messungStoppen") Messung stoppen!
+  button#messung(type='button') Messung starten!
+
   script(src='/js/webaudio.js')
