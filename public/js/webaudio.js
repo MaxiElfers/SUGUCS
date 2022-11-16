@@ -44,7 +44,7 @@ function startMessung() {
     });
 
 
-  // update the volume every refresh_rate m.seconds
+  // update the volume every refresh_rate m.seconds.
   var updateDb = function () {
     window.clearInterval(interval);
 
