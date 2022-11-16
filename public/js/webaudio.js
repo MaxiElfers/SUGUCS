@@ -6,19 +6,27 @@ var offset = 30;
 var average = 0;
 var date;
 
-messungButton = document.getElementById("messung")
-messungButton.addEventListener("click", startMessung)
+messungButton = document.getElementById("messung");
+messungButton.addEventListener("click", startMessung);
 
 function startMessung() {
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
       const context = new AudioContext();
+      // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
+      // come from the local computer microphone or other sources.
       const source = context.createMediaStreamSource(stream);
+      // creates a ScriptProcessorNode used for direct audio processing
       const processor = context.createScriptProcessor(2048, 1, 1);
+      // reates an AnalyserNode, which can be used to expose audio time and frequency data and create data visualizations
       const analyser = context.createAnalyser();
 
+      // A double value representing the averaging constant with the last analysis frame —
+      // basically, it makes the transition between values over time smoother.
       analyser.smoothingTimeConstant = 0.8;
+      // An unsigned long value representing the size of the FFT (Fast Fourier Transform)
+      // to be used to determine the frequency domain.
       analyser.fftSize = 256;
 
       source.connect(analyser);
@@ -37,10 +45,9 @@ function startMessung() {
 
         average = 20 * Math.log10(values / data.length);
         localDbValues.push(average);
-        console.log(localDbValues)
+        console.log(localDbValues);
       };
     });
-
 
   // update the volume every refresh_rate m.seconds
   var updateDb = function () {
