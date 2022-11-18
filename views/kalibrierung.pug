@@ -7,14 +7,55 @@ block content
     document.querySelectorAll(".active")[0].classList.remove("active");
     document.querySelectorAll(".nav-link")[1].classList.add("active");
 
-  div
+  div.container
     br
-    div.btn.btn-primary#btn_Kalibrierung Click here to start your single Kalibration
-    div#singleAusgabe 
-    br
-    br
-    div.btn.btn-primary#btn_Gruppenkalibrierung Nehme an der nächsten Gruppenkalibrierung teil
-    div#groupAusgabe 
+    div.row
+      div.col-4
+      div.col-2
+        div.col.dropdown
+          a#dropdownMenuLink.btn.btn-secondary.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+            | Gerät auswählen
+          ul.dropdown-menu(aria-labelledby='dropdownMenuLink')
+            li
+              a.dropdown-item(href='#') IPhone 14
+            li
+              a.dropdown-item(href='#') IPhone 13
+            li
+              a.dropdown-item(href='#') Samsung Galaxy S22
+        br
+      div.col-2
+      div.col-4
+      div.col-6
+        h2.text-center Einzelkalibrierung
+        div.row.justify-content-center
+          div.card(style='width: 30rem;')
+            div.card-body
+              h5.card-title Anleitung
+              h6.card-subtitle.mb-2.text-muted Achtung: Diese Kalibrierung gilt nicht als offiziel
+              h6.card-subtitle.mb-2.text-muted Bitte befolgen Sie die folgenden Schritte
+              p.card-text
+                | Hier wird in kürze eine Anleitung für die Einzelkalibrierung eingefügt.
+      div.col-6
+        h2.text-center Gruppenkalibrierung
+        div.row.justify-content-center
+          div.card(style='width: 30rem;')
+            div.card-body
+              h5.card-title Anleitung
+              h6.card-subtitle.mb-2.text-muted Bitte befolgen Sie die folgenden Schritte
+              p.card-text
+                | Hier wird in kürze eine Anleitung für die Gruppenkalibrierung eingefügt. 
+        br
+        br
+      div.col-2
+      div.col-2
+        div.btn.btn-primary#btn_Kalibrierung Click here to start your single Kalibration
+        div#singleAusgabe 
+      div.col-2
+      div.col-2
+      div.col-2
+        div.btn.btn-primary#btn_Gruppenkalibrierung Nehme an der nächsten Gruppenkalibrierung teil
+        div#groupAusgabe
+      div.col-2
 
   
   script(src='/js/kalibrierung.js')
