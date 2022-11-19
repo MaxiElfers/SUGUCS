@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "name": "Gundula",
-        "Leq": 69
+        "Leq": "69"
       },
       "geometry": {
         "coordinates": [
@@ -19,7 +19,7 @@
       "type": "Feature",
       "properties": {
         "name": "Lysa",
-        "Leq": 44
+        "Leq": "44"
       },
       "geometry": {
         "coordinates": [
