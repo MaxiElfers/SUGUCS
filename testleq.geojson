@@ -1,1 +1,33 @@
-{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Gundula","Leq":69},"geometry":{"coordinates":[7.627587804252187,51.96323461042476],"type":"Point"}},{"type":"Feature","properties":{"name":"Lysa","Leq":44},"geometry":{"coordinates":[7.6295869320176735,51.960565638439306],"type":"Point"}}]}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gundula",
+        "Leq": 69
+      },
+      "geometry": {
+        "coordinates": [
+          7.627587804252187,
+          51.96323461042476
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lysa",
+        "Leq": 44
+      },
+      "geometry": {
+        "coordinates": [
+          7.6295869320176735,
+          51.960565638439306
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
