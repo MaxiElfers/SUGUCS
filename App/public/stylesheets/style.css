@@ -1,0 +1,26 @@
+body {
+  min-height: 100%;
+  text-align: justify;
+}
+
+.btn {
+  height: 30px;
+  width: 30%;
+}
+
+.analysemap {
+  height: 100%;
+  width: 100%;
+}
+
+.cardanalysemap {
+  height: 50%;
+  width: 120%;
+}
+
+.cardanalysen{
+  height: 100%;
+  width: 75%;
+  margin-left: auto;
+}
+
