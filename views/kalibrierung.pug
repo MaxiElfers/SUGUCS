@@ -24,6 +24,7 @@ block content
               a.dropdown-item(href='#') Samsung Galaxy S22
         br
       div.col-2
+        div.btn.btn-primary#btn_recording Soundaufnahme starten
       div.col-4
       div.col-6
         h2.text-center Einzelkalibrierung
@@ -46,14 +47,20 @@ block content
                 | Hier wird in kürze eine Anleitung für die Gruppenkalibrierung eingefügt. 
         br
         br
+      div.col-8
+      div.col-2
+        div.input-group.mb-3
+          span.input-group-text Group-Code
+          input#input_GroupCode.form-control(placeholder='1234567')
+      div.col-2
+        p#output_Error.text-danger.fs-5 
       div.col-2
       div.col-2
-        div.btn.btn-primary#btn_Kalibrierung Click here to start your single Kalibration
+        div.btn.btn-primary#btn_Einzelkalibrierung Einzelkalibrierung hier starten
         div#singleAusgabe 
+      div.col-4
       div.col-2
-      div.col-2
-      div.col-2
-        div.btn.btn-primary#btn_Gruppenkalibrierung Nehme an der nächsten Gruppenkalibrierung teil
+        div.btn.btn-primary#btn_Gruppenkalibrierung Gruppenkalibrierung beitreten 
         div#groupAusgabe
       div.col-2
 
