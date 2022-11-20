@@ -7,7 +7,6 @@ window.onload = function () {
         }).addTo(map);
 
     var lautstärkedaten = {
-        max: 8,
         data: [{
             lat: 51.96361471843619,
             lng: 7.613263440306753,
@@ -171,6 +170,29 @@ window.onload = function () {
         // which field name in your data represents the data value - default "value"
         valueField: 'leq'
     };
+
+    // spezielles Design für die Marker der Messungen
+    var customLautstärkeIcon = L.icon({
+    iconUrl: 'images/laut.png',
+    iconSize: [50, 50], // size of the icon
+    iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
+    popupAnchor: [5, 0] // point from which the popup should open relative to the iconAnchor
+    });
+    // popup größe regulieren
+    var customPoint = {
+    'maxWidth': '500',
+    }
+
+    // Schleife zum iterieren über den lautstärkedaten Array zum erstellen der popups
+    for(var i=0;i<lautstärkedaten.data.length;i++){
+
+        var lat = lautstärkedaten.data[i].lat;
+        var lng = lautstärkedaten.data[i].lng;
+
+        var markerLocation = new L.LatLng(lat, lng);
+        var marker = new L.Marker(markerLocation, {icon: customLautstärkeIcon }).addTo(map);
+        marker.bindPopup("Der Durchschnittswert der Messung beträgt hier: " + lautstärkedaten.data[i].leq.toString())
+    }
 
     var heatmapLayer = new HeatmapOverlay(cfg).addTo(map);
     heatmapLayer.setData(lautstärkedaten);
