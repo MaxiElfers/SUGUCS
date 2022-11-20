@@ -14,7 +14,7 @@ Um die App zu starten, tippen Sie einfach nur "npm start" in die Konsole. Die Ap
 Über die Navigationsleiste am oberen Bildschirmrand können Sie zwischen den einzelnen Modulen navigieren.
 Wollen Sie Ihr Gerät kalibrieren um eine Lärmmessung vorzunehmen, so nutzen Sie bitte den Reiter "Kalibrierung".
 Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen Sie bitte den Reiter "Messung".
-Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".
+Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen und Analysieren wollen, so nutzen Sie bitte den Reiter "Analyse".
 
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
 
