@@ -3,7 +3,7 @@ Node:<br>
 Klonen Sie das Repository und speichern es Lokal.<br>
 Öffnen Sie den Ordner dann in ihrer IDE und öffnen das Terminal. Dort geben Sie folgenden Befehl ein:
 <br>
-$ cd App
+$ cd Analyse
 <br>
 $ npm install <br>
 und dann <br>
