@@ -3,7 +3,9 @@ Diese Anwendung verfügt aktuell auf der "Analyse" Seite über eine Leaflet Heat
 
 <h2>Tutorial</h2>
 Node:<br>
-Klonen Sie das Repository und speichern es Lokal.<br>
+Klonen Sie den Analyse Branch des Repository mit <br>
+$ git clone -b Analyse https://github.com/MaxiElfers/SUGUCS <br>
+und speichern es Lokal.<br>
 Öffnen Sie den Ordner dann in ihrer IDE und öffnen das Terminal. Dort geben Sie folgenden Befehl ein:
 <br>
 $ cd Analyse
