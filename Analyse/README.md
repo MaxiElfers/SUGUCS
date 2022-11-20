@@ -1,5 +1,4 @@
 <h1>Funktionalitäten</h1>
-<br>
 Diese Anwendung verfügt aktuell auf der "Analyse" Seite über eine Leaflet Heatmap, auf welcher Messungen Für ganz Münster vorhanden sind und durch die Heatmap die Verteilung von Lautstärke in Münster modelliert Dargestellt werden kann. 
 
 <h2>Tutorial</h2>
