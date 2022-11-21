@@ -3,9 +3,15 @@ let input_GroupCode = document.getElementById("input_GroupCode");
 let output_error = document.getElementById("output_Error");
 let btn_Scal = document.getElementById("btn_Einzelkalibrierung");
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
+let btn_recording = document.getElementById("btn_recording");
 
 btn_Gcal.addEventListener("click", function(){checkError("group");});
 btn_Scal.addEventListener("click", function(){checkError("single");});
+btn_recording.addEventListener("click", function(){playSound();});
+
+const audio_steig = new Audio('/sounds/DB_steigend.mpeg');
+const audio_const = new Audio('/sounds/DB_konstant.mpeg');
+const audio_schwan = new Audio('/sounds/DB_schwankend.mpeg');
 
 /**
  * tests that the preconditions are given, so 
@@ -40,6 +46,10 @@ function checkError(art){
         // the single calibration will end up
     }
     // Posibility to add more error checks
+}
+
+function playSound(){
+    audio_schwan.play();
 }
 
 function startDEMO(){
