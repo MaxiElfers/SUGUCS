@@ -48,10 +48,18 @@ function checkError(art){
     // Posibility to add more error checks
 }
 
+/**
+ * function plays the Audio for the calibration,
+ * if button "Sound Starten" is clicked
+ */
 function playSound(){
     audio_schwan.play();
 }
 
+/**
+ * function starts the demo of the calibration of the an
+ * groupcalibration and logs it in the console
+ */
 function startDEMO(){
     console.clear();
     console.log("Entgegengenommen Daten", gelieferteDaten1);
@@ -59,6 +67,7 @@ function startDEMO(){
     multiDeltaKali();
     console.log("Erstelltes Delta:", multiDelta);
 }
+
 
 function startCalDEMO(mode){
     console.clear();
@@ -175,7 +184,12 @@ function ArrayAvg(myArray) {
 
 
 
-
+/**
+ * This function adds the calculated Delta to the data of 
+ * a single calibration or groupcalibration
+ * @param {*} delta 
+ * @param {*} data 
+ */
 function deltaAnwenden(delta, data){
     if(delta === "single"){
         data.forEach((number,index) => {
