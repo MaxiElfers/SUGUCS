@@ -8,8 +8,10 @@ const db = document.getElementById("db");
 
 messungButton = document.getElementById("messung");
 messungButton.addEventListener("click", startMessung);
+var anzahlDatenProAufnahme = -1;
 
 function startMessung() {
+  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 10;
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
@@ -49,9 +51,16 @@ function startMessung() {
           localDbValues.push(average);
         }
         
+        if (context.state === "running" && localDbValues.length > anzahlDatenProAufnahme) {
+          context.suspend().then(() => {
+            messungButton.textContent = "Weiter aufnehmen";
+            console.log(localDbValues);
+          });
+        } 
+     
       };
+      
     });
-
 
   // update the volume every refresh_rate m.seconds
   var updateDb = function () {
@@ -69,4 +78,13 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
+
+
 }
+
+function stoppMessung() {
+  console.log("test");
+  console.log(context);
+}
+
+
