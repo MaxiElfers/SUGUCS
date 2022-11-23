@@ -11,21 +11,30 @@ block content
                 p Karte mit der Möglichkeit eine Heatmap der gemessenen Werte ein und aus zu blenden
                 #analysemap
 
+            .card.text-dark.p-4.border-success.cardplotting
+                h5 Plotting 
+                p Hier werden Plots dargestellt wie diese:
+                p Plot 1:
+                  img(src='images/plot.png' width="500" height="500")
+                p Plot 2:
+                  img(src='images/plot2.png' width="500" height="500")
+
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
                 .card.text-dark.p-4.border-success.card
-                  h4 Anzeige aller gemessenen Werte mit downloadmöglichkeit
-                  p leq 56 ...
-                  a.i.fa.fa-download.btn.btn-success(role='button', href='http://localhost:3000/analyse/lautstärkedaten', download='')
-                    | Download
+                  h4 Anzeige aller gemessenen Werte mit Möglicheit zum herunterladen
+                    br
+                    #elements
+                    br
+                    | Herunterladen der Lautstärkedaten:
+                    br
+                    a.i.fa.fa-download.button.btn-dark#container
+          
                 br
                 .card.text-dark.p-4.border-success.card
                   h4 OSM Widget
                   iframe(src="https://sensebox.github.io/opensensemap-widget/iframe.html?senseboxId=61cde4ec1b17b1001b8e126d", width="100%", height="600px", marginwidth="8", marginheight="8", hspace="0", vspace="0", frameborder="0", scrolling="no")
-                br
-                .card.text-dark.p-4.border-success.card
-                  h4 Plot 2
-    
+                
     script.
         // Set active Button
         document.querySelectorAll(".active")[0].classList.remove("active");
