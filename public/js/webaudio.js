@@ -1,3 +1,6 @@
+// Source:
+//https://github.com/takispig/db-meter
+
 var localDbValues = []; // array to store db values for each loop withing the refresh_rate
 var refresh_rate = 5000;
 var stream;
@@ -74,7 +77,6 @@ function startMessung() {
     db.innerText = volume;
     localDbValues = []; // clear previous values
 
-    changeUpdateRate();
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
@@ -82,6 +84,16 @@ function startMessung() {
 
 }
 
+// change update rate
+function changeUpdateRate() {
+  refresh_rate = Number(document.getElementById("refresh_rate").value);
+  document.getElementById("refresh_value").innerText = refresh_rate;
+  intervalId = window.setInterval(function() {
+      updateDb;
+  }, refresh_rate);
+}
+
+// stopping measurment
 function stoppMessung() {
   console.log("test");
   console.log(context);
