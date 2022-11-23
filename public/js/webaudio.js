@@ -11,7 +11,7 @@ messungButton.addEventListener("click", startMessung);
 var anzahlDatenProAufnahme = -1;
 
 function startMessung() {
-  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 10;
+  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
