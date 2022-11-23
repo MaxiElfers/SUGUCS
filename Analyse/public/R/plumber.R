@@ -1,11 +1,3 @@
-#
-# This is a Plumber API. You can run the API by clicking
-# the 'Run API' button above.
-#
-# Find out more about building APIs with Plumber here:
-#
-#    https://www.rplumber.io/
-#
 install.packages('RCurl')
 install.packages('plumber')
 install.packages('rjson')
@@ -16,6 +8,7 @@ library(rjson)
 library(geojsonio)
 library(RCurl)
 library(ggplot2)
+
 
 #* @apiTitle Plumber Example API
 #* @apiDescription Plumber example description.
@@ -39,20 +32,18 @@ function() {
 #* @serializer png
 #* @get /Scatter
 function() {
- 
-  x <- fromJSON(readLines(("https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1?date=2022-11-23T08:17:16.542Z&phenomenon=temperature&format=json")))
-  y <- as.data.frame(x)
-
-  z <- y$sensors.lastMeasurement.createdAt
-  z[1] <- "2022-11-10T11:00:49.880Z"
   
-  z1 <- y$sensors.lastMeasurement.value
-  z1[1] <- 10
+  # Herunterladen der Messungswerte von der OpenSense Api
+  Messungen <- read.csv("https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&from-date=2022-11-22T08:00:00Z&to-date=2022-11-23T08:00:00Z&phenomenon=Lautst%C3%A4rke")
   
-  Ausgabe <- ggplot(data = y, aes(x=z, y=z1))+
+  # Plotten mit Hilfe von ggplot
+  Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))+
     geom_point(col = "green")+
     labs(title = "Scatterplot der Lautstärke",subtitle = "Test2", x = "Zeit der Messung", y = "Lautstärke (Db)")
+  
+  # Ausgeben des Plots
   print(Ausgabe)
+  
 }
 
 # Programmatically alter your API
