@@ -7,7 +7,7 @@ Sie befinden sich hier in dem Branch "Kalibrierung", der zu dem Main-Branch des 
 
 Die App bietet Ihnen umfangreiche Tools zum Einsehen und Einmessung von Lärmdaten im Stadtbereich Münsters. Um die App zu starten, tippen Sie einfach nur "npm start" in die Konsole. Die App ist dann auf localhost:3000 erreichbar. Über die Navigationsleiste am oberen Bildschirmrand können Sie zwischen den einzelnen Modulen navigieren. Wollen Sie Ihr Gerät kalibrieren um eine Lärmmessung vorzunehmen, so nutzen Sie bitte den Reiter "Kalibrierung". Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen Sie bitte den Reiter "Messung". Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen und Analysieren wollen, so nutzen Sie bitte den Reiter "Analyse".
 
-Bei der Kalibrierung stehen 2 möglichkeiten zur Auswahl. Die Einzel- und Gruppenkalibrierung. 
+Formal betrachtet handelt es sich bei der Kalibrierung um einen dokumentierten Vergleich des zu kalibrierenden Messgeräts mit einem rückführbaren Referenzgerät. Das Referenzgerät kann ebenfalls als „Kalibrator“ bezeichnet werden. Dieses ist logischerweise genauer als das zu kalibrierende Gerät.Bei der Kalibrierung wird der angezeigte Messwert am Messgerät mit einem als normal definierten Referenzwert verglichen. Die auftretenden Abweichungen werden genau dokumentiert, um wiederum die Messgenauigkeit herauszufinden. Bei der Kalibrierung stehen 2 möglichkeiten zur Auswahl: Die Einzel- und Gruppenkalibrierung. 
 
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
 
