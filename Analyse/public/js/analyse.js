@@ -201,4 +201,19 @@ window.onload = function () {
     var overlays={heatmapLayer};
 
     L.control.layers(null, overlays).addTo(map);
+
+    lautstärkedaten.data.forEach(element => {
+    document.getElementById("elements").innerHTML= JSON.stringify(lautstärkedaten.data); 
+    });
+
+    var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lautstärkedaten));
+
+    var a = document.createElement('a');
+    a.href = 'data:' + data;
+    a.download = 'data.json';
+    a.innerHTML = "Herunterladen"
+
+    var container = document.getElementById('container');
+    container.appendChild(a);
+
 }
