@@ -7,10 +7,15 @@ var offset = 30;
 var average = 0;
 
 const db = document.getElementById("db");
+var con;
 
 messungButton = document.getElementById("messung");
+messungStoppenButton = document.getElementById("messungStoppen");
 messungButton.addEventListener("click", startMessung);
+messungStoppenButton.addEventListener("click", stoppMessung);
+
 var anzahlDatenProAufnahme = 0;
+
 
 function startMessung() {
   anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
@@ -18,6 +23,7 @@ function startMessung() {
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
       const context = new AudioContext();
+      con = context;
       // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
       // come from the local computer microphone or other sources.
       const source = context.createMediaStreamSource(stream);
@@ -52,7 +58,8 @@ function startMessung() {
           db.innerText = average;
           aufnahme.push(average);
         }
-
+        //stoppMessung(context);
+        /*
         if (
           context.state === "running" &&
           aufnahme.length >= anzahlDatenProAufnahme
@@ -62,7 +69,9 @@ function startMessung() {
             console.log(aufnahme);
           });
         }
+        */
       };
+
     });
 
   // update the volume every refresh_rate m.seconds
@@ -78,9 +87,13 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
+
+
+        //messungStoppenButton.addEventListener("click", console.log("hallo"));
 }
 
 // change update rate
+
 function changeUpdateRate() {
   refresh_rate = Number(document.getElementById("refresh_rate").value);
   document.getElementById("refresh_value").innerText = refresh_rate;
@@ -91,6 +104,9 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
-  console.log("test");
-  console.log(context);
+ 
+  if (aufnahme.length > 50){
+  con.suspend();
+  console.log(aufnahme);
+}
 }
