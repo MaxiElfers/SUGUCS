@@ -1,7 +1,7 @@
 // Source:
 //https://github.com/takispig/db-meter
 
-var refresh_rate = 5000;
+var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
