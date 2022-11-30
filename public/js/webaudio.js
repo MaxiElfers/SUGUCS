@@ -8,20 +8,27 @@ var average = 0;
 
 const db = document.getElementById("db");
 var con;
+var con;
 
 messungButton = document.getElementById("messung");
+messungStoppenButton = document.getElementById("messungStoppen");
 messungStoppenButton = document.getElementById("messungStoppen");
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
 var anzahlDatenProAufnahme = 0;
 
+messungStoppenButton.addEventListener("click", stoppMessung);
+
+var mindestDatenProAufnahme = 50;
+
+
 function startMessung() {
-  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
       const context = new AudioContext();
+      con = context;
       con = context;
       // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
       // come from the local computer microphone or other sources.
@@ -62,6 +69,8 @@ function startMessung() {
         }
         //stoppMessung(context);
         /*
+        //stoppMessung(context);
+        /*
         if (
           context.state === "running" &&
           modell.length >= anzahlDatenProAufnahme
@@ -72,7 +81,9 @@ function startMessung() {
           });
         }
         */
+        */
       };
+
     });
 
   // update the volume every refresh_rate m.seconds
@@ -90,9 +101,13 @@ function startMessung() {
   var interval = window.setInterval(updateDb, refresh_rate);
 
   //messungStoppenButton.addEventListener("click", console.log("hallo"));
+
+
+        //messungStoppenButton.addEventListener("click", console.log("hallo"));
 }
 
 // change update rate
+
 
 function changeUpdateRate() {
   refresh_rate = Number(document.getElementById("refresh_rate").value);
@@ -108,4 +123,9 @@ function stoppMessung() {
     con.suspend();
     console.log(modell);
   }
+ 
+  if (aufnahme.length > mindestDatenProAufnahme){
+  con.suspend();
+  console.log(aufnahme);
+}
 }
