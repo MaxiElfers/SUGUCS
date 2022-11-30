@@ -14,11 +14,10 @@ messungStoppenButton = document.getElementById("messungStoppen");
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
-var anzahlDatenProAufnahme = 0;
+var mindestDatenProAufnahme = 50;
 
 
 function startMessung() {
-  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
@@ -105,7 +104,7 @@ function changeUpdateRate() {
 // stopping measurment
 function stoppMessung() {
  
-  if (aufnahme.length > 50){
+  if (aufnahme.length > mindestDatenProAufnahme){
   con.suspend();
   console.log(aufnahme);
 }
