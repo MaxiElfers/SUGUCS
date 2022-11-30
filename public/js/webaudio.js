@@ -16,7 +16,6 @@ messungStoppenButton.addEventListener("click", stoppMessung);
 
 var anzahlDatenProAufnahme = 0;
 
-
 function startMessung() {
   anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
   navigator.mediaDevices
@@ -56,13 +55,16 @@ function startMessung() {
         average = 20 * Math.log10(values / data.length) + offset;
         if (isFinite(average)) {
           db.innerText = average;
-          aufnahme.push(average);
+          //Klonen der Aufnahmestruktur aus modell.js
+          let a = Object.assign({}, aufnahme);
+          a.value = average;
+          modell.push(a);
         }
         //stoppMessung(context);
         /*
         if (
           context.state === "running" &&
-          aufnahme.length >= anzahlDatenProAufnahme
+          modell.length >= anzahlDatenProAufnahme
         ) {
           context.suspend().then(() => {
             messungButton.textContent = "Weiter aufnehmen";
@@ -71,14 +73,13 @@ function startMessung() {
         }
         */
       };
-
     });
 
   // update the volume every refresh_rate m.seconds
   var updateDb = function () {
     window.clearInterval(interval);
 
-    var volume = Math.round(aufnahme.reduce((a, b) => a + b) / aufnahme.length);
+    var volume = Math.round(modell.reduce((a, b) => a + b) / modell.length);
     //var volume = Math.round(Math.max.apply(null, aufnahme));
     if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
     db.innerText = volume;
@@ -88,8 +89,7 @@ function startMessung() {
   };
   var interval = window.setInterval(updateDb, refresh_rate);
 
-
-        //messungStoppenButton.addEventListener("click", console.log("hallo"));
+  //messungStoppenButton.addEventListener("click", console.log("hallo"));
 }
 
 // change update rate
@@ -104,9 +104,8 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
- 
-  if (aufnahme.length > 50){
-  con.suspend();
-  console.log(aufnahme);
-}
+  if (modell.length > 50) {
+    con.suspend();
+    console.log(modell);
+  }
 }
