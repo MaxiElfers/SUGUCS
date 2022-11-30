@@ -14,4 +14,6 @@ Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, s
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
 
 ---------------------------------- Arbeitsbereich -----------------------------------
-Sprint Review Präsi:    https://docs.google.com/presentation/d/1wbafLUjXNcCMcaRTixpYtC6L_fmAFUf-ZMuY11mWwEQ/edit#slide=id.g17696e7e275_0_0
+
+Sprint Review Präsi:    
+https://docs.google.com/presentation/d/1wbafLUjXNcCMcaRTixpYtC6L_fmAFUf-ZMuY11mWwEQ/edit#slide=id.g17696e7e275_0_0
