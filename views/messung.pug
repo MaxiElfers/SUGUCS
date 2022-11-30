@@ -12,3 +12,27 @@ block content
   p
   a.btn.btn-primary.btn-sm(type='button', id="messungStoppen") Messung stoppen!
   script(src='/js/webaudio.js')
+
+    // Leaflet
+  .row.gx-5.gx-lg-5.justify-content-center
+    .col-md-8.mb-5
+      .card.center
+        .card-body
+          #map
+          div
+            | Click here to read in your personal 
+            span.Eingabe Browser-Coordinates
+            | : 
+            a.btn.btn-primary.btn-sm(onclick='getLocation()') Try It
+          p#demo
+  // Leaflet
+  script(src='/js/leaflet.js')
+
+    .col-md-4.mb-5
+      .card.h-100
+        .card-body
+          h2.card-title Die Messung
+          p.card-text
+            | Nachdem ihr Mikrofon kalibiert wurde, können Sie mit einer eigenen Messung starten. [Anleitung]
+        .card-footer
+          a.btn.btn-primary.btn-sm(href='/messung') zur Messung
