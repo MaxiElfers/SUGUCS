@@ -7,9 +7,13 @@ var offset = 30;
 var average = 0;
 
 const db = document.getElementById("db");
+var con;
 
 messungButton = document.getElementById("messung");
+messungStoppenButton = document.getElementById("messungStoppen");
 messungButton.addEventListener("click", startMessung);
+messungStoppenButton.addEventListener("click", stoppMessung);
+
 var anzahlDatenProAufnahme = 0;
 
 function startMessung() {
@@ -18,6 +22,7 @@ function startMessung() {
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
       const context = new AudioContext();
+      con = context;
       // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
       // come from the local computer microphone or other sources.
       const source = context.createMediaStreamSource(stream);
@@ -50,18 +55,23 @@ function startMessung() {
         average = 20 * Math.log10(values / data.length) + offset;
         if (isFinite(average)) {
           db.innerText = average;
-          aufnahme.push(average);
+          //Klonen der Aufnahmestruktur aus modell.js
+          let a = Object.assign({}, aufnahme);
+          a.value = average;
+          modell.push(a);
         }
-
+        //stoppMessung(context);
+        /*
         if (
           context.state === "running" &&
-          aufnahme.length >= anzahlDatenProAufnahme
+          modell.length >= anzahlDatenProAufnahme
         ) {
           context.suspend().then(() => {
             messungButton.textContent = "Weiter aufnehmen";
             console.log(aufnahme);
           });
         }
+        */
       };
     });
 
@@ -69,7 +79,7 @@ function startMessung() {
   var updateDb = function () {
     window.clearInterval(interval);
 
-    var volume = Math.round(aufnahme.reduce((a, b) => a + b) / aufnahme.length);
+    var volume = Math.round(modell.reduce((a, b) => a + b) / modell.length);
     //var volume = Math.round(Math.max.apply(null, aufnahme));
     if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
     db.innerText = volume;
@@ -78,9 +88,12 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
+
+  //messungStoppenButton.addEventListener("click", console.log("hallo"));
 }
 
 // change update rate
+
 function changeUpdateRate() {
   refresh_rate = Number(document.getElementById("refresh_rate").value);
   document.getElementById("refresh_value").innerText = refresh_rate;
@@ -91,6 +104,8 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
-  console.log("test");
-  console.log(context);
+  if (modell.length > 50) {
+    con.suspend();
+    console.log(modell);
+  }
 }
