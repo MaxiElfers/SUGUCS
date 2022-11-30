@@ -22,7 +22,6 @@ messungStoppenButton.addEventListener("click", stoppMessung);
 
 var mindestDatenProAufnahme = 50;
 
-
 function startMessung() {
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
@@ -81,9 +80,7 @@ function startMessung() {
           });
         }
         */
-        */
       };
-
     });
 
   // update the volume every refresh_rate m.seconds
@@ -102,12 +99,10 @@ function startMessung() {
 
   //messungStoppenButton.addEventListener("click", console.log("hallo"));
 
-
-        //messungStoppenButton.addEventListener("click", console.log("hallo"));
+  //messungStoppenButton.addEventListener("click", console.log("hallo"));
 }
 
 // change update rate
-
 
 function changeUpdateRate() {
   refresh_rate = Number(document.getElementById("refresh_rate").value);
@@ -123,9 +118,9 @@ function stoppMessung() {
     con.suspend();
     console.log(modell);
   }
- 
-  if (aufnahme.length > mindestDatenProAufnahme){
-  con.suspend();
-  console.log(aufnahme);
-}
+
+  if (aufnahme.length > mindestDatenProAufnahme) {
+    con.suspend();
+    console.log(aufnahme);
+  }
 }
