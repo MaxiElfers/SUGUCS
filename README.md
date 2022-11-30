@@ -12,3 +12,6 @@ Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen
 Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".
 
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
+
+---------------------------------- Arbeitsbereich -----------------------------------
+Sprint Review Präsi:    https://docs.google.com/presentation/d/1wbafLUjXNcCMcaRTixpYtC6L_fmAFUf-ZMuY11mWwEQ/edit#slide=id.g17696e7e275_0_0
