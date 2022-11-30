@@ -11,4 +11,4 @@ Formal betrachtet handelt es sich bei der Kalibrierung um einen dokumentierten V
 
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
 
-1. Sprint Review: https://docs.google.com/presentation/d/1soiBm50p9X8f7VMJ7-3Wx0e0ESVvKABAOEm0eV2Gz1c/edit#slide=id.g17696e7e275_0_0
+Sprint Review: https://docs.google.com/presentation/d/1wbafLUjXNcCMcaRTixpYtC6L_fmAFUf-ZMuY11mWwEQ/edit#slide=id.g197bc51abbc_0_65
