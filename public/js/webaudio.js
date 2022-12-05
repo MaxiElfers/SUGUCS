@@ -124,3 +124,63 @@ function stoppMessung() {
     console.log(aufnahme);
   }
 }
+
+document.getElementById("hinzufuegen").addEventListener("click", function () {
+  getValues();
+});
+
+function getValues() {
+  // Daten einlesen
+  var newName = document.getElementById("NameDiv").value;
+  var newModell = modell;
+  var newStandort = pos;
+  //console.log(newName, newModell, newStandort);
+  if (newName == "") {
+    document.getElementById("FehlerDiv3").style.display = "block";
+  }
+  if (newModell.length == 0) {
+    document.getElementById("FehlerDiv").style.display = "block";
+  }
+  if (newStandort == null) {
+    document.getElementById("FehlerDiv2").style.display = "block";
+  } else {
+    var durchschnitt = getDurchschnitt(newModell);
+
+    data = {
+      name: newName,
+      geometry: {
+        type: "Point",
+        coordinates: newStandort,
+      },
+      Messung: newModell,
+      Durchschnitt: durchschnitt,
+    };
+    console.log(data);
+    postData(data);
+  }
+}
+
+/**
+ * Berechnet den Durchschnitt aus einem Feld mit int Werten
+ * @param {int} Messungen
+ * @returns durchschnitt
+ */
+function getDurchschnitt(Messungen) {
+  var Summe = 0;
+  for (var i = 0; i < Messungen.length; i++) {
+    Summe = Summe + Messungen[i].value;
+  }
+  return Summe / Messungen.length;
+}
+
+/**
+ * Fetcht die neuen Daten
+ * @param doc zu postende Daten
+ */
+function postData(doc) {
+  fetch("/addData", {
+    headers: { "Content-Type": "application/json" },
+    method: "post",
+    body: JSON.stringify(doc),
+  });
+}

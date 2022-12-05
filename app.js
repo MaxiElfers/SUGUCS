@@ -12,6 +12,17 @@ var messungRouter = require("./routes/messung");
 
 var app = express();
 
+// Mongo DB aufsetzen
+const { MongoClient } = require("mongodb");
+
+const url = "mongodb://mongo:27017"; // connection URL
+
+const client = new MongoClient(url); // mongodb client
+
+const dbName = "mydatabase"; // database name
+
+const collectionName = "pois"; // collection name
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -43,5 +54,32 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+// Path definition for the fetch post
+app.post("/addData", function (req, res, next) {
+  addData(req.body)
+    .catch(console.error)
+    .finally(() =>
+      setTimeout(() => {
+        client.close();
+      }, 1500)
+    );
+});
+
+/**
+ * Adds the data to the database
+ * @param {Object} data
+ */
+async function addData(data) {
+  await client.connect();
+  console.log("Connected successfully to server");
+
+  const db = client.db(dbName);
+
+  const collection = db.collection(collectionName);
+
+  await collection.insertOne(data); //function to insert one object
+  console.log("Marker added successfuly");
+}
 
 module.exports = app;

@@ -28,6 +28,19 @@ block content
             a.btn.btn-primary.btn-sm(onclick='getLocation()') Try It
           p#demo
           #map.mt-3
+    .col-lg-6.col-xs-12.mb-3
+      .card
+        .card-body
+          h2.card-title Neue Messung hinzufügen
+          div
+            #EingabeDiv
+              |Name: 
+              input#NameDiv(type='text')
+            p
+            a.btn.btn-primary.btn-sm(type='button' id="hinzufuegen") Hinzufügen
+            #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
+            #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
+            #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
 
   script(src='/js/webaudio.js')
   script(src='/js/leaflet.js')
