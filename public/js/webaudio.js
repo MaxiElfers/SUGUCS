@@ -135,13 +135,14 @@ function getValues() {
   var newModell = modell;
   var newStandort = pos;
   //console.log(newName, newModell, newStandort);
+  document.getElementById("FehlerDiv").style.display = "none";
+  document.getElementById("FehlerDiv2").style.display = "none";
+  document.getElementById("FehlerDiv3").style.display = "none";
   if (newName == "") {
     document.getElementById("FehlerDiv3").style.display = "block";
-  }
-  if (newModell.length == 0) {
+  } else if (newModell.length == 0) {
     document.getElementById("FehlerDiv").style.display = "block";
-  }
-  if (newStandort == null) {
+  } else if (newStandort == null) {
     document.getElementById("FehlerDiv2").style.display = "block";
   } else {
     var durchschnitt = getDurchschnitt(newModell);
