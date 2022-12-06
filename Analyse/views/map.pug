@@ -7,8 +7,9 @@ block content
     .row.justify-content-md-left
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
-                h5 Heatmap
-                p Karte mit der Möglichkeit eine Heatmap der gemessenen Werte ein und aus zu blenden
+                h5 (Heat)map
+                p Karte zur Visualisierung der Messtationen und (in Arbeit) mit Abruf der gemessenen Werte als popup der Marker
+                p (mit der Möglichkeit eine Heatmap der gemessenen Werte ein und aus zu blenden)
                 #analysemap
 
             .card.text-dark.p-4.border-success.cardplotting
@@ -22,18 +23,13 @@ block content
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
                 .card.text-dark.p-4.border-success.card
-                  h4 Anzeige aller gemessenen Werte mit Möglicheit zum herunterladen
+                  h4 Anzeige aller gemessenen Werte eines Messstandorts (eventuell Möglichkeit diesen hier noch zu ändern, auch wenn vorher andere ID angegeben wurde)
                     br
                     #elements
                     br
                     | Herunterladen der Lautstärkedaten:
                     br
                     a.i.fa.fa-download.button.btn-dark#container
-          
-                br
-                .card.text-dark.p-4.border-success.card
-                  h4 OSM Widget
-                  iframe(src="https://sensebox.github.io/opensensemap-widget/iframe.html?senseboxId=61cde4ec1b17b1001b8e126d", width="100%", height="600px", marginwidth="8", marginheight="8", hspace="0", vspace="0", frameborder="0", scrolling="no")
                 
     script.
         // Set active Button
