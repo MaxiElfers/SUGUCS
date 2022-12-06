@@ -69,10 +69,21 @@ block content
         br
         div.btn.btn-primary#btn_GruppeErstellen Gruppe Erstellen - Host sein 
         div#groupCreate
-      div.col-2
+        .row.gx-10.gx-lg-3.mt-3
+    .col-lg-6.col-xs-12.mb-3
+      .card
+        .card-body
+          h2.card-title Soundaufnahme
+          div
+            textarea#db(name='db' rows='4' cols='50')
+            p
+            a.btn.btn-primary.btn-sm(type='button' id="aufnahme") Aufnahme starten!
+            p
+            a.btn.btn-primary.btn-sm(type='button' id="aufnahmeStoppen") Aufnahme stoppen!
 
 
   
   script(src='/js/kalibrierung.js')
   script(src='/js/qrcode.js')
+  script(src='/js/webaudio.js')
 
