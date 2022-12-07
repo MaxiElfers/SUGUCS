@@ -125,7 +125,7 @@ function stoppMessung() {
     "Gemessener Durchschnitt:<br><b>" +
     Math.round(summe / modell.length) +
     "</b> dB";
-
+    messungButton.textContent = "Neue Messung"
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
