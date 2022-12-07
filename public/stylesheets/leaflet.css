@@ -21,3 +21,7 @@ div {
   color: rgb(49, 46, 46);
   font-size: large;
 }
+
+.row{
+    --bs-gutter-x: 0 !important;
+}
