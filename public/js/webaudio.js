@@ -9,16 +9,15 @@ var average = 0;
 const db = document.getElementById("db");
 var con;
 var con;
+let durchschn = document.getElementById("ausg");
+let maxim = document.getElementById("maxima");
 
 messungButton = document.getElementById("messung");
-messungStoppenButton = document.getElementById("messungStoppen");
 messungStoppenButton = document.getElementById("messungStoppen");
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
 var anzahlDatenProAufnahme = 0;
-
-messungStoppenButton.addEventListener("click", stoppMessung);
 
 var mindestDatenProAufnahme = 50;
 
@@ -117,6 +116,16 @@ function stoppMessung() {
   if (modell.length > 50) {
     con.suspend();
     console.log(modell);
+    var summe = 0;
+    for(let i = 0 ; i < modell.length ; i++) {
+      summe = summe + modell[i].value
+    }
+    durchschn.innerHTML =
+    "<br>Messung erfolgreich!<br>" + 
+    "Gemessener Durchschnitt:<br><b>" +
+    Math.round(summe / modell.length) +
+    "</b> dB";
+
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
