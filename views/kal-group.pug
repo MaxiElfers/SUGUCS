@@ -44,6 +44,9 @@ block content
                       div
                         textarea#db(name='db' rows='4' cols='50')
                         p
-                        a.btn.btn-primary.btn-sm(type='button' id="aufnahme") Aufnahme starten!
+                        a.btn.btn-primary.btn-sm(type='button' id="messung") Aufnahme starten!
                         p
-                        a.btn.btn-primary.btn-sm(type='button' id="aufnahmeStoppen") Aufnahme stoppen!
+                        a.btn.btn-primary.btn-sm(type='button' id="messungStoppen") Aufnahme stoppen!
+
+    script(src='/js/qrcode.js')
+    script(src='/js/webaudio.js')
