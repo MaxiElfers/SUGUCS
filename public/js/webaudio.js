@@ -1,7 +1,8 @@
 // Source:
 //https://github.com/takispig/db-meter
 
-var refresh_rate = 5000;
+
+var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
@@ -19,6 +20,7 @@ var anzahlDatenProAufnahme = 0;
 
 function startMessung() {
   anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
+
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
@@ -56,6 +58,7 @@ function startMessung() {
         average = 20 * Math.log10(values / data.length) + offset;
         if (isFinite(average)) {
           db.innerText = average;
+
           aufnahme.push(average);
         }
         //stoppMessung(context);
@@ -66,12 +69,12 @@ function startMessung() {
         ) {
           context.suspend().then(() => {
             messungButton.textContent = "Weiter aufnehmen";
+
             console.log(aufnahme);
           });
         }
         */
       };
-
     });
 
   // update the volume every refresh_rate m.seconds
@@ -89,7 +92,9 @@ function startMessung() {
   var interval = window.setInterval(updateDb, refresh_rate);
 
 
+
         //messungStoppenButton.addEventListener("click", console.log("hallo"));
+
 }
 
 // change update rate
