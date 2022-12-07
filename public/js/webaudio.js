@@ -17,8 +17,6 @@ messungStoppenButton = document.getElementById("messungStoppen");
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
-var anzahlDatenProAufnahme = 0;
-
 var mindestDatenProAufnahme = 50;
 
 function startMessung() {
@@ -65,20 +63,6 @@ function startMessung() {
           a.value = average;
           modell.push(a);
         }
-        //stoppMessung(context);
-        /*
-        //stoppMessung(context);
-        /*
-        if (
-          context.state === "running" &&
-          modell.length >= anzahlDatenProAufnahme
-        ) {
-          context.suspend().then(() => {
-            messungButton.textContent = "Weiter aufnehmen";
-            console.log(aufnahme);
-          });
-        }
-        */
       };
     });
 
@@ -96,9 +80,6 @@ function startMessung() {
   };
   var interval = window.setInterval(updateDb, refresh_rate);
 
-  //messungStoppenButton.addEventListener("click", console.log("hallo"));
-
-  //messungStoppenButton.addEventListener("click", console.log("hallo"));
 }
 
 // change update rate
@@ -113,7 +94,7 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
-  if (modell.length > 50) {
+  if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
     console.log(modell);
     var summe = 0;
