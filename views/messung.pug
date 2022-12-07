@@ -10,7 +10,7 @@ block content
   .row.gx-10
     .col-md-4
       .pb-3
-        .card
+        .card.shadow-lg
           .card-body
             h2.card-title Soundaufnahme
             div
@@ -21,7 +21,7 @@ block content
               a.btn.btn-primary.btn-sm(type='button' id="messungStoppen") Messung stoppen
               p#ausg
       .pb-3
-        .card
+        .card.shadow-lg
           .card-body
             h2.card-title Neue Messung hinzufügen
             div
@@ -34,16 +34,16 @@ block content
               #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
               #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
     .col-md-8
-      .card
+      .card.shadow-lg
         .card-body
-          div
+          div.align-items-center
             | Click here to read in your personal 
             span.Eingabe Browser-Coordinates
             | : 
             a.btn.btn-primary.btn-sm(onclick='getLocation()') Try It
-          p#demo
-          #map.mt-3
-      
+            p#demo
+            p#map.mt-3
+
 
   script(src='/js/webaudio.js')
   script(src='/js/leaflet.js')
