@@ -12,10 +12,10 @@ block content
       img.img-fluid.rounded.mb-4.mb-lg-0(src="/images/muenster-altstadt.jpg" title="Der Prinzipalmarkt in Münster.© Münsterland e.V./Philipp Fölting")
 
     .col-lg-5
-      h1.font-weight-light Neuer Titel
+      h1.font-weight-light The Sound of Münster
       p
         | Lärmbelastung kann weitreichende Folgen für die Gesundheit der betroffenen Personen haben.  Daher findet regelmäßig eine Lärmkartierung statt, für die von offizieller Seite gemäß EU Umgebungslärmrichtlinie alle fünf Jahre die durchschnittliche Lärmbelastung  durch Straßen-, Schienen- und Flugverkehr sowie Industrie quellenspezifisch modelliert wird. Jedoch werden in der Lärmkartierung nur stärker befahrende Straßen abgebildet und die Gesamtlärmbelastung aus verschiedenen Quellen wird nicht dargestellt.  Hier besteht ein großes Potenzial für Citizen Science: Bürger*innen können zusätzliche Messungen beitragen und damit die Datengrundlage erheblich verbessern.
-      a.btn.btn-primary(href='#!') Ruf zur Aktion!
+      a.btn.btn-primary(href='#!') Call to Action!
 
   // Call to Action
   .card.text-white.bg-success(style='--bs-bg-opacity: .75;').my-5.py-4.text-center
@@ -24,17 +24,11 @@ block content
         | Schauen Sie sich verschiedene Lärmmessungen in Münster an und fügen Sie Eigene hinzu!
 
   // Leaflet
-  .row.gx-10.gx-lg-3.justify-content-center
-    .col-md-8.mb-3
-      .card.center
+  .row.gx-4.gx-lg-5
+    .col-md-14.mb-5
+      .card.h-100
         .card-body
           #map
-          div
-            | Click here to read in your personal 
-            span.Eingabe Browser-Coordinates
-            | : 
-            a.btn.btn-primary.btn-sm(onclick='getLocation()') Try It
-          p#demo
 
   // Content Row
   .row.gx-4.gx-lg-5
