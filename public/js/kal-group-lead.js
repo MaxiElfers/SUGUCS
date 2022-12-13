@@ -1,16 +1,16 @@
 let btn_calibration = document.getElementById("btn_Kalibrierung");
 let input_GroupCode = document.getElementById("input_GroupCode");
 let output_error = document.getElementById("output_Error");
-let btn_Scal = document.getElementById("btn_Einzelkalibrierung");
+//let btn_Scal = document.getElementById("btn_Einzelkalibrierung");
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
-let btn_recording = document.getElementById("btn_recording");
-let btn_audioFile = document.getElementById("btn_audioDatei");
+//let btn_recording = document.getElementById("btn_recording");
+//let btn_audioFile = document.getElementById("btn_audioDatei");
 let in_file = document.getElementById("in_file");
 
 btn_Gcal.addEventListener("click", function(){checkError("group");});
-btn_Scal.addEventListener("click", function(){checkError("single");});
-btn_recording.addEventListener("click", function(){playSound();});
-btn_audioFile.addEventListener("click", function(){getAudioFile();});
+//btn_Scal.addEventListener("click", function(){checkError("single");});
+//btn_recording.addEventListener("click", function(){playSound();});
+//btn_audioFile.addEventListener("click", function(){getAudioFile();});
 
 const audio_steig = new Audio('/sounds/DB_steigend.mpeg');
 const audio_const = new Audio('/sounds/DB_konstant.mpeg');
