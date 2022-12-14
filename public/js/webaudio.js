@@ -116,7 +116,6 @@ function stoppMessung() {
 
   if (aufnahme.length > mindestDatenProAufnahme) {
     con.suspend();
-    console.log(aufnahme);
   }
 }
 
