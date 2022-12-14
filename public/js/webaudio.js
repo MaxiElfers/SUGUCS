@@ -26,14 +26,14 @@ messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
 nameDiv.addEventListener("change", function () {
-  if (osbDiv.value == "" || nameDiv.value == "") {
+  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
     messungButton.disabled = true;
   } else {
     messungButton.disabled = false;
   }
 });
 osbDiv.addEventListener("change", function () {
-  if (osbDiv.value == "" || nameDiv.value == "") {
+  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
     messungButton.disabled = true;
   } else {
     messungButton.disabled = false;
@@ -97,11 +97,13 @@ function startMessung() {
       source.connect(analyserNode);
       const pcmData = new Float32Array(analyserNode.fftSize);
       const onFrame = () => {
-          analyserNode.getFloatTimeDomainData(pcmData);
-          let sumSquares = 0.0;
-          for (const amplitude of pcmData) { sumSquares += amplitude*amplitude; }
-          volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
-          window.requestAnimationFrame(onFrame);
+        analyserNode.getFloatTimeDomainData(pcmData);
+        let sumSquares = 0.0;
+        for (const amplitude of pcmData) {
+          sumSquares += amplitude * amplitude;
+        }
+        volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
+        window.requestAnimationFrame(onFrame);
       };
       window.requestAnimationFrame(onFrame);
     });

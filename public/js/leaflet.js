@@ -35,4 +35,10 @@ function showPosition(position) {
   marker.bindPopup("mein Standort");
   marker.addTo(map);
   map.setView([pos[0], pos[1]], 20);
+
+  if (osbDiv.value == "" || nameDiv.value == "") {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
 }
