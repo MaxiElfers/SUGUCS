@@ -51,7 +51,6 @@ function startMessung() {
     .then((stream) => {
       const context = new AudioContext();
       con = context;
-      con = context;
       // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
       // come from the local computer microphone or other sources.
       const source = context.createMediaStreamSource(stream);
@@ -94,6 +93,17 @@ function startMessung() {
           modell.push(a);
         }
       };
+      const analyserNode = context.createAnalyser();
+      source.connect(analyserNode);
+      const pcmData = new Float32Array(analyserNode.fftSize);
+      const onFrame = () => {
+          analyserNode.getFloatTimeDomainData(pcmData);
+          let sumSquares = 0.0;
+          for (const amplitude of pcmData) { sumSquares += amplitude*amplitude; }
+          volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
+          window.requestAnimationFrame(onFrame);
+      };
+      window.requestAnimationFrame(onFrame);
     });
 
   // update the volume every refresh_rate m.seconds
