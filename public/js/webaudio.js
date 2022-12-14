@@ -20,6 +20,8 @@ messungStoppenButton.addEventListener("click", stoppMessung);
 var mindestDatenProAufnahme = 50;
 
 function startMessung() {
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
@@ -59,7 +61,11 @@ function startMessung() {
           db.innerText = average;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
+          a.lat = pos[0];
+          a.lon = pos[1];
           a.value = average;
+          a.boxName = newName;
+          a.boxId = osbID;
           modell.push(a);
         }
       };
@@ -89,7 +95,6 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
-
 }
 
 // change update rate
@@ -108,15 +113,15 @@ function stoppMessung() {
     con.suspend();
     console.log(modell);
     var summe = 0;
-    for(let i = 0 ; i < modell.length ; i++) {
-      summe = summe + modell[i].value
+    for (let i = 0; i < modell.length; i++) {
+      summe = summe + modell[i].value;
     }
     durchschn.innerHTML =
-    "<br>Messung erfolgreich!<br>" + 
-    "Gemessener Durchschnitt:<br><b>" +
-    Math.round(summe / modell.length) +
-    "</b> dB";
-    messungButton.textContent = "Neue Messung"
+      "<br>Messung erfolgreich!<br>" +
+      "Gemessener Durchschnitt:<br><b>" +
+      Math.round(summe / modell.length) +
+      "</b> dB";
+    messungButton.textContent = "Neue Messung";
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
@@ -129,37 +134,39 @@ document.getElementById("hinzufuegen").addEventListener("click", function () {
   getValues();
 });
 
-function getValues() {
-  // Daten einlesen
-  var newName = document.getElementById("NameDiv").value;
-  var newModell = modell;
-  var newStandort = pos;
-  //console.log(newName, newModell, newStandort);
-  document.getElementById("FehlerDiv").style.display = "none";
-  document.getElementById("FehlerDiv2").style.display = "none";
-  document.getElementById("FehlerDiv3").style.display = "none";
-  if (newName == "") {
-    document.getElementById("FehlerDiv3").style.display = "block";
-  } else if (newModell.length == 0) {
-    document.getElementById("FehlerDiv").style.display = "block";
-  } else if (newStandort == null) {
-    document.getElementById("FehlerDiv2").style.display = "block";
-  } else {
-    var durchschnitt = getDurchschnitt(newModell);
+// function getValues() {
+//   // Daten einlesen
+//   var newName = document.getElementById("NameDiv").value;
+//   var osbID = document.getElementById("OpenSenseBoxDiv").value;
+//   var newModell = modell;
+//   var newStandort = pos;
+//   //console.log(newName, newModell, newStandort);
+//   document.getElementById("FehlerDiv").style.display = "none";
+//   document.getElementById("FehlerDiv2").style.display = "none";
+//   document.getElementById("FehlerDiv3").style.display = "none";
+//   if (newName == "") {
+//     document.getElementById("FehlerDiv3").style.display = "block";
+//   } else if (newModell.length == 0) {
+//     document.getElementById("FehlerDiv").style.display = "block";
+//   } else if (newStandort == null) {
+//     document.getElementById("FehlerDiv2").style.display = "block";
+//   } else {
+//     var durchschnitt = getDurchschnitt(newModell);
 
-    data = {
-      name: newName,
-      geometry: {
-        type: "Point",
-        coordinates: newStandort,
-      },
-      Messung: newModell,
-      Durchschnitt: durchschnitt,
-    };
-    console.log(data);
-    postData(data);
-  }
-}
+//     data = {
+//       name: newName,
+//       geometry: {
+//         type: "Point",
+//         coordinates: newStandort,
+//       },
+//       Messung: newModell,
+//       Durchschnitt: durchschnitt,
+//       OpenSenseBoxID: osbID,
+//     };
+//     console.log(data);
+//     postData(data);
+//   }
+// }
 
 /**
  * Berechnet den Durchschnitt aus einem Feld mit int Werten
