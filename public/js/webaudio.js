@@ -79,7 +79,6 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
-
 }
 
 // change update rate
@@ -99,18 +98,19 @@ function stoppMessung() {
     console.log(modell);
     var summe = 0;
     for (let i = 0; i < modell.length; i++) {
-      summe = summe + modell[i].value
+      summe = summe + modell[i].value;
     }
     durchschn.innerHTML =
       "<br>Messung erfolgreich!<br>" +
       "Gemessener Durchschnitt:<br><b>" +
       Math.round(summe / modell.length) +
       "</b> dB";
-    messungButton.textContent = "Neue Messung"
+    messungButton.textContent = "Neue Messung";
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
     con.suspend();
+    console.log(aufnahme);
   }
 }
 
