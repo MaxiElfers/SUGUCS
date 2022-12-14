@@ -14,12 +14,36 @@ let maxim = document.getElementById("maxima");
 
 messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
+var nameDiv = document.getElementById("NameDiv");
+var osbDiv = document.getElementById("OpenSenseBoxDiv");
+nameDiv.value = "";
+osbDiv.value = "";
+
+messungButton.disabled = true;
+messungStoppenButton.disabled = true;
+
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
+
+nameDiv.addEventListener("change", function () {
+  if (osbDiv.value == "" || nameDiv.value == "") {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
+osbDiv.addEventListener("change", function () {
+  if (osbDiv.value == "" || nameDiv.value == "") {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
 
 var mindestDatenProAufnahme = 50;
 
 function startMessung() {
+  messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
   navigator.mediaDevices
@@ -99,6 +123,7 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
+  messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
     console.log(modell);
