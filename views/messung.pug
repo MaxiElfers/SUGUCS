@@ -12,14 +12,17 @@ block content
       .pb-3
         .card.shadow-lg
           .card-body
+            
             h2.card-title Soundaufnahme
             div
               textarea#db(name='db')
               p
               a.btn.btn-primary.btn-sm(type='button' id="messung" style="background:green") Messung starten
+              meter#volumeMeterEl(high='0.25' max='0.5' value='0')
               p
               a.btn.btn-primary.btn-sm(type='button' id="messungStoppen") Messung stoppen
               p#ausg
+  
       .pb-3
         .card.shadow-lg
           .card-body
