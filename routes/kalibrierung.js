@@ -6,12 +6,12 @@ router.get("/", function (req, res, next) {
   res.render("kalibrierung", { title: "Kalibrierung" });
 });
 
-router.get("/group-lead", function (req, res, next) {
-  res.render("kal-group-lead", { title: "Kalibrierung" });
+router.get("/kal-lead", function (req, res, next) {
+  res.render("kal-lead", { title: "Kalibrierung" });
 });
 
-router.get("/group", function (req, res, next) {
-  res.render("kal-group", { title: "Kalibrierung" });
+router.get("/kal-atten", function (req, res, next) {
+  res.render("kal-atten", { title: "Kalibrierung" });
 });
 
 module.exports = router;
