@@ -10,7 +10,12 @@ var mapRouter = require("./routes/map");
 var kalibrierungRouter = require("./routes/kalibrierung");
 var messungRouter = require("./routes/messung");
 
-var app = express();
+const app = express();
+const port = 3000;
+
+var bodyParser = require("body-parser");
+var jsonParser = bodyParser.json();
+app.use(jsonParser);
 
 // Mongo DB aufsetzen
 const { MongoClient } = require("mongodb");
@@ -19,9 +24,9 @@ const url = "mongodb://mongo:27017"; // connection URL
 
 const client = new MongoClient(url); // mongodb client
 
-const dbName = "mydatabase"; // database name
+const dbName = "laermmessungen"; // database name
 
-const collectionName = "pois"; // collection name
+const collectionName = "data"; // collection name
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -55,15 +60,23 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+// rendering static files
+app.use(express.static("public"));
+
+// Path definition for the Website
+app.get("/messung", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public", "messung.pug"));
+});
+
 // Path definition for the fetch post
 app.post("/addData", function (req, res, next) {
   addData(req.body)
     .catch(console.error)
-    .finally(() =>
-      setTimeout(() => {
-        client.close();
-      }, 1500)
-    );
+    .finally(() => client.close());
+});
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`);
 });
 
 /**
@@ -79,7 +92,7 @@ async function addData(data) {
   const collection = db.collection(collectionName);
 
   await collection.insertOne(data); //function to insert one object
-  console.log("Marker added successfuly");
+  console.log("Data added successfuly");
 }
 
 module.exports = app;

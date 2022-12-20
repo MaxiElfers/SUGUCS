@@ -161,39 +161,39 @@ document.getElementById("hinzufuegen").addEventListener("click", function () {
   getValues();
 });
 
-// function getValues() {
-//   // Daten einlesen
-//   var newName = document.getElementById("NameDiv").value;
-//   var osbID = document.getElementById("OpenSenseBoxDiv").value;
-//   var newModell = modell;
-//   var newStandort = pos;
-//   //console.log(newName, newModell, newStandort);
-//   document.getElementById("FehlerDiv").style.display = "none";
-//   document.getElementById("FehlerDiv2").style.display = "none";
-//   document.getElementById("FehlerDiv3").style.display = "none";
-//   if (newName == "") {
-//     document.getElementById("FehlerDiv3").style.display = "block";
-//   } else if (newModell.length == 0) {
-//     document.getElementById("FehlerDiv").style.display = "block";
-//   } else if (newStandort == null) {
-//     document.getElementById("FehlerDiv2").style.display = "block";
-//   } else {
-//     var durchschnitt = getDurchschnitt(newModell);
+function getValues() {
+  // Daten einlesen
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  var newModell = modell;
+  var newStandort = pos;
+  //console.log(newName, newModell, newStandort);
+  document.getElementById("FehlerDiv").style.display = "none";
+  document.getElementById("FehlerDiv2").style.display = "none";
+  document.getElementById("FehlerDiv3").style.display = "none";
+  if (newName == "") {
+    document.getElementById("FehlerDiv3").style.display = "block";
+  } else if (newModell.length == 0) {
+    document.getElementById("FehlerDiv").style.display = "block";
+  } else if (newStandort == null) {
+    document.getElementById("FehlerDiv2").style.display = "block";
+  } else {
+    var durchschnitt = getDurchschnitt(newModell);
 
-//     data = {
-//       name: newName,
-//       geometry: {
-//         type: "Point",
-//         coordinates: newStandort,
-//       },
-//       Messung: newModell,
-//       Durchschnitt: durchschnitt,
-//       OpenSenseBoxID: osbID,
-//     };
-//     console.log(data);
-//     postData(data);
-//   }
-// }
+    data = {
+      name: newName,
+      geometry: {
+        type: "Point",
+        coordinates: newStandort,
+      },
+      Messung: newModell,
+      Durchschnitt: durchschnitt,
+      OpenSenseBoxID: osbID,
+    };
+    console.log(data);
+    postData(data);
+  }
+}
 
 /**
  * Berechnet den Durchschnitt aus einem Feld mit int Werten
