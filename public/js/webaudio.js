@@ -157,6 +157,6 @@ function tonspurMax(tonspur) {
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen")
   // Array kürzen auf richtige Länge
-  aufnahme = tonspur.slice(max, max + 30)
+  tonspur = tonspur.slice(max, max + 30)
   console.log(tonspur)
 }
