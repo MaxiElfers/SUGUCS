@@ -1,20 +1,20 @@
 let btn_calibration = document.getElementById("btn_Kalibrierung");
 let input_GroupCode = document.getElementById("input_GroupCode");
 let output_error = document.getElementById("output_Error");
-//let btn_Scal = document.getElementById("btn_Einzelkalibrierung");
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
-//let btn_recording = document.getElementById("btn_recording");
-//let btn_audioFile = document.getElementById("btn_audioDatei");
 let in_file = document.getElementById("in_file");
+let btn_xl2 = document.getElementById("btn_XL2");
+let in_soundArray = document.getElementById("soundArray")
 
 btn_Gcal.addEventListener("click", function(){checkError("group");});
-//btn_Scal.addEventListener("click", function(){checkError("single");});
-//btn_recording.addEventListener("click", function(){playSound();});
-//btn_audioFile.addEventListener("click", function(){getAudioFile();});
+btn_xl2.addEventListener("click", function(){window.location = '/kalibrierung/XL2';});
 
 const audio_steig = new Audio('/sounds/DB_steigend.mpeg');
 const audio_const = new Audio('/sounds/DB_konstant.mpeg');
 const audio_schwan = new Audio('/sounds/DB_schwankend.mpeg');
+let xl2Daten = in_soundArray.innerHTML.split(',');
+var counter = 0;
+
 
 /**
  * tests that the preconditions are given, so 
@@ -226,5 +226,3 @@ async function getAudio(){
     
     console.log(float32Data);
 }
-
-
