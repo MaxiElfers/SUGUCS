@@ -1,7 +1,6 @@
 // Source:
 //https://github.com/takispig/db-meter
 
-
 var refresh_rate = 500;
 var stream;
 var offset = 30;
@@ -9,16 +8,44 @@ var average = 0;
 
 const db = document.getElementById("db");
 var con;
+var con;
+let durchschn = document.getElementById("ausg");
+let maxim = document.getElementById("maxima");
 
 messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
+var nameDiv = document.getElementById("NameDiv");
+var osbDiv = document.getElementById("OpenSenseBoxDiv");
+nameDiv.value = "";
+osbDiv.value = "";
+
+messungButton.disabled = true;
+messungStoppenButton.disabled = true;
+
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
-var anzahlDatenProAufnahme = 0;
+nameDiv.addEventListener("change", function () {
+  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
+osbDiv.addEventListener("change", function () {
+  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
 
+var mindestDatenProAufnahme = 50;
 
 function startMessung() {
+  messungStoppenButton.disabled = false;
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
   anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
 
   navigator.mediaDevices
@@ -58,30 +85,38 @@ function startMessung() {
         average = 20 * Math.log10(values / data.length) + offset;
         if (isFinite(average)) {
           db.innerText = average;
-
-          aufnahme.push(average);
+          //Klonen der Aufnahmestruktur aus modell.js
+          let a = Object.assign({}, aufnahme);
+          a.lat = pos[0];
+          a.lon = pos[1];
+          a.value = average;
+          a.boxName = newName;
+          a.boxId = osbID;
+          modell.push(a);
         }
-        //stoppMessung(context);
-        /*
-        if (
-          context.state === "running" &&
-          aufnahme.length >= anzahlDatenProAufnahme
-        ) {
-          context.suspend().then(() => {
-            messungButton.textContent = "Weiter aufnehmen";
-
-            console.log(aufnahme);
-          });
-        }
-        */
       };
+      const analyserNode = context.createAnalyser();
+      source.connect(analyserNode);
+      const pcmData = new Float32Array(analyserNode.fftSize);
+      const onFrame = () => {
+        analyserNode.getFloatTimeDomainData(pcmData);
+        let sumSquares = 0.0;
+        for (const amplitude of pcmData) {
+          sumSquares += amplitude * amplitude;
+        }
+        volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
+        window.requestAnimationFrame(onFrame);
+      };
+
+      window.requestAnimationFrame(onFrame);
+
     });
 
   // update the volume every refresh_rate m.seconds
   var updateDb = function () {
     window.clearInterval(interval);
 
-    var volume = Math.round(aufnahme.reduce((a, b) => a + b) / aufnahme.length);
+    var volume = Math.round(modell.reduce((a, b) => a + b) / modell.length);
     //var volume = Math.round(Math.max.apply(null, aufnahme));
     if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
     db.innerText = volume;
@@ -90,11 +125,6 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
-
-
-
-        //messungStoppenButton.addEventListener("click", console.log("hallo"));
-
 }
 
 // change update rate
@@ -109,6 +139,90 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
+
+  messungStoppenButton.disabled = true;
+  if (modell.length > mindestDatenProAufnahme) {
+    con.suspend();
+    console.log(modell);
+    var summe = 0;
+    for (let i = 0; i < modell.length; i++) {
+      summe = summe + modell[i].value;
+    }
+    durchschn.innerHTML =
+      "<br>Messung erfolgreich!<br>" +
+      "Gemessener Durchschnitt:<br><b>" +
+      Math.round(summe / modell.length) +
+      "</b> dB";
+    messungButton.textContent = "Neue Messung";
+  }
+
+  if (aufnahme.length > mindestDatenProAufnahme) {
+    con.suspend();
+    console.log(aufnahme);
+  }
+}
+
+document.getElementById("hinzufuegen").addEventListener("click", function () {
+  getValues();
+});
+
+function getValues() {
+  // Daten einlesen
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  var newModell = modell;
+  var newStandort = pos;
+  //console.log(newName, newModell, newStandort);
+  document.getElementById("FehlerDiv").style.display = "none";
+  document.getElementById("FehlerDiv2").style.display = "none";
+  document.getElementById("FehlerDiv3").style.display = "none";
+  if (newName == "") {
+    document.getElementById("FehlerDiv3").style.display = "block";
+  } else if (newModell.length == 0) {
+    document.getElementById("FehlerDiv").style.display = "block";
+  } else if (newStandort == null) {
+    document.getElementById("FehlerDiv2").style.display = "block";
+  } else {
+    var durchschnitt = getDurchschnitt(newModell);
+
+    data = {
+      name: newName,
+      geometry: {
+        type: "Point",
+        coordinates: newStandort,
+      },
+      Messung: newModell,
+      Durchschnitt: durchschnitt,
+      OpenSenseBoxID: osbID,
+    };
+    console.log(data);
+    postData(data);
+  }
+}
+
+/**
+ * Berechnet den Durchschnitt aus einem Feld mit int Werten
+ * @param {int} Messungen
+ * @returns durchschnitt
+ */
+function getDurchschnitt(Messungen) {
+  var Summe = 0;
+  for (var i = 0; i < Messungen.length; i++) {
+    Summe = Summe + Messungen[i].value;
+  }
+  return Summe / Messungen.length;
+}
+
+/**
+ * Fetcht die neuen Daten
+ * @param doc zu postende Daten
+ */
+function postData(doc) {
+  fetch("/addData", {
+    headers: { "Content-Type": "application/json" },
+    method: "post",
+    body: JSON.stringify(doc),
+  });
  
   if (aufnahme.length > 50){
   con.suspend();

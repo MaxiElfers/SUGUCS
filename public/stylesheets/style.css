@@ -2,10 +2,27 @@ body {
   min-height: 100%;
   text-align: justify;
 }
+
+#FehlerDiv{
+  text-align: center;
+  color: red;
+  display: none;
+}
+#FehlerDiv2{
+  text-align: center;
+  color: red;
+  display: none;
+}
+#FehlerDiv3{
+  text-align: center;
+  color: red;
+  display: none;
+  
 .vertical-center {
   min-height: 70%;  /* Fallback for browsers do NOT support vh unit */
   min-height: 70vh; /* These two lines are counted as one :-)       */
 
   display: flex;
   align-items: center;
+
 }
