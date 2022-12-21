@@ -46,6 +46,8 @@ function startMessung() {
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
+
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
@@ -105,7 +107,9 @@ function startMessung() {
         volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
         window.requestAnimationFrame(onFrame);
       };
+
       window.requestAnimationFrame(onFrame);
+
     });
 
   // update the volume every refresh_rate m.seconds
@@ -135,6 +139,7 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
+
   messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
@@ -218,4 +223,59 @@ function postData(doc) {
     method: "post",
     body: JSON.stringify(doc),
   });
+ 
+  if (aufnahme.length > 50){
+  con.suspend();
+  console.log(aufnahme);
+  tonspurMax(aufnahme)
+}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//// Array kürzen
+///////////////////////////////////////////////////////////////////////////
+
+// Tonspur Startton(Maximum) finden
+function tonspurMax(tonspur) {
+  console.log("Array Laenge ist: " + tonspur.length)
+
+  // Maximum berechnen 
+  // überprüfen von Array
+  if (tonspur.length === 0) {
+      return -1;
+  }
+  var max = tonspur[0];
+  var maxIndex = 0;
+  // nach Maximum suchen
+  for (var i = 1; i < tonspur.length; i++) {
+      if (tonspur[i] > max) {
+          maxIndex = i;
+          max = tonspur[i];
+      }
+  }
+  console.log("Max Index ist: " + maxIndex)
+
+  var realMaxIndex = maxIndex
+  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
+  for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 als Zeiteinheit für maximale Länge des Starttons 
+      if(tonspur[maxIndex] - 5 < tonspur[i]) { // Maximal 5dB unterschied als zugelassene Varianz
+          realMaxIndex = i 
+      }
+  }
+  console.log("Real Max Index ist: " + realMaxIndex)
+
+  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
+  if ( tonspur.length - realMaxIndex + 30 > 0 ) { // 30 Testzeiteinheit für zu kalibrierendes Audio
+      tonspurKuerzen(realMaxIndex, tonspur)
+  } else {
+      console.log("Aufnahme ist zu kurz")
+  }
+}
+
+// Tonspur kürzen
+function tonspurKuerzen(max, tonspur) {
+  console.log("Bereit zum kuerzen")
+  // Array kürzen auf richtige Länge
+  tonspur = tonspur.slice(max, max + 30)
+  console.log(tonspur)
 }
