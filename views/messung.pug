@@ -12,6 +12,19 @@ block content
       .pb-3
         .card.shadow-lg
           .card-body
+            h2.card-title Neue Messung hinzufügen
+            div
+              #EingabeDiv
+                |Name:  
+                input#NameDiv(type='text')
+                p
+                |OpenSenseBox ID: 
+                input#OpenSenseBoxDiv(type='text')
+              p
+
+      .pb-3
+        .card.shadow-lg
+          .card-body
 
             h2.card-title Soundaufnahme
             div
@@ -27,19 +40,10 @@ block content
       .pb-3
         .card.shadow-lg
           .card-body
-            h2.card-title Neue Messung hinzufügen
-            div
-              #EingabeDiv
-                |Name:  
-                input#NameDiv(type='text')
-                p
-                |OpenSenseBox ID: 
-                input#OpenSenseBoxDiv(type='text')
-              p
-              a.btn.btn-primary.btn-sm(type='button' id="hinzufuegen") Hinzufügen
-              #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
-              #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
-              #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
+            a.btn.btn-primary.btn-sm(type='button' id="hinzufuegen") Hinzufügen
+            #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
+            #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
+            #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
     .col-md-8
       .card.shadow-lg
         .card-body
