@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const { SerialPort } = require('serialport');
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -15,49 +16,48 @@ router.get("/kal-atten", function (req, res, next) {
 });
 
 router.get("/XL2", function (req, res, next){
-  const { SerialPort } = require('serialport');
- var port = "COM3";
- let dbArray = [];
- let soundArray = [];
+  var port = "COM3"; // @ToDo: needs a way of how to decide for the right port
+  let dbArray = [];
+  let soundArray = [];
 
-    var serialPort = new SerialPort({
-        path: port,
-        baudRate: 9600, 
+  var serialPort = new SerialPort({
+      path: port,
+      baudRate: 9600, 
+    });
+
+    serialPort.on("open", function() { // reacts on opening of the port
+      console.log("-- Connection opened --");
+      serialPort.write('*RST\n') 
+      serialPort.write('INIT START\n') // starts the system
+      for(var i = 0; i < 1000; i++){
+        serialPort.write('MEAS:INIT\n') // starts the recording
+        serialPort.write('MEAS:SLM:123?LAF\n') // saves the measurement
+        serialPort.write('INIT STOP\n') // stops the recording 
+      }
+      serialPort.on("data", function(data) { // everytime data is received
+        console.log("Data received: " + data);
+        dbArray.push("Data received: " + data); // saves data in the array
       });
-      
-      serialPort.on("open", function() {
-        console.log("-- Connection opened --");
-        serialPort.write('*RST\n') 
-        serialPort.write('INIT START\n')
-        for(var i = 0; i < 1000; i++){
-          serialPort.write('MEAS:INIT\n')
-          serialPort.write('MEAS:SLM:123?LAF\n')
-          serialPort.write('INIT STOP\n')
-        }
-        serialPort.on("data", function(data) {
-          console.log("Data received: " + data);
-          dbArray.push("Data received: " + data);
-        });
-        setTimeout(function(){
-          sounddatenBearbeiten();
-          serialPort.close()
-        }, 11000)
-      });
+      setTimeout(function(){
+        sounddatenBearbeiten();
+        serialPort.close() // closes the port
+      }, 13000)
+    });
 
 
   /**
- * builds the soundArray, so there are 
- * only a db number for every secound 
- */
+  * builds the soundArray, so there are 
+  * only a db number for every secound 
+  */
   function sounddatenBearbeiten(){
-  var counter = 0;
-  for(var i = 0; i< dbArray.length; i++){
-    soundArray[counter] = (parseFloat(dbArray[i].slice(15, 19)) +4);
-    i += 99;
-    counter++;
-  }
-  console.log(soundArray);
-  res.render("kal-lead", {titel: "Kalibrierung", array: soundArray})
+    var counter = 0;
+    for(var i = 0; i< dbArray.length; i++){
+      soundArray[counter] = (parseFloat(dbArray[i].slice(15, 19)) +4);
+      i += 99; // thus only every one secound a value is used 
+      counter++;
+    }
+    console.log(soundArray);
+    res.render("kal-lead", {titel: "Kalibrierung", array: soundArray})
   }
 })
 
