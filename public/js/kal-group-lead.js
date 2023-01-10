@@ -12,8 +12,6 @@ btn_xl2.addEventListener("click", function(){window.location = '/kalibrierung/XL
 const audio_steig = new Audio('/sounds/DB_steigend.mpeg');
 const audio_const = new Audio('/sounds/DB_konstant.mpeg');
 const audio_schwan = new Audio('/sounds/DB_schwankend.mpeg');
-let xl2Daten = in_soundArray.innerHTML.split(',');
-var counter = 0;
 
 
 /**
@@ -59,87 +57,24 @@ function playSound(){
     audio_schwan.play();
 }
 
-/**
- * function starts the demo of the calibration of the an
- * groupcalibration and logs it in the console
- */
-function startDEMO(){
-    console.clear();
-    console.log("Entgegengenommen Daten", gelieferteDaten1);
-    console.log("Reference Daten", referenceDaten1)
-    multiDeltaKali();
-    console.log("Erstelltes Delta:", multiDelta);
-}
-
-
-function startCalDEMO(mode){
-    console.clear();
-    let spur = [];
-    spur.push(parseInt(input1.value));
-    spur.push(parseInt(input2.value));
-    console.log(spur);
-    deltaAnwenden(mode, spur);
-    console.log(spur);
-}
-
-
-
-let referenceDaten1 = [10, 40];
-let referenceDaten2 = [4, 7];
-let referenceDaten3 = [20, 31];
-let gelieferteDaten1 = [4, 42];
-let gelieferteDaten2 = [5, 10];
-let gelieferteDaten3 = [24, 30];
-let singleDelta = 0;
-let multiDelta = [];
+let referenceDaten = [10, 40];
+let gelieferteDaten = [4, 42];
+let allDeltas = [];
 let soundDatei;
+let xl2Tonspur = in_soundArray.innerHTML.split(',');
+var counter = 0;
 
 /**
- * function starts the system
+ * Takes the soundArray of the xl2 and the soundArray of
+ * the device used by the user and compares them. The differences
+ * in different decible heights will be taken the mean and that will 
+ * be the delta for this height.
+ * @param {Array} xl2Array - soundArray of the xl2
+ * @param {Array} userArray - soundArray of the users device
+ * @returns allDeltas - an Array of Deltas for different decibles
  */
-function startSystem(){
-    // to-do: Wert bekommen
-    console.clear();
-    console.log("Entgegengenommen Daten", gelieferteDaten1);
-    console.log("Reference Daten", referenceDaten1)
-    calibration();
-    console.log("Erstelltes Delta:", singleDelta);
-}
-
-/**
- * function to start the system when data is given from the user
- */
-function startSystemWithInputData() {
-    gelieferteDaten1 = input_user.value;
-    console.log("Entgegengenommen Daten", gelieferteDaten1);
-    console.log("Reference Daten", referenceDaten1)
-    calibration();
-    console.log("Erstelltes Delta:", singleDelta);
-}
-/**
- * Starts the calibration process
- * Maybe you can choose the method of the
- * calibration
- */
-function calibration(){
-    let lieferStack = [gelieferteDaten1, gelieferteDaten2, gelieferteDaten3];
-    let referStack = [referenceDaten1, referenceDaten2, referenceDaten3];
-    oneDeltaKali(referenceDaten1, gelieferteDaten1);
-}
-
-/**
- * This function averages the check array
- * and the array to calibrate and calculates 
- * one single delte which then will be used to
- * add onto the whole array
- * @param {Array} 
- * @param {Array} 
- */
-function oneDeltaKali(referenceAry, geliefertAry){
-    let reference = ArrayAvg(referenceAry);
-    let geliefert = ArrayAvg(geliefertAry);
-
-    singleDelta = reference - geliefert;
+function calibration(xl2Array, userArray){
+    return;
 }
 
 /**
@@ -154,38 +89,6 @@ function multiDeltaKali(){
         multiDelta[index] = referenceDaten1[index] - Wert;
     })
 }
-
-/**
- * !!!ACHTUNG!!! funktioniert noch nicht
- * @param {*} referenceStack 
- * @param {*} geliefertStack 
- */
-function multiReferenceDeltaKali(referenceStack, geliefertStack){
-    let deltaArray = [];
-    let hilfsArray = [];
-    geliefertStack.forEach((Daten, index) => {
-        let hilfsArrayReference = referenceStack[index];
-        Daten.forEach((dat, index) => {
-            hilfsArray[index] = hilfsArrayReference[index] - dat;
-        })
-        deltaArray[index] = hilfsArray;
-    })
-    console.log(deltaArray)
-}
-
-/**
- * Berechnet durchschnitt der Übergebenen Array
- * @param {Array} myArray 
- * @returns number
- */
-function ArrayAvg(myArray) {
-    let i = 0, summ = 0, ArrayLen = myArray.length;
-    while (i < ArrayLen) {
-        summ = summ + myArray[i++];
-    }
-    return summ / ArrayLen;
-}
-
 
 
 /**
@@ -226,3 +129,54 @@ async function getAudio(){
     
     console.log(float32Data);
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////
+//// Array kürzen
+///////////////////////////////////////////////////////////////////////////
+
+// Tonspur Startton(Maximum) finden
+function tonspurMax(tonspur) {
+    console.log("Array Laenge ist: " + tonspur.length)
+  
+    // Maximum berechnen 
+    // überprüfen von Array
+    if (tonspur.length === 0) {
+        return -1;
+    }
+    var max = tonspur[0];
+    var maxIndex = 0;
+    // nach Maximum suchen
+    for (var i = 1; i < tonspur.length; i++) {
+        if (tonspur[i] > max) {
+            maxIndex = i;
+            max = tonspur[i];
+        }
+    }
+    console.log("Max Index ist: " + maxIndex)
+  
+    var realMaxIndex = maxIndex
+    // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
+    for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 als Zeiteinheit für maximale Länge des Starttons 
+        if(tonspur[maxIndex] - 5 < tonspur[i]) { // Maximal 5dB unterschied als zugelassene Varianz
+            realMaxIndex = i 
+        }
+    }
+    console.log("Real Max Index ist: " + realMaxIndex)
+  
+    // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
+    if ( tonspur.length - realMaxIndex + 30 > 0 ) { // 30 Testzeiteinheit für zu kalibrierendes Audio
+        tonspurKuerzen(realMaxIndex, tonspur)
+    } else {
+        console.log("Aufnahme ist zu kurz")
+    }
+  }
+  
+  // Tonspur kürzen
+  function tonspurKuerzen(max, tonspur) {
+    console.log("Bereit zum kuerzen")
+    // Array kürzen auf richtige Länge
+    tonspur = tonspur.slice(max, max + 30)
+    console.log(tonspur)
+  }

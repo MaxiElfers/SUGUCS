@@ -52,7 +52,7 @@ router.get("/XL2", function (req, res, next){
   function sounddatenBearbeiten(){
   var counter = 0;
   for(var i = 0; i< dbArray.length; i++){
-    soundArray[counter] = parseFloat(dbArray[i].slice(15, 19));
+    soundArray[counter] = (parseFloat(dbArray[i].slice(15, 19)) +4);
     i += 99;
     counter++;
   }
