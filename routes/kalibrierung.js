@@ -39,8 +39,8 @@ router.get("/XL2", function (req, res, next){
         dbArray.push("Data received: " + data); // saves data in the array
       });
       setTimeout(function(){
-        sounddatenBearbeiten();
         serialPort.close() // closes the port
+        sounddatenBearbeiten();
       }, 13000)
     });
 
