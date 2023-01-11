@@ -20,7 +20,12 @@ block content
                 p
                 |OpenSenseBox ID: 
                 input#OpenSenseBoxDiv(type='text' maxLength = "24" placeholder= " 638b1a8f11467c001b6b1af3")
-              p
+                p 
+                | Ermittel Deine Browser Koordinaten
+                span.Eingabe
+                | : 
+                p#demo
+                a.btn.btn-primary.btn-sm(onclick='getLocation()') mein Standort
 
       .pb-3
         .card.shadow-lg
@@ -48,11 +53,6 @@ block content
       .card.shadow-lg
         .card-body
           div.align-items-center
-            | Click here to read in your personal 
-            span.Eingabe Browser-Coordinates
-            | : 
-            a.btn.btn-primary.btn-sm(onclick='getLocation()') Try It
-            p#demo
             p#map.mt-3
 
 

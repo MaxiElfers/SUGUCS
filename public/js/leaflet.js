@@ -25,9 +25,9 @@ let pos;
  */
 function showPosition(position) {
   x.innerHTML =
-    "Latitude: " +
+    "Breitengrad: " +
     position.coords.latitude +
-    ",  Longitude: " +
+    ",  Längengrad: " +
     position.coords.longitude;
 
   pos = [position.coords.latitude, position.coords.longitude];
