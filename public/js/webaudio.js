@@ -5,6 +5,11 @@ var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
+var mindestDatenProAufnahme = 50;
+var anzahlDatenProAufnahme = 50;
+
+//Testarray for offest
+var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
 
 const db = document.getElementById("db");
 var con;
@@ -40,12 +45,13 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
-var mindestDatenProAufnahme = 50;
 
 function startMessung() {
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
+
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
     .then((stream) => {
@@ -80,8 +86,42 @@ function startMessung() {
           values += data[i];
         }
 
-        average = 20 * Math.log10(values / data.length) + offset;
+        average = 20 * Math.log10(values / data.length);
         if (isFinite(average)) {
+          //adding the offset
+          switch (average) {
+            case (average < 10):
+              average += testarray[0];
+              break;
+            case (10 < average < 20):
+              average += testarray[1];
+              break;
+            case (20 < average < 30):
+              average += testarray[2];
+              break;
+            case (30 < average < 40):
+              average += testarray[3];
+              break;
+            case (40 < average < 50):
+              average += testarray[4];
+              break;
+            case (50 < average < 60):
+              average += testarray[5];
+              break;
+            case (60 < average < 70):
+              average += testarray[6];
+              break;
+            case (70 < average < 80):
+              average += testarray[7];
+              break;
+            case (80 < average < 90):
+              average += testarray[8];
+              break;
+            case (90 < average):
+              average += testarray[9];
+              break;
+          }
+
           db.innerText = average;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
@@ -105,7 +145,9 @@ function startMessung() {
         volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
         window.requestAnimationFrame(onFrame);
       };
+
       window.requestAnimationFrame(onFrame);
+
     });
 
   // update the volume every refresh_rate m.seconds
@@ -135,6 +177,7 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
+
   messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
@@ -218,4 +261,59 @@ function postData(doc) {
     method: "post",
     body: JSON.stringify(doc),
   });
+
+  if (aufnahme.length > 50) {
+    con.suspend();
+    console.log(aufnahme);
+    tonspurMax(aufnahme)
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////
+//// Array kürzen
+///////////////////////////////////////////////////////////////////////////
+
+// Tonspur Startton(Maximum) finden
+function tonspurMax(tonspur) {
+  console.log("Array Laenge ist: " + tonspur.length)
+
+  // Maximum berechnen 
+  // überprüfen von Array
+  if (tonspur.length === 0) {
+    return -1;
+  }
+  var max = tonspur[0];
+  var maxIndex = 0;
+  // nach Maximum suchen
+  for (var i = 1; i < tonspur.length; i++) {
+    if (tonspur[i] > max) {
+      maxIndex = i;
+      max = tonspur[i];
+    }
+  }
+  console.log("Max Index ist: " + maxIndex)
+
+  var realMaxIndex = maxIndex
+  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
+  for (i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 als Zeiteinheit für maximale Länge des Starttons 
+    if (tonspur[maxIndex] - 5 < tonspur[i]) { // Maximal 5dB unterschied als zugelassene Varianz
+      realMaxIndex = i
+    }
+  }
+  console.log("Real Max Index ist: " + realMaxIndex)
+
+  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
+  if (tonspur.length - realMaxIndex + 30 > 0) { // 30 Testzeiteinheit für zu kalibrierendes Audio
+    tonspurKuerzen(realMaxIndex, tonspur)
+  } else {
+    console.log("Aufnahme ist zu kurz")
+  }
+}
+
+// Tonspur kürzen
+function tonspurKuerzen(max, tonspur) {
+  console.log("Bereit zum kuerzen")
+  // Array kürzen auf richtige Länge
+  tonspur = tonspur.slice(max, max + 30)
+  console.log(tonspur)
 }
