@@ -13,13 +13,15 @@ block content
         .card.shadow-lg
           .card-body
             h2.card-title Neue Messung hinzufügen
-            div
+            div.mt-3
               #EingabeDiv
-                |Name:  
-                input#NameDiv(type='text' maxLength = "9")
+                |Gerätename 
+                i (z.B SUGUCS12)
+                |:
+                input#NameDiv.form-control.mt-3(type='text' maxLength = "9")
                 p
                 |OpenSenseBox ID: 
-                input#OpenSenseBoxDiv(type='text' maxLength = "24" placeholder= " 638b1a8f11467c001b6b1af3")
+                input#OpenSenseBoxDiv.form-control.mt-3(type='text' maxLength = "24" placeholder= " 638b1a8f11467c001b6b1af3")
                 p 
                 | Ermittel Deine Browser Koordinaten
                 span.Eingabe
@@ -33,7 +35,7 @@ block content
 
             h2.card-title Soundaufnahme
             div
-              textarea#db(name='db')
+              textarea#db.form-control-lg(name='db' rows="1")
               p
               #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
               button.btn.btn-primary.btn-sm(id="messung" style="background:green") Messung starten
