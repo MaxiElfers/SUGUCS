@@ -9,6 +9,7 @@ btn_Gcal.addEventListener("click", function(){checkError("group");});
 
 /***** all Variables ******/
 let allDeltas = {};
+let deltaArr = [];
 const xl2Array = "?";
 const userArray = "?";
 let calibrationObject;
@@ -53,7 +54,6 @@ let calibrationObject;
  */
 function calibration(xl2Array, userArray){
     if(xl2Array.length === userArray.length){
-        let deltaArr = [];
         // calculates the delta for each known value
         userArray.forEach((sound, index) => {
             let delta = xl2Array[index] - sound;
@@ -80,7 +80,9 @@ function estimateAllDelta(){
     meanDelta = meanDelta / deltaArr.length;
     // adds mean delta to all unknown values
     for(var i = 0; i < 120; i++){
-        allDeltas[i] = meanDelta;
+        if(allDeltas[i] === undefined){
+            allDeltas[i] = meanDelta;
+        }
     }
 }
 
