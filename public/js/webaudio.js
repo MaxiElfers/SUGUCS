@@ -1,24 +1,54 @@
 // Source:
 //https://github.com/takispig/db-meter
 
-
 var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
+var mindestDatenProAufnahme = 50;
+var anzahlDatenProAufnahme = 50;
+
+//Testarray for offest
+var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
 
 const db = document.getElementById("db");
 var con;
+var con;
+let durchschn = document.getElementById("ausg");
+let maxim = document.getElementById("maxima");
 
 messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
+var nameDiv = document.getElementById("NameDiv");
+var osbDiv = document.getElementById("OpenSenseBoxDiv");
+nameDiv.value = "SUGUCS";
+osbDiv.value = "";
+
+messungButton.disabled = true;
+messungStoppenButton.disabled = true;
+
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
-var anzahlDatenProAufnahme = 0;
-
+nameDiv.addEventListener("change", function () {
+  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
+osbDiv.addEventListener("change", function () {
+  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
 
 function startMessung() {
+  messungStoppenButton.disabled = false;
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
   anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
 
   navigator.mediaDevices
@@ -55,33 +85,74 @@ function startMessung() {
           values += data[i];
         }
 
-        average = 20 * Math.log10(values / data.length) + offset;
+        average = 20 * Math.log10(values / data.length);
         if (isFinite(average)) {
+          //adding the offset
+          switch (average) {
+            case average < 10:
+              average += testarray[0];
+              break;
+            case 10 < average < 20:
+              average += testarray[1];
+              break;
+            case 20 < average < 30:
+              average += testarray[2];
+              break;
+            case 30 < average < 40:
+              average += testarray[3];
+              break;
+            case 40 < average < 50:
+              average += testarray[4];
+              break;
+            case 50 < average < 60:
+              average += testarray[5];
+              break;
+            case 60 < average < 70:
+              average += testarray[6];
+              break;
+            case 70 < average < 80:
+              average += testarray[7];
+              break;
+            case 80 < average < 90:
+              average += testarray[8];
+              break;
+            case 90 < average:
+              average += testarray[9];
+              break;
+          }
+
           db.innerText = average;
-
-          aufnahme.push(average);
+          //Klonen der Aufnahmestruktur aus modell.js
+          let a = Object.assign({}, aufnahme);
+          a.lat = pos[0];
+          a.lon = pos[1];
+          a.value = average;
+          a.boxName = newName;
+          a.boxId = osbID;
+          modell.push(a);
         }
-        //stoppMessung(context);
-        /*
-        if (
-          context.state === "running" &&
-          aufnahme.length >= anzahlDatenProAufnahme
-        ) {
-          context.suspend().then(() => {
-            messungButton.textContent = "Weiter aufnehmen";
-
-            console.log(aufnahme);
-          });
-        }
-        */
       };
+      const analyserNode = context.createAnalyser();
+      source.connect(analyserNode);
+      const pcmData = new Float32Array(analyserNode.fftSize);
+      const onFrame = () => {
+        analyserNode.getFloatTimeDomainData(pcmData);
+        let sumSquares = 0.0;
+        for (const amplitude of pcmData) {
+          sumSquares += amplitude * amplitude;
+        }
+        volumeMeterEl.value = Math.sqrt(sumSquares / pcmData.length);
+        window.requestAnimationFrame(onFrame);
+      };
+
+      window.requestAnimationFrame(onFrame);
     });
 
   // update the volume every refresh_rate m.seconds
   var updateDb = function () {
     window.clearInterval(interval);
 
-    var volume = Math.round(aufnahme.reduce((a, b) => a + b) / aufnahme.length);
+    var volume = Math.round(modell.reduce((a, b) => a + b) / modell.length);
     //var volume = Math.round(Math.max.apply(null, aufnahme));
     if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
     db.innerText = volume;
@@ -90,11 +161,6 @@ function startMessung() {
     interval = window.setInterval(updateDb, refresh_rate);
   };
   var interval = window.setInterval(updateDb, refresh_rate);
-
-
-
-        //messungStoppenButton.addEventListener("click", console.log("hallo"));
-
 }
 
 // change update rate
@@ -109,59 +175,146 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
- 
-  if (aufnahme.length > 50){
-  con.suspend();
-  console.log(aufnahme);
-  tonspurMax(aufnahme)
+  messungStoppenButton.disabled = true;
+  if (modell.length > mindestDatenProAufnahme) {
+    con.suspend();
+    console.log(modell);
+    var summe = 0;
+    for (let i = 0; i < modell.length; i++) {
+      summe = summe + modell[i].value;
+    }
+    durchschn.innerHTML =
+      "<br>Messung erfolgreich!<br>" +
+      "Gemessener Durchschnitt:<br><b>" +
+      Math.round(summe / modell.length) +
+      "</b> dB";
+    messungButton.textContent = "Neue Messung";
+  }
+
+  if (aufnahme.length > mindestDatenProAufnahme) {
+    con.suspend();
+    console.log(aufnahme);
+  }
 }
+
+document.getElementById("hinzufuegen").addEventListener("click", function () {
+  getValues();
+});
+
+function getValues() {
+  // Daten einlesen
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  var newModell = modell;
+  var newStandort = pos;
+  //console.log(newName, newModell, newStandort);
+  document.getElementById("FehlerDiv").style.display = "none";
+  document.getElementById("FehlerDiv2").style.display = "none";
+  document.getElementById("FehlerDiv3").style.display = "none";
+  if (newName == "") {
+    document.getElementById("FehlerDiv3").style.display = "block";
+  } else if (newModell.length == 0) {
+    document.getElementById("FehlerDiv").style.display = "block";
+  } else if (newStandort == null) {
+    document.getElementById("FehlerDiv2").style.display = "block";
+  } else {
+    var durchschnitt = getDurchschnitt(newModell);
+
+    data = {
+      name: newName,
+      geometry: {
+        type: "Point",
+        coordinates: newStandort,
+      },
+      Messung: newModell,
+      Durchschnitt: durchschnitt,
+      OpenSenseBoxID: osbID,
+    };
+    console.log(data);
+    postData(data);
+  }
+}
+
+/**
+ * Berechnet den Durchschnitt aus einem Feld mit int Werten
+ * @param {int} Messungen
+ * @returns durchschnitt
+ */
+function getDurchschnitt(Messungen) {
+  var Summe = 0;
+  for (var i = 0; i < Messungen.length; i++) {
+    Summe = Summe + Messungen[i].value;
+  }
+  return Summe / Messungen.length;
+}
+
+/**
+ * Fetcht die neuen Daten
+ * @param doc zu postende Daten
+ */
+function postData(doc) {
+  fetch("/addData", {
+    headers: { "Content-Type": "application/json" },
+    method: "post",
+    body: JSON.stringify(doc),
+  });
+
+  if (aufnahme.length > 50) {
+    con.suspend();
+    console.log(aufnahme);
+    tonspurMax(aufnahme);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////
 //// Array kürzen
 ///////////////////////////////////////////////////////////////////////////
 
-// Tonspur Startton(Maximum) finden
-function tonspurMax(tonspur) {
-  console.log("Array Laenge ist: " + tonspur.length)
-
-  // Maximum berechnen 
-  // überprüfen von Array
-  if (tonspur.length === 0) {
-      return -1;
-  }
-  var max = tonspur[0];
-  var maxIndex = 0;
-  // nach Maximum suchen
-  for (var i = 1; i < tonspur.length; i++) {
-      if (tonspur[i] > max) {
-          maxIndex = i;
-          max = tonspur[i];
+/**
+ * Searches for the first maximum decible value
+ * inside the given soundarray 
+ * @param {Array} soundArray 
+ * @returns {Number} max - is the indice of the first maximum decible value
+ */
+function soundArrayMax(soundArray) {
+  if (soundArray.length > 0) {
+      let max = soundArray[0];
+      let maxIndex = 0;
+      // search for maximum
+      for (var i = 1; i < soundArray.length; i++) {
+          if (soundArray[i] > max) {
+              maxIndex = i;
+              max = soundArray[i];
+          }
       }
-  }
-  console.log("Max Index ist: " + maxIndex)
-
-  var realMaxIndex = maxIndex
-  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
-  for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 als Zeiteinheit für maximale Länge des Starttons 
-      if(tonspur[maxIndex] - 5 < tonspur[i]) { // Maximal 5dB unterschied als zugelassene Varianz
-          realMaxIndex = i 
+  
+      var realMaxIndex = maxIndex
+      // check that this value is really the last of the starting sound, as this sound is one secound long
+      for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 as time for the maximum length of the starting sound 
+          if(soundArray[maxIndex] - 2 < soundArray[i]) { // maximum 2 decibles difference as varianz
+              realMaxIndex = i 
+          }
       }
+      return realMaxIndex;
   }
-  console.log("Real Max Index ist: " + realMaxIndex)
-
-  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if ( tonspur.length - realMaxIndex + 30 > 0 ) { // 30 Testzeiteinheit für zu kalibrierendes Audio
-      tonspurKuerzen(realMaxIndex, tonspur)
-  } else {
-      console.log("Aufnahme ist zu kurz")
+  else{
+      console.error("Fehlerhafter Lautstärke-Array übergeben") // Error handling
+      // @todo  response auf der Website anzeigen
   }
 }
 
-// Tonspur kürzen
-function tonspurKuerzen(max, tonspur) {
-  console.log("Bereit zum kuerzen")
-  // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 30)
-  console.log(tonspur)
+/**
+* Slices the soundArray starting from the 
+* first max decible value down to 30 sound values
+* @param {Array} soundArray is the array that needs to be shortend
+*/
+function sliceSoundArray(soundArray) {
+  const max = soundArrayMax(soundArray)
+  if(soundArray[max] === undefined || soundArray[max+30] === undefined){
+      console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
+      // @todo  response auf der Website anzeigen
+  }
+  else{
+      soundArray = soundArray.slice(max, max + 30) // shorten Array to 30 values
+  }
 }

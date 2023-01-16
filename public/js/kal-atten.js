@@ -10,19 +10,19 @@ btn_Gcal.addEventListener("click", function(){checkError("group");});
 /***** all Variables ******/
 let allDeltas = {};
 let deltaArr = [];
-const xl2Array = "?";
+let xl2Array = [];
 const userArray = "?";
 let calibrationObject;
-
+let SBID = "63c3f0c9a122c30008268cc0";
+let SBSensor = "63c3f0c9a122c30008268cc1";
 
 /***** all functionalities ******/
 
 /**
  * tests that the preconditions are given, so 
  * the calibration can be done without a problem 
- * @param {*} art Array of which calibration method will be used
  */
- function checkError(art){
+ function checkError(){
     if(code.length > 7){
         output_error.innerHTML = "Input zu lang!"
     }
@@ -101,4 +101,21 @@ function createCalibrationObject(){
         deltas: allDeltas,
         lengthTheCalibration: "12 secounds"
     }
+}
+
+/**
+ * fetches the reference data of the XL2 
+ * from the OpenSenseMap Server 
+ */
+function getReferenceData() {
+    fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SBSensor}?`).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        console.log(data);
+        // Filter die letzten 100 Einträge heraus
+        for(let i = 0; i < 100; i++) {
+            xl2Array.push(parseInt(data[i].value))
+        }
+        console.log(xl2Array)
+    })
 }
