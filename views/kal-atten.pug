@@ -10,35 +10,49 @@ block content
     div.container
         br
         div.row.justify-content-center 
-          div.col-4
-            div.row.justify-content-center.vertical-center
+          .col-9
+            div.row.justify-content-center
               div.col-auto.align-middle
-                div.input-group.mb-3
-                    span.input-group-text Group-Code
-                    input#input_GroupCode.form-control(placeholder='1234567')
-                div.btn.btn-primary#btn_Gruppenkalibrierung Kalibrierung beitreten 
-                br
-                p#output_Error.text-danger.fs-5
-          .col-7
-            div.row.justify-content-center.vertical-center
-              div.card(style='width: 30rem;')
+                div.card(style='width: 30rem;')
                   div.card-body
-                      h5.card-title Anleitung 
-                      h6.card-subtitle.mb-2.text-muted Bitte befolgen Sie die folgenden Schritte
-                      p.card-text
-                        | Hier wird in kürze eine Anleitung für das Teilnehmen Gruppenkalibrierung eingefügt.
-                      h6.card-subtitle.mb-2.text-muted WICHTIG!!! Folgen Sie auch immer den Anweisungen der Person, welche diese Kalibrierung leitet
-              div.row.justify-content-center.gx-10.gx-lg-3.mt-3
-                div.col-lg-6.col-xs-12.mb-3
-                  div.card
-                    div.card-body
-                      h2.card-title Soundaufnahme
-                      div
-                        textarea#db(name='db' rows='4' cols='50')
-                        p
-                        a.btn.btn-primary.btn-sm(type='button' id="messung") Aufnahme starten!
-                        p
-                        a.btn.btn-primary.btn-sm(type='button' id="messungStoppen") Aufnahme stoppen!
+                    h5.card-title Anleitung 
+                    h6.card-subtitle.mb-2.text-muted Bitte befolgen Sie die folgenden Schritte
+                    p.card-text
+                      | Hier wird in kürze eine Anleitung für das Teilnehmen Gruppenkalibrierung eingefügt.
+                    h6.card-subtitle.mb-2.text-muted WICHTIG!!! Folgen Sie auch immer den Anweisungen der Person, welche diese Kalibrierung leitet
+                br
+                br    
+          .col-5  
+            div.row.justify-content-center
+              .col-10.align-middle
+                div.input-group.mb-3
+                  span.input-group-text Group-Code
+                  input#input_GroupCode.form-control(placeholder='1234567') 
+                div.btn.btn-primary#btn_Gruppenkalibrierung Kalibrierungsraum speichern 
+                br 
+                p#output_Error_Cal.text-danger.fs-5
+          .col-5
+            div.row.justify-content-center
+              .col-10.align-middle
+                //div.card
+                  //div.card-body
+                    //h2.card-title Soundaufnahme
+                div
+                  input.form-control#db(name='db' rows='1' cols='50' type="text" readonly)
+                  p
+                  div.row.justify-content-center
+                    .col-6
+                      div.btn.btn-primary#messung Aufnahme starten!
+                    .col-6
+                      div.btn.btn-secondary.disabled#messungStoppen Aufnahme stoppen!
+            br
+            br
+          .col-4 
+            .row.justify-content-center
+              div.btn.btn-success.btn-lg#btn_Kalibrierung Kalibrierung starten
+              br
+              div#output_Error_Down.text-danger.fs-5
+              span#output_Error_Spin.spinner-border.text-success.visually-hidden(role='status')
 
     script(src='/js/webaudio.js')
     script(src='/js/kal-atten.js')

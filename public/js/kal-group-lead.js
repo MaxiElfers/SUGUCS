@@ -1,25 +1,25 @@
 /***** all getElements *****/
-let btn_calibration = document.getElementById("btn_Kalibrierung");
-let input_GroupCode = document.getElementById("input_GroupCode");
-let output_error = document.getElementById("output_Error");
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
-let btn_recording = document.getElementById("btn_recording");
-let in_file = document.getElementById("in_file");
+let btn_upload = document.getElementById("uploadData");
 let btn_xl2 = document.getElementById("btn_XL2");
+let btn_recording = document.getElementById("btn_recording");
+let in_GroupCode = document.getElementById("input_GroupCode");
+let in_file = document.getElementById("in_file");
 let in_soundArray = document.getElementById("soundArray");
-// noch anpassen
-document.getElementById("Send").addEventListener("click", sendReferenceData)
-document.getElementById("Get").addEventListener("click", getReferenceData)
+let output_error_cal = document.getElementById("output_Error_Cal");
+let output_error_up = document.getElementById("output_Error_Up");
 
 /***** all EventListeners ******/
-btn_Gcal.addEventListener("click", function(){checkError("group");});
+btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal");});
+btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
 btn_xl2.addEventListener("click", function(){window.location = '/kalibrierung/XL2';});
 btn_recording.addEventListener("click", function(){playSound();});
 
 /***** all Variables ******/
 const audio_calibration = new Audio('/sounds/Calibration_sound.mpeg');
-let xl2Tonspur = in_soundArray.innerHTML.split(',');
+//let xl2Tonspur = in_soundArray.innerHTML.split(',');
 let counter = 0;
+let group_code;
 let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
 let AT = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
@@ -330,31 +330,61 @@ let KaliWerteJson = [
         "value":63
     }
 ]
+let preparedXL2Data = [];
+let xl2Tonspur = [65,66,55,65,70,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67,63,64,65,66,67]; // zum Testen
 
 
 /***** all functionalities ******/
 
 /**
  * tests that the preconditions are given, so 
- * the calibration can be done without a problem 
+ * the functionalities can work without problems
+ * This function also starts the workflows 
+ * @param {String} type - what buton called this function
  */
-function checkError(){
-    let code = input_GroupCode.value;
-    if(code.length > 7){
-        output_error.innerHTML = "Input zu lang!"
-    }
-    else if(code.length < 7){
-        output_error.innerHTML = "Input zu kurz!"
-    }
-    else{
-        for(var i = 0; i < code.length; i++){
-            if(isNaN(code[i])){
-                output_error.innerHTML = "Nur Zahlen erlaubt!"
+function checkErrorAndStartWorkflow(type){
+    let error = false;
+    // Here start the code for the groupcalibration button (btn_Gcal)
+    if(type === "Cal"){
+        let code = in_GroupCode.value;
+        if(code.length > 7){
+            output_error_cal.innerHTML = "Input zu lang!";
+        }
+        else if(code.length < 7){
+            output_error_cal.innerHTML = "Input zu kurz!"
+        }
+        else{
+            for(var i = 0; i < code.length; i++){
+                if(isNaN(code[i])){
+                    output_error_cal.innerHTML = "Nur Zahlen erlaubt!"
+                    error = true;
+                }
+            }
+            if(error === false){
+                group_code = in_GroupCode.value;
+                btn_Gcal.classList.remove("btn-primary")
+                btn_Gcal.classList.add("btn-secondary")
+                btn_Gcal.classList.add("disabled")
+                output_error_cal.classList.remove("text-danger");
+                output_error_cal.classList.add("text-success");
+                output_error_cal.innerHTML = "Lade Teilnehmer ein mit dem Code: " + group_code; 
             }
         }
     }
-    // Here is the space where the function that will be called for
-    // the group calibration will end up
+    // Here start the code for the upload button (btn_upload)
+    else if(type === "Up"){
+        if(xl2Tonspur[0] === ""){
+            output_error_up.innerHTML = "Keine Tonspur vorhanden";
+        }
+        else if(group_code === undefined){
+            output_error_up.innerHTML = "Keine Gruppe erstellt";
+        }
+        else{
+            output_error_up.innerHTML = "";
+            prepareXL2Data();
+            sendReferenceData();
+        }
+    }
     
     // Posibility to add more error checks
 }
@@ -365,6 +395,27 @@ function checkError(){
  */
 function playSound(){
     audio_calibration.play();
+}
+
+/**
+ * takes the recorded XL2 Soundarray and converts it into 
+ * a new Array, which corresponds to the OpenSenseMap standards
+ */
+function prepareXL2Data(){
+    // add the group code as first element
+    const groupCode = {
+        "sensor":"63c3f0c9a122c30008268cc1",
+        "value": group_code
+    }
+    preparedXL2Data.push(groupCode);
+    // add all the sound values to the Array
+    xl2Tonspur.forEach(value => {
+        const data = {
+            "sensor":"63c3f0c9a122c30008268cc1",
+            "value": value
+        }
+        preparedXL2Data.push(data);
+    })
 }
   
 /**
@@ -427,11 +478,8 @@ function sendReferenceData() {
             'Authorization': AT,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(KaliWerteJson)
+        body: JSON.stringify(preparedXL2Data)
     })
     .then(response => response.json())
     .then(response => console.log(JSON.stringify(response)))
-
-    document.getElementById("OSMData").innerHTML = "Daten wurden hinzugefügt"
-
 }
