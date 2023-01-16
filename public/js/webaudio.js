@@ -7,6 +7,8 @@ var offset = 30;
 var average = 0;
 var mindestDatenProAufnahme = 50;
 var anzahlDatenProAufnahme = 50;
+let measurementCount = 0;
+let startTime = performance.now();
 
 //Testarray for offest
 var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
@@ -87,6 +89,7 @@ function startMessung() {
 
         average = 20 * Math.log10(values / data.length);
         if (isFinite(average)) {
+          measurementCount++;
           //adding the offset
           switch (average) {
             case average < 10:
@@ -317,3 +320,11 @@ function tonspurKuerzen(max, tonspur) {
   tonspur = tonspur.slice(max, max + 30);
   console.log(tonspur);
 }
+
+
+setInterval(function(){
+  //calculate the end time
+  let endTime = performance.now();
+  let timeInterval = (endTime - startTime)/1000;
+  console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
+}, 1000);
