@@ -5,6 +5,7 @@ let in_GroupCode = document.getElementById("input_GroupCode");
 let output_error_cal = document.getElementById("output_Error_Cal");
 let output_error_down = document.getElementById("output_Error_Down");
 let output_error_spin = document.getElementById("output_Error_Spin");
+let out_fin = document.getElementById("out_finished");
 
 /***** all EventListeners ******/
 btn_Gcal.addEventListener("click", function(){checkError("Cal");});
@@ -98,20 +99,43 @@ function calibration(xl2Array, userArray){
  * The rest of the allDeltas object will be filled
  * with an estimated value, thus the calibration can 
  * work for all the measured values
+ * NOTE: Not all the values will be estimated. Only the ones 
+ * in close proximity, which means +- 5 as decible is non linear,
+ * which means estimating it can be hard
  */
 function estimateAllDelta(){
-    let meanDelta = 0;
-    // calculates the mean delta
-    deltaArr.forEach(delta =>{
-        meanDelta += delta;
+    // takes out every double variable
+    let soundArrayNoDouble = soundArray.filter((element, index) => {
+    return soundArray.indexOf(element) === index;
     })
-    meanDelta = meanDelta / deltaArr.length;
-    // adds mean delta to all unknown values
-    for(var i = 0; i < 121; i++){
-        if(allDeltas[i] === undefined){
-            allDeltas[i] = meanDelta;
+    // sorts the array from smallest to biggest
+    soundArrayNoDouble.sort();
+    // goes over all non double decible values 
+    soundArrayNoDouble.forEach(value => {
+        let helpVar = 2; // set, so the furthes away point (5 away) is only 1/2 of the original
+        // calculates the deltas for all values +- 5 of the measured decible values
+        for(var i = value - 5; i <= value + 5; i++){
+            // empty: than just add the calculated value
+            if(allDeltas[i] === undefined){ 
+                allDeltas[i] = allDeltas[value] - (allDeltas[value] * (1 / (helpVar)));
+            }
+            // same index: reset helpVar
+            else if(i === value){
+                helpVar = 2;
+            }
+            // value is set from a different measured value: leave it like this
+            else if(soundArrayNoDouble.includes(i)){
+                // do nothing
+            }
+            // there is a number: calculate the mean between the new and the given value
+            else{
+                allDeltas[i] = (allDeltas[i] + allDeltas[value]) / 2;
+                console.error(allDeltas[i]);
+            }
+            allDeltas[i] = +allDeltas[i].toFixed(2); // rounds the delta down to two after komma numbers
+            helpVar++;
         }
-    }
+    })
 }
 
 /**
@@ -151,20 +175,17 @@ function getReferenceData() {
             btn_Gcal.classList.remove("btn-primary");
             btn_Cal.classList.remove("btn-success");
             output_error_down.classList.remove("text-danger");
-            output_error_spin.classList.remove("visually-hidden");
             btn_Cal.classList.add("btn-secondary");
             btn_Cal.classList.add("disabled");
             btn_Gcal.classList.add("btn-secondary");
             btn_Gcal.classList.add("disabled");
             output_error_down.classList.add("text-success");
             output_error_cal.innerHTML = "";
-            output_error_down.innerHTML = "Kalibrierungsraum " + group_code + " wurde gefunden! Vorgang läuft ... ";
             calibration(xl2Array, soundArray);
             estimateAllDelta();
             createCalibrationObject();
             console.log(calibrationObject);
-            output_error_spin.classList.add("visually-hidden");
-            output_error_down.innerHTML = "Kalibrierungsraum " + group_code + " wurde gefunden! Die Kalibrierung wurde abgeschlossen.";
+            out_fin.classList.remove("visually-hidden");
         }
         else{
             output_error_down.innerHTML = "Zu dem angegebenen Code konnte kein Raum gefunden werden";
