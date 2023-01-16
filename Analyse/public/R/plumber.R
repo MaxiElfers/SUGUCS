@@ -1,53 +1,124 @@
+rm(list = ls())
 library(plumber)
 library(rjson)
 library(geojsonio)
 library(RCurl)
 library(ggplot2)
 library(dplyr)
+library(lubridate)
+library(hms)
 
 #* @apiTitle SUGUC
 #* @apiDescription Backend für die Geräuschdaten
 
-
-#* Plots a Scatterplot
-#* @serializer png
-#* @get /Scatter
-function() {
-  
-  # Herunterladen der Messungswerte von der OpenSense Api
-  Messungen <- read.csv("https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&from-date=2022-11-22T08:00:00Z&to-date=2022-11-23T08:00:00Z&phenomenon=Lautst%C3%A4rke")
-  str(Messungen)
-  # Plotten mit Hilfe von ggplot
-  Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))+
-    geom_point()+
-    geom_smooth(method=lm, color = 'purple')+
-    labs(title = "Scatterplot der Lautstärke",subtitle = "Senden", x = "Zeit der Messung", y = "Lautstärke (Db)")
-  
-  # Ausgeben des Plots
-  print(Ausgabe)
-  
+dayPlot <- function(Messungen) {
+  Messungen <- Messungen %>%
+    mutate(timestamp_utc = ymd_hms(createdAt, tz = 'UTC'),
+           timestamp_est = with_tz(timestamp_utc, tz = 'Europe/Berlin'),
+           time_est = as_hms(timestamp_est)) %>%
+    filter(time_est >= hms::as.hms('07:00:00', tz = 'Europe/Berlin'),
+           time_est <= hms::as.hms('19:00:00', tz = 'Europe/Berlin'))
+  return(Messungen)
 }
 
-#* Plots a Scatterplot
+nightPlot <- function(Messungen){
+  Messungen <- Messungen %>%
+    mutate(timestamp_utc = ymd_hms(createdAt, tz = 'UTC'),
+           timestamp_est = with_tz(timestamp_utc, tz = 'Europe/Berlin'),
+           time_est = as_hms(timestamp_est)) %>%
+    filter(time_est >= hms::as.hms('19:00:00', tz = 'Europe/Berlin') 
+           | time_est <= hms::as.hms('07:00:00', tz = 'Europe/Berlin'))
+  return(Messungen)
+}
+
+boxID <- "60f077874fb91e001c71b3b1"
+from <- "2022-11-22T08:00:00Z"
+to <- "2022-11-23T08:00:00Z"
+phenomenon <- "Lautst%C3%A4rke"
+structurePlot("60f077874fb91e001c71b3b1", "2022-11-22T08:00:00Z", "2022-11-23T08:00:00Z", "Lautst%C3%A4rke",TRUE, TRUE, TRUE, TRUE, c("purple", "red", "blue"), 1)
+
+#* Plottet die Werte nach Wunsch des Kunden
 #* @serializer png
-#* @get /linearRegression
-function() {
+#* @get /structurePlot
+structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, colors, theme){
   
-  Messungen <- read.csv("https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&from-date=2022-11-22T08:00:00Z&to-date=2022-11-23T08:00:00Z&phenomenon=Lautst%C3%A4rke")
+  # Einladen Der Daten
+  openSenseBox <- sprintf("https://api.opensensemap.org/boxes/data?boxId=%s&from-date=%s&to-date=%s&phenomenon=%s", boxID, from, to, phenomenon)
+  Messungen <- read.csv(openSenseBox)
   Messungen$createdAt <- as.POSIXct(Messungen$createdAt,format="%Y-%m-%dT%H:%M:%S",tz=Sys.timezone())
-  Mean_Messungen <- Messungen %>%
-    mutate(mean_value = mean(value))
-  Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))+
-    geom_point(shape = 8, col='green', size = 1.5)+
-    geom_line(aes(createdAt,y=Mean_Messungen$mean_value), size=2, col='black')+
-    labs(title = "Scatterplot der Lautstärke",subtitle = "Senden", x = "Zeit der Messung", y = "Lautstärke (Db)")
+  Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
+  counter <- 1
   
-  Messungen_ZEIT <- Messungen %>%
-    filter(Messungen$createdAt < '2022-11-23 02:26:36')
   
+  if(Day == TRUE){
+    if(Night == TRUE){
+      
+      print("Kompletter Tag!")
+      Ausgabe <- Ausgabe + geom_point(col = colors[counter])
+      counter <- counter + 1
+      
+    } else {
+      
+      print("Nur Tagsüber!")
+      Messungen <- dayPlot(Messungen)
+      Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
+      Ausgabe <- Ausgabe + geom_point(col= colors[counter])
+      counter <- counter + 1
+      
+    }
+  } else {
+    if(Night == TRUE){
+      
+      print("Nur Nachts!")
+      Messungen <- nightPlot(Messungen)
+      Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
+      Ausgabe <- Ausgabe + geom_point(col= colors[counter])
+      counter <- counter + 1
+      
+    } else {
+      
+      print("Ungültige Eingabe!")
+      stop()
+      
+    }
+  }
+  
+  if(Mean == TRUE){
+    Messungen <- Messungen %>%
+      mutate(mean_value = mean(value))
+    Ausgabe <- Ausgabe + geom_line(data = Messungen, aes(createdAt,mean_value), size=2, col = colors[counter])
+    counter <- counter + 1
+  }
+  
+  if(MA == TRUE){
+    Ausgabe <- Ausgabe + geom_smooth(method = "loess", col = colors[counter])
+    counter <- counter + 1
+  }
+  
+  Ausgabe <- Ausgabe + theme_bw()+ theme(
+    
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    
+    axis.line = element_line(colour = "black"),
+  ) 
+  
+  Ausgabe <- Ausgabe + labs(x = "Zeit der Messung", y = "Lautstärke (Db)")
   print(Ausgabe)
- 
+  
+  predictionPlot()
 }
+
+
+predictionPlot <- function(){
+  
+  print("Hello World")
+  #plot
+  
+  
+}
+
 
 # Programmatically alter your API
 #* @plumber
@@ -56,3 +127,4 @@ function(pr) {
         # Overwrite the default serializer to return unboxed JSON
         pr_set_serializer(serializer_unboxed_json())
 }
+
