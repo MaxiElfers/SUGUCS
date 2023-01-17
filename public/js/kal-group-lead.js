@@ -8,6 +8,7 @@ let in_file = document.getElementById("in_file");
 let in_soundArray = document.getElementById("soundArray");
 let output_error_cal = document.getElementById("output_Error_Cal");
 let output_error_up = document.getElementById("output_Error_Up");
+let out_fin = document.getElementById("out_finished");
 
 /***** all EventListeners ******/
 btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal");});
@@ -363,8 +364,7 @@ function checkErrorAndStartWorkflow(type){
             if(error === false){
                 group_code = in_GroupCode.value;
                 btn_Gcal.classList.remove("btn-primary")
-                btn_Gcal.classList.add("btn-secondary")
-                btn_Gcal.classList.add("disabled")
+                btn_Gcal.classList.add("btn-secondary", "disabled")
                 output_error_cal.classList.remove("text-danger");
                 output_error_cal.classList.add("text-success");
                 output_error_cal.innerHTML = "Lade Teilnehmer ein mit dem Code: " + group_code; 
@@ -383,6 +383,10 @@ function checkErrorAndStartWorkflow(type){
             output_error_up.innerHTML = "";
             prepareXL2Data();
             sendReferenceData();
+            output_error_cal.innerHTML = " "; 
+            btn_upload.classList.remove("btn-success");
+            btn_upload.classList.add("disabled", "btn-secondary");
+            out_fin.classList.remove("visually-hidden");
         }
     }
     

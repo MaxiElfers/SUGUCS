@@ -151,7 +151,7 @@ function createCalibrationObject(){
         numberOfAttendees: undefined,
         referenceMicrofon: "XL2",
         deltas: allDeltas,
-        lengthTheCalibration: "12 secounds"
+        lengthTheCalibration: "10 secounds"
     }
 }
 
@@ -170,15 +170,12 @@ function getReferenceData() {
         }
         console.log(xl2Array)
         if(xl2Array[0] === group_code){
-            xl2Array = xl2Array.slice(1,101)
-            console.log(xl2Array);
+            xl2Array = xl2Array.slice(1,101);
             btn_Gcal.classList.remove("btn-primary");
             btn_Cal.classList.remove("btn-success");
             output_error_down.classList.remove("text-danger");
-            btn_Cal.classList.add("btn-secondary");
-            btn_Cal.classList.add("disabled");
-            btn_Gcal.classList.add("btn-secondary");
-            btn_Gcal.classList.add("disabled");
+            btn_Cal.classList.add("btn-secondary", "disabled");
+            btn_Gcal.classList.add("btn-secondary", "disabled");
             output_error_down.classList.add("text-success");
             output_error_cal.innerHTML = "";
             calibration(xl2Array, soundArray);

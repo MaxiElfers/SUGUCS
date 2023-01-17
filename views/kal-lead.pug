@@ -43,9 +43,17 @@ block content
             .btn.btn-success.btn-lg#uploadData Daten für Teilnehmer freigeben
             br
             p#output_Error_Up.text-danger.fs-5
+          .col-10
+            br
+            .row.justify-content-center
+              div#out_finished.text-success.fs-2.fw-bold.visually-hidden 
+                span Sounddatein wurde freigegeben!
+                br
+                span Sie können nun zur Startseite zurückkehren.
+            br
 
 
-        p#soundArray(display="none")= array
+        p#soundArray.visually-hidden= array
 
     script(src='/js/kal-group-lead.js')
     script(src='/js/qrcode.js')
