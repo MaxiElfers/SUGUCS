@@ -8,10 +8,10 @@ var average = 0;
 var mindestDatenProAufnahme = 50;
 var anzahlDatenProAufnahme = 50;
 let measurementCount = 0;
-let startTime = performance.now();
+let startTime;
 
 //Testarray for offest
-var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
+var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
 const db = document.getElementById("db");
 var con;
@@ -48,6 +48,7 @@ osbDiv.addEventListener("change", function () {
 });
 
 function startMessung() {
+  startTime = performance.now();
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
@@ -88,39 +89,43 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
-        if (isFinite(average)) {
+        if (isFinite(average) && (average>=0)) {
           measurementCount++;
           //adding the offset
-          switch (average) {
-            case average < 10:
+          let switchValue = Math.floor(average/10);
+          switch (switchValue) {
+            case 0:
               average += testarray[0];
               break;
-            case 10 < average < 20:
+            case 1:
               average += testarray[1];
               break;
-            case 20 < average < 30:
+            case 2:
               average += testarray[2];
               break;
-            case 30 < average < 40:
+            case 3:
               average += testarray[3];
               break;
-            case 40 < average < 50:
+            case 4:
               average += testarray[4];
               break;
-            case 50 < average < 60:
+            case 5:
               average += testarray[5];
               break;
-            case 60 < average < 70:
+            case 6:
               average += testarray[6];
               break;
-            case 70 < average < 80:
+            case 7:
               average += testarray[7];
               break;
-            case 80 < average < 90:
+            case 8:
               average += testarray[8];
               break;
-            case 90 < average:
+            case 9:
               average += testarray[9];
+              break;
+            case 10:
+              average += testarray[10];
               break;
           }
 
