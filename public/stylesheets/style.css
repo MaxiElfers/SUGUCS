@@ -40,3 +40,9 @@ body {
 #volumeMeterEl::-webkit-meter-bar {
   background: #4CAF50;
 }
+
+.textarea-unit-dB{
+  position: absolute;
+  right: 5vw;
+  top: 11vh;
+}

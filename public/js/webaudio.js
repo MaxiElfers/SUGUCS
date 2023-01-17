@@ -8,7 +8,9 @@ var average = 0;
 var mindestDatenProAufnahme = 50;
 var anzahlDatenProAufnahme = 50;
 let measurementCount = 0;
-let startTime = performance.now();
+let startTime;
+let mitzaehlen = false;
+let anzahlMessungenProSekunde = 0;
 
 //Testarray for offest
 var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
@@ -124,7 +126,7 @@ function startMessung() {
               break;
           }
 
-          db.innerText = average;
+          db.innerText = (Math.round(average*1000))/1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];
@@ -190,7 +192,9 @@ function stoppMessung() {
       "<br>Messung erfolgreich!<br>" +
       "Gemessener Durchschnitt:<br><b>" +
       Math.round(summe / modell.length) +
-      "</b> dB";
+      "dB<br>" +
+      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+      (Math.round(anzahlMessungenProSekunde * 10))/10 ;
     messungButton.textContent = "Neue Messung";
   }
 
@@ -326,5 +330,8 @@ setInterval(function(){
   //calculate the end time
   let endTime = performance.now();
   let timeInterval = (endTime - startTime)/1000;
-  console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
+  if(mitzaehlen == true){
+  anzahlMessungenProSekunde = measurementCount/timeInterval;
+  //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
+  }
 }, 1000);
