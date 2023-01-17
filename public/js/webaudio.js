@@ -21,7 +21,8 @@ messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
-nameDiv.value = "SUGUCS";
+
+nameDiv.value = "";
 osbDiv.value = "";
 
 messungButton.disabled = true;
@@ -44,6 +45,8 @@ osbDiv.addEventListener("change", function () {
     messungButton.disabled = false;
   }
 });
+
+var mindestDatenProAufnahme = 50;
 
 function startMessung() {
   messungStoppenButton.disabled = false;
@@ -87,39 +90,6 @@ function startMessung() {
 
         average = 20 * Math.log10(values / data.length);
         if (isFinite(average)) {
-          //adding the offset
-          switch (average) {
-            case average < 10:
-              average += testarray[0];
-              break;
-            case 10 < average < 20:
-              average += testarray[1];
-              break;
-            case 20 < average < 30:
-              average += testarray[2];
-              break;
-            case 30 < average < 40:
-              average += testarray[3];
-              break;
-            case 40 < average < 50:
-              average += testarray[4];
-              break;
-            case 50 < average < 60:
-              average += testarray[5];
-              break;
-            case 60 < average < 70:
-              average += testarray[6];
-              break;
-            case 70 < average < 80:
-              average += testarray[7];
-              break;
-            case 80 < average < 90:
-              average += testarray[8];
-              break;
-            case 90 < average:
-              average += testarray[9];
-              break;
-          }
 
           db.innerText = average;
           //Klonen der Aufnahmestruktur aus modell.js
@@ -146,6 +116,7 @@ function startMessung() {
       };
 
       window.requestAnimationFrame(onFrame);
+
     });
 
   // update the volume every refresh_rate m.seconds
@@ -175,6 +146,7 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
+
   messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
@@ -195,6 +167,74 @@ function stoppMessung() {
     con.suspend();
     console.log(aufnahme);
   }
+}
+
+document.getElementById("hinzufuegen").addEventListener("click", function () {
+  getValues();
+});
+
+function getValues() {
+  // Daten einlesen
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  var newModell = modell;
+  var newStandort = pos;
+  //console.log(newName, newModell, newStandort);
+  document.getElementById("FehlerDiv").style.display = "none";
+  document.getElementById("FehlerDiv2").style.display = "none";
+  document.getElementById("FehlerDiv3").style.display = "none";
+  if (newName == "") {
+    document.getElementById("FehlerDiv3").style.display = "block";
+  } else if (newModell.length == 0) {
+    document.getElementById("FehlerDiv").style.display = "block";
+  } else if (newStandort == null) {
+    document.getElementById("FehlerDiv2").style.display = "block";
+  } else {
+    var durchschnitt = getDurchschnitt(newModell);
+
+    data = {
+      name: newName,
+      geometry: {
+        type: "Point",
+        coordinates: newStandort,
+      },
+      Messung: newModell,
+      Durchschnitt: durchschnitt,
+      OpenSenseBoxID: osbID,
+    };
+    console.log(data);
+    postData(data);
+  }
+}
+
+/**
+ * Berechnet den Durchschnitt aus einem Feld mit int Werten
+ * @param {int} Messungen
+ * @returns durchschnitt
+ */
+function getDurchschnitt(Messungen) {
+  var Summe = 0;
+  for (var i = 0; i < Messungen.length; i++) {
+    Summe = Summe + Messungen[i].value;
+  }
+  return Summe / Messungen.length;
+}
+
+/**
+ * Fetcht die neuen Daten
+ * @param doc zu postende Daten
+ */
+function postData(doc) {
+  fetch("/addData", {
+    headers: { "Content-Type": "application/json" },
+    method: "post",
+    body: JSON.stringify(doc),
+  });
+ 
+  if (aufnahme.length > 50){
+  con.suspend();
+  console.log(aufnahme);
+  tonspurMax(aufnahme)
 }
 
 document.getElementById("hinzufuegen").addEventListener("click", function () {
