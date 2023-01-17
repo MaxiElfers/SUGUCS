@@ -31,20 +31,16 @@ block content
                     input#input_GroupCode.form-control(placeholder='1234567')
                 div.btn.btn-primary#btn_Gruppenkalibrierung Kalibrierungsraum erstellen 
                 br
-                p#output_Error_Cal.text-danger.fs-5
-          .col-5
-            div.row.justify-content-center
+                p#output_Error_Cal.allign-middle.text-danger.fs-5
+                br
               .col-5.allign-middle
-                div.btn.btn-primary#btn_XL2 XL2-Tonaufnahme starten
-              .col-5.allign-middle
-                div.btn.btn-primary#btn_recording Kalibrierungssound starten
+                div.btn.btn-secondary.disabled#btn_XL2 Kalibrierungsprozess starten
             br
             br
+          .col-8.allign-middle
+            .btn.btn-secondary.disabled.btn-lg#uploadData Daten für Teilnehmer freigeben
             br
-          .col-auto.allign-middle
-            .btn.btn-success.btn-lg#uploadData Daten für Teilnehmer freigeben
-            br
-            p#output_Error_Up.text-danger.fs-5
+            p#output_Error_Up.allign-middle.text-danger.fs-5
           .col-10
             br
             .row.justify-content-center

@@ -164,7 +164,7 @@ function getReferenceData() {
         return response.json();
     }).then(function(data) {
         console.log(data);
-        // Filter die letzten 100 Einträge heraus
+        // Filter die letzten 100 Einträge + 1 Group-Code heraus
         for(let i = 0; i < 101; i++) {
             xl2Array.push(parseInt(data[i].value))
         }

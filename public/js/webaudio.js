@@ -346,16 +346,16 @@ function soundArrayMax(soundArray) {
 
 /**
 * Slices the soundArray starting from the 
-* first max decible value down to 30 sound values
+* first max decible value down to 100 sound values
 * @param {Array} soundArray is the array that needs to be shortend
 */
 function sliceSoundArray(soundArray) {
   const max = soundArrayMax(soundArray)
-  if(soundArray[max] === undefined || soundArray[max+30] === undefined){
+  if(soundArray[max] === undefined || soundArray[max+100] === undefined){
       console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
       // @todo  response auf der Website anzeigen
   }
   else{
-      soundArray = soundArray.slice(max, max + 30) // shorten Array to 30 values
+      soundArray = soundArray.slice(max, max + 100) // shorten Array to 30 values
   }
 }
