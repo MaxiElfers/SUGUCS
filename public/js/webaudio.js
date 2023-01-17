@@ -5,6 +5,11 @@ var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
+var mindestDatenProAufnahme = 50;
+var anzahlDatenProAufnahme = 50;
+
+//Testarray for offest
+var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
 
 const db = document.getElementById("db");
 var con;
@@ -16,6 +21,7 @@ messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
+
 nameDiv.value = "";
 osbDiv.value = "";
 
@@ -82,8 +88,9 @@ function startMessung() {
           values += data[i];
         }
 
-        average = 20 * Math.log10(values / data.length) + offset;
+        average = 20 * Math.log10(values / data.length);
         if (isFinite(average)) {
+
           db.innerText = average;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
@@ -229,53 +236,125 @@ function postData(doc) {
   console.log(aufnahme);
   tonspurMax(aufnahme)
 }
+
+document.getElementById("hinzufuegen").addEventListener("click", function () {
+  getValues();
+});
+
+function getValues() {
+  // Daten einlesen
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  var newModell = modell;
+  var newStandort = pos;
+  //console.log(newName, newModell, newStandort);
+  document.getElementById("FehlerDiv").style.display = "none";
+  document.getElementById("FehlerDiv2").style.display = "none";
+  document.getElementById("FehlerDiv3").style.display = "none";
+  if (newName == "") {
+    document.getElementById("FehlerDiv3").style.display = "block";
+  } else if (newModell.length == 0) {
+    document.getElementById("FehlerDiv").style.display = "block";
+  } else if (newStandort == null) {
+    document.getElementById("FehlerDiv2").style.display = "block";
+  } else {
+    var durchschnitt = getDurchschnitt(newModell);
+
+    data = {
+      name: newName,
+      geometry: {
+        type: "Point",
+        coordinates: newStandort,
+      },
+      Messung: newModell,
+      Durchschnitt: durchschnitt,
+      OpenSenseBoxID: osbID,
+    };
+    console.log(data);
+    postData(data);
+  }
+}
+
+/**
+ * Berechnet den Durchschnitt aus einem Feld mit int Werten
+ * @param {int} Messungen
+ * @returns durchschnitt
+ */
+function getDurchschnitt(Messungen) {
+  var Summe = 0;
+  for (var i = 0; i < Messungen.length; i++) {
+    Summe = Summe + Messungen[i].value;
+  }
+  return Summe / Messungen.length;
+}
+
+/**
+ * Fetcht die neuen Daten
+ * @param doc zu postende Daten
+ */
+function postData(doc) {
+  fetch("/addData", {
+    headers: { "Content-Type": "application/json" },
+    method: "post",
+    body: JSON.stringify(doc),
+  });
+
+  if (aufnahme.length > 50) {
+    con.suspend();
+    console.log(aufnahme);
+    tonspurMax(aufnahme);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////
 //// Array kürzen
 ///////////////////////////////////////////////////////////////////////////
 
-// Tonspur Startton(Maximum) finden
-function tonspurMax(tonspur) {
-  console.log("Array Laenge ist: " + tonspur.length)
-
-  // Maximum berechnen 
-  // überprüfen von Array
-  if (tonspur.length === 0) {
-      return -1;
-  }
-  var max = tonspur[0];
-  var maxIndex = 0;
-  // nach Maximum suchen
-  for (var i = 1; i < tonspur.length; i++) {
-      if (tonspur[i] > max) {
-          maxIndex = i;
-          max = tonspur[i];
+/**
+ * Searches for the first maximum decible value
+ * inside the given soundarray 
+ * @param {Array} soundArray 
+ * @returns {Number} max - is the indice of the first maximum decible value
+ */
+function soundArrayMax(soundArray) {
+  if (soundArray.length > 0) {
+      let max = soundArray[0];
+      let maxIndex = 0;
+      // search for maximum
+      for (var i = 1; i < soundArray.length; i++) {
+          if (soundArray[i] > max) {
+              maxIndex = i;
+              max = soundArray[i];
+          }
       }
-  }
-  console.log("Max Index ist: " + maxIndex)
-
-  var realMaxIndex = maxIndex
-  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
-  for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 als Zeiteinheit für maximale Länge des Starttons 
-      if(tonspur[maxIndex] - 5 < tonspur[i]) { // Maximal 5dB unterschied als zugelassene Varianz
-          realMaxIndex = i 
+  
+      var realMaxIndex = maxIndex
+      // check that this value is really the last of the starting sound, as this sound is one secound long
+      for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 as time for the maximum length of the starting sound 
+          if(soundArray[maxIndex] - 2 < soundArray[i]) { // maximum 2 decibles difference as varianz
+              realMaxIndex = i 
+          }
       }
+      return realMaxIndex;
   }
-  console.log("Real Max Index ist: " + realMaxIndex)
-
-  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if ( tonspur.length - realMaxIndex + 30 > 0 ) { // 30 Testzeiteinheit für zu kalibrierendes Audio
-      tonspurKuerzen(realMaxIndex, tonspur)
-  } else {
-      console.log("Aufnahme ist zu kurz")
+  else{
+      console.error("Fehlerhafter Lautstärke-Array übergeben") // Error handling
+      // @todo  response auf der Website anzeigen
   }
 }
 
-// Tonspur kürzen
-function tonspurKuerzen(max, tonspur) {
-  console.log("Bereit zum kuerzen")
-  // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 30)
-  console.log(tonspur)
+/**
+* Slices the soundArray starting from the 
+* first max decible value down to 30 sound values
+* @param {Array} soundArray is the array that needs to be shortend
+*/
+function sliceSoundArray(soundArray) {
+  const max = soundArrayMax(soundArray)
+  if(soundArray[max] === undefined || soundArray[max+30] === undefined){
+      console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
+      // @todo  response auf der Website anzeigen
+  }
+  else{
+      soundArray = soundArray.slice(max, max + 30) // shorten Array to 30 values
+  }
 }
