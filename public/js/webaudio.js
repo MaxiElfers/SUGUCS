@@ -7,9 +7,13 @@ var offset = 30;
 var average = 0;
 var mindestDatenProAufnahme = 50;
 var anzahlDatenProAufnahme = 50;
+let measurementCount = 0;
+let startTime;
+let mitzaehlen = false;
+let anzahlMessungenProSekunde = 0;
 
 //Testarray for offest
-var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
+var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
 const db = document.getElementById("db");
 var con;
@@ -46,6 +50,7 @@ osbDiv.addEventListener("change", function () {
 });
 
 function startMessung() {
+  startTime = performance.now();
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
@@ -86,42 +91,47 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
-        if (isFinite(average)) {
+        if (isFinite(average) && (average>=0)) {
+          measurementCount++;
           //adding the offset
-          switch (average) {
-            case average < 10:
+          let switchValue = Math.floor(average/10);
+          switch (switchValue) {
+            case 0:
               average += testarray[0];
               break;
-            case 10 < average < 20:
+            case 1:
               average += testarray[1];
               break;
-            case 20 < average < 30:
+            case 2:
               average += testarray[2];
               break;
-            case 30 < average < 40:
+            case 3:
               average += testarray[3];
               break;
-            case 40 < average < 50:
+            case 4:
               average += testarray[4];
               break;
-            case 50 < average < 60:
+            case 5:
               average += testarray[5];
               break;
-            case 60 < average < 70:
+            case 6:
               average += testarray[6];
               break;
-            case 70 < average < 80:
+            case 7:
               average += testarray[7];
               break;
-            case 80 < average < 90:
+            case 8:
               average += testarray[8];
               break;
-            case 90 < average:
+            case 9:
               average += testarray[9];
+              break;
+            case 10:
+              average += testarray[10];
               break;
           }
 
-          db.innerText = average;
+          db.innerText = (Math.round(average*1000))/1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];
@@ -187,7 +197,9 @@ function stoppMessung() {
       "<br>Messung erfolgreich!<br>" +
       "Gemessener Durchschnitt:<br><b>" +
       Math.round(summe / modell.length) +
-      "</b> dB";
+      "dB<br>" +
+      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+      (Math.round(anzahlMessungenProSekunde * 10))/10 ;
     messungButton.textContent = "Neue Messung";
   }
 
@@ -317,3 +329,14 @@ function tonspurKuerzen(max, tonspur) {
   tonspur = tonspur.slice(max, max + 30);
   console.log(tonspur);
 }
+
+
+setInterval(function(){
+  //calculate the end time
+  let endTime = performance.now();
+  let timeInterval = (endTime - startTime)/1000;
+  if(mitzaehlen == true){
+  anzahlMessungenProSekunde = measurementCount/timeInterval;
+  //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
+  }
+}, 1000);
