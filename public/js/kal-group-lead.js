@@ -13,7 +13,7 @@ let out_fin = document.getElementById("out_finished");
 /***** all EventListeners ******/
 btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal");});
 btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
-btn_xl2.addEventListener("click", function(){window.location = '/kalibrierung/XL2';});
+btn_xl2.addEventListener("click", function(){playSound(); window.location = '/kalibrierung/XL2';});
 btn_recording.addEventListener("click", function(){playSound();});
 
 /***** all Variables ******/
@@ -398,7 +398,7 @@ function checkErrorAndStartWorkflow(type){
  * if button "Sound Starten" is clicked
  */
 function playSound(){
-    audio_calibration.play();
+    setTimeout(audio_calibration.play(), 1000);
 }
 
 /**
