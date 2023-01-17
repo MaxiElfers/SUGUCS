@@ -2,7 +2,6 @@
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
 let btn_upload = document.getElementById("uploadData");
 let btn_xl2 = document.getElementById("btn_XL2");
-let btn_recording = document.getElementById("btn_recording");
 let in_GroupCode = document.getElementById("input_GroupCode");
 let in_file = document.getElementById("in_file");
 let in_soundArray = document.getElementById("soundArray");
@@ -14,7 +13,6 @@ let out_fin = document.getElementById("out_finished");
 btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal");});
 btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
 btn_xl2.addEventListener("click", function(){playSound(); window.location = '/kalibrierung/XL2';});
-btn_recording.addEventListener("click", function(){playSound();});
 
 /***** all Variables ******/
 const audio_calibration = new Audio('/sounds/Calibration_sound.mpeg');

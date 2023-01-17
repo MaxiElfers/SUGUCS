@@ -205,8 +205,8 @@ var refresh_rate = 10;
 var stream;
 var offset = 30;
 var average = 0;
-var mindestDatenProAufnahme = 50;
-var anzahlDatenProAufnahme = 50;
+var mindestDatenProAufnahme = 100;
+var anzahlDatenProAufnahme = 100;
 let measurementCount = 0;
 let startTime;
 let mitzaehlen = false;
@@ -218,8 +218,6 @@ var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 const db = document.getElementById("db");
 var con;
 var con;
-let durchschn = document.getElementById("ausg");
-let maxim = document.getElementById("maxima");
 
 messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
@@ -311,7 +309,7 @@ function startMessung() {
               break;
           }
 
-          db.innerText = (Math.round(average*1000))/1000;
+          //db.innerText = (Math.round(average*1000))/1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];

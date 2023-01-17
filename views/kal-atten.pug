@@ -39,16 +39,15 @@ block content
                 .pb-3
                   .card.shadow-lg
                     .card-body
-                      h2.card-title Soundaufnahme
+                      h4.card-title Soundaufnahme
                       div
-                        textarea#db(name='db')
-                        p
-                        #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
-                        button.btn.btn-primary.btn-sm(id="messung" style="background:green") Messung starten
                         meter#volumeMeterEl(high='0.25' max='0.5' value='0')
+                        //textarea#db(name='db')
                         p
-                        button.btn.btn-primary.btn-sm(id="messungStoppen") Messung stoppen
-                        p#ausg
+                        button.btn.btn-success.btn-sm#messung Messung starten
+                        //meter#volumeMeterEl(high='0.25' max='0.5' value='0')
+                        p
+                        button.btn.btn-secondary.btn-sm#messungStoppen Messung stoppen
 
 
                 //div
