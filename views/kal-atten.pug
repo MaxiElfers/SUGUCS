@@ -15,7 +15,7 @@ block content
               div.col-auto.allign-middle
                 p.allign-middle
                   u.fs-2.fw-bold Teilnehmer
-                div.card(style='width: 30rem;')
+                div.card.shadow-lg(style='width: 30rem;')
                   div.card-body
                     h5.card-title Anleitung 
                     h6.card-subtitle.mb-2.text-muted Bitte befolgen Sie die folgenden Schritte
@@ -36,29 +36,29 @@ block content
           .col-5
             div.row.justify-content-center
               .col-10.allign-middle
-                //.pb-3
-                //  .card.shadow-lg
-                //    .card-body
-                //      h2.card-title Soundaufnahme
-                //      div
-                //        textarea#db(name='db')
-                //        p
-                //        #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
-                //        button.btn.btn-primary.btn-sm(id="messung" style="background:green") Messung starten
-                //        meter#volumeMeterEl(high='0.25' max='0.5' value='0')
-                //        p
-                //        button.btn.btn-primary.btn-sm(id="messungStoppen") Messung stoppen
-                //        p#ausg
+                .pb-3
+                  .card.shadow-lg
+                    .card-body
+                      h2.card-title Soundaufnahme
+                      div
+                        textarea#db(name='db')
+                        p
+                        #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
+                        button.btn.btn-primary.btn-sm(id="messung" style="background:green") Messung starten
+                        meter#volumeMeterEl(high='0.25' max='0.5' value='0')
+                        p
+                        button.btn.btn-primary.btn-sm(id="messungStoppen") Messung stoppen
+                        p#ausg
 
 
-                div
-                  input.form-control#db(name='db' rows='1' cols='50' type="text" readonly)
-                  p
-                  div.row.justify-content-center
-                    .col-6
-                      div.btn.btn-primary#messung Aufnahme starten!
-                    .col-6
-                      div.btn.btn-secondary.disabled#messungStoppen Aufnahme stoppen!
+                //div
+                //  input.form-control#db(name='db' rows='1' cols='50' type="text" readonly)
+                //  p
+                //  div.row.justify-content-center
+                //    .col-6
+                //      div.btn.btn-primary#messung Aufnahme starten!
+                //    .col-6
+                //      div.btn.btn-secondary.disabled#messungStoppen Aufnahme stoppen!
             br
             br
           .col-4 
@@ -76,5 +76,5 @@ block content
                 span Sie können nun zur Startseite zurückkehren.
             br
 
-    script(src='/js/webaudio.js')
+    //script(src='/js/webaudio.js')
     script(src='/js/kal-atten.js')
