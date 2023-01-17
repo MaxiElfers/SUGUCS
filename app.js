@@ -11,7 +11,6 @@ var kalibrierungRouter = require("./routes/kalibrierung");
 var messungRouter = require("./routes/messung");
 
 const app = express();
-const port = 3000;
 
 var bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
@@ -73,10 +72,6 @@ app.post("/addData", function (req, res, next) {
   addData(req.body)
     .catch(console.error)
     .finally(() => client.close());
-});
-
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
 });
 
 /**
