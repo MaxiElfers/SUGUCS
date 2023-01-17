@@ -232,14 +232,15 @@ function postData(doc) {
   });
  
   if (aufnahme.length > 50){
-  con.suspend();
-  console.log(aufnahme);
-  tonspurMax(aufnahme)
-}
+    con.suspend();
+    console.log(aufnahme);
+    tonspurMax(aufnahme)
+  }
 
-document.getElementById("hinzufuegen").addEventListener("click", function () {
+  document.getElementById("hinzufuegen").addEventListener("click", function () {
   getValues();
-});
+  });
+}
 
 function getValues() {
   // Daten einlesen

@@ -12,8 +12,8 @@ block content
         div.row.justify-content-center 
           .col-9
             div.row.justify-content-center
-              div.col-auto.align-middle
-                p
+              div.col-auto.allign-middle
+                p.allign-middle
                   u.fs-2.fw-bold Teilnehmer
                 div.card(style='width: 30rem;')
                   div.card-body
@@ -26,7 +26,7 @@ block content
                 br    
           .col-5  
             div.row.justify-content-center
-              .col-10.align-middle
+              .col-10.allign-middle
                 div.input-group.mb-3
                   span.input-group-text Group-Code
                   input#input_GroupCode.form-control(placeholder='1234567') 
@@ -35,10 +35,22 @@ block content
                 p#output_Error_Cal.text-danger.fs-5
           .col-5
             div.row.justify-content-center
-              .col-10.align-middle
-                //div.card
-                  //div.card-body
-                    //h2.card-title Soundaufnahme
+              .col-10.allign-middle
+                .pb-3
+                //  .card.shadow-lg
+                //    .card-body
+                //      h2.card-title Soundaufnahme
+                //      div
+                //        textarea#db(name='db')
+                //        p
+                //        #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
+                //        button.btn.btn-primary.btn-sm(id="messung" style="background:green") Messung starten
+                //        meter#volumeMeterEl(high='0.25' max='0.5' value='0')
+                //        p
+                //        button.btn.btn-primary.btn-sm(id="messungStoppen") Messung stoppen
+                //        p#ausg
+
+
                 div
                   input.form-control#db(name='db' rows='1' cols='50' type="text" readonly)
                   p
@@ -58,7 +70,7 @@ block content
             br
             br
             .row.justify-content-center
-              div#out_finished.text-success.fs-2.fw-bold.visually-hidden 
+              div#out_finished.text-success.fs-2.fw-bold.visually-hidden.allign-middle
                 span Kalibrierung wurde abgeschlossen!
                 br
                 span Sie können nun zur Startseite zurückkehren.
