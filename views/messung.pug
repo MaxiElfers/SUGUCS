@@ -34,7 +34,7 @@ block content
           p
           #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
           #startbtn
-            button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green" onclick="mitzaehlen = true; document.getElementById('Div').style.display='none'; document.getElementById('volumeMeterEl').style.display='block'; document.getElementById('db').style.display='block'; document.getElementById('stopbtn').style.display='block';") Messung starten
+            button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green" onclick="mitzaehlen = true; anzahlMessungenErhoehen(); document.getElementById('Div').style.display='none'; document.getElementById('volumeMeterEl').style.display='block'; document.getElementById('db').style.display='block'; document.getElementById('stopbtn').style.display='block';") Messung starten
           meter#volumeMeterEl(high='0.25' max='0.3' value='0')
           p
           #stopbtn
