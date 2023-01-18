@@ -4,9 +4,9 @@ block content
     h2 Analyse Seite
     br
     p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
-    h5 Eingabe der SenseBox ID zur Abfrage und Visualisierung:
+    h5 1. Eingabe der SenseBox ID zur Abfrage und Visualisierung: (Beispiele: Senden: 60f077874fb91e001c71b3b1 TestBox: 63c3f0c9a122c30008268cc0)
     input#userInput(style="width: 30%", type='text' placeholder='Sensebox ID')
-    h5 Eingabe der SenseBoxID und SensorID zur Abfrage der letzten 100 gemessenen Werte
+    h5 2. Eingabe der SensorID zur Abfrage der letzten 100 gemessenen Werte: (Beispiele: Senden: 60f077874fb91e001c71b3b2 TestBox: 63c3f0c9a122c30008268cc1)
     input#sid(style="width: 30%", type='text' placeholder='Sensor ID')
     p
     button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
@@ -21,25 +21,24 @@ block content
 
             .card.text-dark.p-4.border-success.cardplotting
                 h5 Plotting 
-                p Hier werden Plots dargestellt wie diese:
-                p Plot 1:
-                  img(src= ueblink , alt="")
-                p Plot 2:
-                  img(src= weblink , alt="")
-                  
+                p Hier werden Plots dargestellt für eine visuelle Analyse:
+                p Struktur Plot:
+                img(src= weblink , alt="")
+                
+
 
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
                 .card.text-dark.p-4.border-success.card
                   h4 Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit
-                  h5 Eingabe der Start und Endzeit zur Abfrage und Ausgabe der in der Zeit gemessenen Lautstärken:
-                  h6 Startzeit:
+                  h5 3. Eingabe der Start und Endzeit zur Abfrage und Ausgabe der in der Zeit gemessenen Lautstärken:
+                  h6 Startzeit: (Beispiele: 2022-11-22T08:00 und 2022-11-22T12:00)
                   input#starttimeInput(style="width: 100%", type='text' placeholder='Startzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-23T08:00')
                   h6 Endzeit:
                   input#endtimeInput(style="width: 100%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-22T10:00')
                   button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
                   br
-                  table#resultTable
+                  table#resultTable 
                     tr
                       th
                         | Datum der Messung
