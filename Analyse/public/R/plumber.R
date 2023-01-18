@@ -31,19 +31,20 @@ nightPlot <- function(Messungen){
   return(Messungen)
 }
 
-boxID <- "60f077874fb91e001c71b3b1"
-from <- "2022-11-22T08:00:00Z"
-to <- "2022-11-23T08:00:00Z"
-phenomenon <- "Lautst%C3%A4rke"
-structurePlot("60f077874fb91e001c71b3b1", "2022-11-22T08:00:00Z", "2022-11-23T08:00:00Z", "Lautst%C3%A4rke",TRUE, TRUE, TRUE, TRUE, c("purple", "red", "blue"), 1)
+#boxID <- "60f077874fb91e001c71b3b1"
+#from <- "2022-11-22T08:00:00Z"
+#to <- "2022-11-23T08:00:00Z"
+#phenomenon <- "Lautst%C3%A4rke"
+#structurePlot("60f077874fb91e001c71b3b1", "2022-11-22T08:00:00Z", "2022-11-23T08:00:00Z",FALSE, TRUE, FALSE, FALSE, 1, 1)
 
 #* Plottet die Werte nach Wunsch des Kunden
 #* @serializer png
 #* @get /structurePlot
-structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, colors, theme){
+structurePlot <- function(boxID, from, to, Day, Night, MA, Mean, colors, theme){
   
   # Einladen Der Daten
-  openSenseBox <- sprintf("https://api.opensensemap.org/boxes/data?boxId=%s&from-date=%s&to-date=%s&phenomenon=%s", boxID, from, to, phenomenon)
+  openSenseBox <- sprintf("https://api.opensensemap.org/boxes/data?boxId=%s&from-date=%s&to-date=%s&phenomenon=", boxID, from, to)
+  openSenseBox <- paste(openSenseBox, "Lautst%C3%A4rke", sep="")
   Messungen <- read.csv(openSenseBox)
   Messungen$createdAt <- as.POSIXct(Messungen$createdAt,format="%Y-%m-%dT%H:%M:%S",tz=Sys.timezone())
   Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
@@ -54,7 +55,7 @@ structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, col
     if(Night == TRUE){
       
       print("Kompletter Tag!")
-      Ausgabe <- Ausgabe + geom_point(col = colors[counter])
+      Ausgabe <- Ausgabe + geom_point(col = "red")
       counter <- counter + 1
       
     } else {
@@ -62,7 +63,7 @@ structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, col
       print("Nur Tagsüber!")
       Messungen <- dayPlot(Messungen)
       Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
-      Ausgabe <- Ausgabe + geom_point(col= colors[counter])
+      Ausgabe <- Ausgabe + geom_point(col= "red")
       counter <- counter + 1
       
     }
@@ -72,7 +73,7 @@ structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, col
       print("Nur Nachts!")
       Messungen <- nightPlot(Messungen)
       Ausgabe <- ggplot(data = Messungen, aes(x=createdAt, y=value))
-      Ausgabe <- Ausgabe + geom_point(col= colors[counter])
+      Ausgabe <- Ausgabe + geom_point(col= "red")
       counter <- counter + 1
       
     } else {
@@ -86,12 +87,12 @@ structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, col
   if(Mean == TRUE){
     Messungen <- Messungen %>%
       mutate(mean_value = mean(value))
-    Ausgabe <- Ausgabe + geom_line(data = Messungen, aes(createdAt,mean_value), size=2, col = colors[counter])
+    Ausgabe <- Ausgabe + geom_line(data = Messungen, aes(createdAt,mean_value), size=2, col = "blue")
     counter <- counter + 1
   }
   
   if(MA == TRUE){
-    Ausgabe <- Ausgabe + geom_smooth(method = "loess", col = colors[counter])
+    Ausgabe <- Ausgabe + geom_smooth(method = "loess", col = "green")
     counter <- counter + 1
   }
   
@@ -114,7 +115,6 @@ structurePlot <- function(boxID, from, to, phenomenon, Day, Night, MA, Mean, col
 predictionPlot <- function(){
   
   print("Hello World")
-  #plot
   
   
 }
@@ -127,4 +127,3 @@ function(pr) {
         # Overwrite the default serializer to return unboxed JSON
         pr_set_serializer(serializer_unboxed_json())
 }
-
