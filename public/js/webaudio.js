@@ -1,7 +1,6 @@
 // Source:
 //https://github.com/takispig/db-meter
 
-// Variablendefinitionen
 var refresh_rate = 500;
 var stream;
 var offset = 30;
@@ -19,8 +18,8 @@ let gemessenesdB = 0;
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
-// Einlesen der eingegebenen Werte
 const db = document.getElementById("db");
+var con;
 var con;
 let durchschn = document.getElementById("ausg");
 let maxim = document.getElementById("maxima");
@@ -32,14 +31,12 @@ var osbDiv = document.getElementById("OpenSenseBoxDiv");
 nameDiv.value = "SUGUCS";
 osbDiv.value = "";
 
-// Buttons disablen
 messungButton.disabled = true;
 messungStoppenButton.disabled = true;
 
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
-// Button zur Messung disablen solange nicht alle anderen Werte eingegeben wurden
 nameDiv.addEventListener("change", function () {
   if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
     messungButton.disabled = true;
@@ -55,10 +52,6 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
-/**
- * Funktion zum Durchführen der Soundmessung
- * Quelle: s.o.
- */
 function startMessung() {
   startTime = performance.now();
   messungStoppenButton.disabled = false;
@@ -183,9 +176,8 @@ function startMessung() {
   var interval = window.setInterval(updateDb, refresh_rate);
 }
 
-/**
- * Funktion zum Ändern der UpdateRate
- */
+// change update rate
+
 function changeUpdateRate() {
   refresh_rate = Number(document.getElementById("refresh_rate").value);
   document.getElementById("refresh_value").innerText = refresh_rate;
@@ -194,12 +186,9 @@ function changeUpdateRate() {
   }, refresh_rate);
 }
 
-/**
- * Funktion zum Stoppen der Soundaufnahme
- */
+// stopping measurment
 function stoppMessung() {
   messungStoppenButton.disabled = true;
-  // sicherstellen, dass Mindestanzahl an Datenwerten vorliegt
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
     console.log(modell);
@@ -207,16 +196,14 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-
-    // Nachricht mit Durchschnittlicher Anzahl an Werten pro Sekunde zurückgeben
     if (anzahlMessungen == 1) {
       ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
       gemessenesdB = Math.round(summe / modell.length);
-      durchschn.innerHTML = "<br>Messung erfolgreich!<br>";
+      durchschn.innerHTML = "Messung erfolgreich!";
       messungButton.textContent = "Neue Messung";
     } else {
       gemessenesdB = Math.round(summe / modell.length);
-      durchschn.innerHTML = "<br>Messung erfolgreich!<br>";
+      durchschn.innerHTML = "Messung erfolgreich!";
     }
   }
 
@@ -230,11 +217,6 @@ document.getElementById("hinzufuegen").addEventListener("click", function () {
   getValues();
 });
 
-/**
- * Funktion zum Einlesen aller Daten auf der Seite
- * Daten werden in einem GeoJSON gespeichert und in der Konsole ausgegeben
- * Fehler, dass Daten unvollständig sind, wird abgefangen
- */
 function getValues() {
   // Daten einlesen
   var newName = document.getElementById("NameDiv").value;
@@ -245,7 +227,6 @@ function getValues() {
   document.getElementById("FehlerDiv").style.display = "none";
   document.getElementById("FehlerDiv2").style.display = "none";
   document.getElementById("FehlerDiv3").style.display = "none";
-  // Fehler, dass Daten unvollständig, abfangen
   if (newName == "") {
     document.getElementById("FehlerDiv3").style.display = "block";
   } else if (newModell.length == 0) {
@@ -255,7 +236,6 @@ function getValues() {
   } else {
     var durchschnitt = getDurchschnitt(newModell);
 
-    // GeoJSON mit Werten
     data = {
       name: newName,
       geometry: {
@@ -266,7 +246,6 @@ function getValues() {
       Durchschnitt: durchschnitt,
       OpenSenseBoxID: osbID,
     };
-    // GeoJSON ausgeben
     console.log(data);
     postData(data);
   }
@@ -347,11 +326,7 @@ function tonspurMax(tonspur) {
   }
 }
 
-/**
- * Funktion zum Kürzen der Tonspur
- * @param max maximaler Datenwert
- * @param {*} tonspur Tonspur
- */
+// Tonspur kürzen
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
@@ -359,9 +334,6 @@ function tonspurKuerzen(max, tonspur) {
   console.log(tonspur);
 }
 
-/**
- * Funktion zum Erhöhen der Messung um 1
- */
 function anzahlMessungenErhoehen() {
   anzahlMessungen = anzahlMessungen + 1;
 }
@@ -396,9 +368,9 @@ setInterval(function () {
   }
 }, 1000);
 
-function kopieren(event) {
+function kopieren() {
   // Get the text field
-  var copyText = document.getElementById(event.srcElement.id + "Input");
+  var copyText = document.getElementById("sbid");
 
   // Select the text field
   copyText.select();
