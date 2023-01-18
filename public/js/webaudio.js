@@ -7,9 +7,17 @@ var offset = 30;
 var average = 0;
 var mindestDatenProAufnahme = 50;
 var anzahlDatenProAufnahme = 50;
+let measurementCount = 0;
+let startTime;
+let mitzaehlen = false;
+let anzahlMessungenProSekunde = 0;
+let anzahlMessungen = 0;
+let ausgabedurchschnitt = 0;
+let gemessenesdB = 0;
 
 //Testarray for offest
-var testarray = [30, 25, 20, 25, 10, -10, -10, -15, -20, -30];
+var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
+
 
 const db = document.getElementById("db");
 var con;
@@ -22,7 +30,7 @@ messungStoppenButton = document.getElementById("messungStoppen");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
 
-nameDiv.value = "";
+nameDiv.value = "SUGUCS";
 osbDiv.value = "";
 
 messungButton.disabled = true;
@@ -46,9 +54,8 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
-var mindestDatenProAufnahme = 50;
-
 function startMessung() {
+  startTime = performance.now();
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
@@ -89,9 +96,48 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
-        if (isFinite(average)) {
 
-          db.innerText = average;
+        if (isFinite(average) && average >= 0) {
+          measurementCount++;
+          //adding the offset
+          let switchValue = Math.floor(average / 10);
+          switch (switchValue) {
+            case 0:
+              average += testarray[0];
+              break;
+            case 1:
+              average += testarray[1];
+              break;
+            case 2:
+              average += testarray[2];
+              break;
+            case 3:
+              average += testarray[3];
+              break;
+            case 4:
+              average += testarray[4];
+              break;
+            case 5:
+              average += testarray[5];
+              break;
+            case 6:
+              average += testarray[6];
+              break;
+            case 7:
+              average += testarray[7];
+              break;
+            case 8:
+              average += testarray[8];
+              break;
+            case 9:
+              average += testarray[9];
+              break;
+            case 10:
+              average += testarray[10];
+              break;
+          }
+
+          db.innerText = Math.round(average * 1000) / 1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];
@@ -116,7 +162,6 @@ function startMessung() {
       };
 
       window.requestAnimationFrame(onFrame);
-
     });
 
   // update the volume every refresh_rate m.seconds
@@ -146,7 +191,6 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
-
   messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
@@ -155,12 +199,15 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-    durchschn.innerHTML =
-      "<br>Messung erfolgreich!<br>" +
-      "Gemessener Durchschnitt:<br><b>" +
-      Math.round(summe / modell.length) +
-      "</b> dB";
-    messungButton.textContent = "Neue Messung";
+    if (anzahlMessungen == 1) {
+      ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
+      gemessenesdB = Math.round(summe / modell.length);
+      durchschn.innerHTML = "Messung erfolgreich!";
+      messungButton.textContent = "Neue Messung";
+    } else {
+      gemessenesdB = Math.round(summe / modell.length);
+      durchschn.innerHTML = "Messung erfolgreich!";
+    }
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
@@ -172,75 +219,6 @@ function stoppMessung() {
 document.getElementById("hinzufuegen").addEventListener("click", function () {
   getValues();
 });
-
-function getValues() {
-  // Daten einlesen
-  var newName = document.getElementById("NameDiv").value;
-  var osbID = document.getElementById("OpenSenseBoxDiv").value;
-  var newModell = modell;
-  var newStandort = pos;
-  //console.log(newName, newModell, newStandort);
-  document.getElementById("FehlerDiv").style.display = "none";
-  document.getElementById("FehlerDiv2").style.display = "none";
-  document.getElementById("FehlerDiv3").style.display = "none";
-  if (newName == "") {
-    document.getElementById("FehlerDiv3").style.display = "block";
-  } else if (newModell.length == 0) {
-    document.getElementById("FehlerDiv").style.display = "block";
-  } else if (newStandort == null) {
-    document.getElementById("FehlerDiv2").style.display = "block";
-  } else {
-    var durchschnitt = getDurchschnitt(newModell);
-
-    data = {
-      name: newName,
-      geometry: {
-        type: "Point",
-        coordinates: newStandort,
-      },
-      Messung: newModell,
-      Durchschnitt: durchschnitt,
-      OpenSenseBoxID: osbID,
-    };
-    console.log(data);
-    postData(data);
-  }
-}
-
-/**
- * Berechnet den Durchschnitt aus einem Feld mit int Werten
- * @param {int} Messungen
- * @returns durchschnitt
- */
-function getDurchschnitt(Messungen) {
-  var Summe = 0;
-  for (var i = 0; i < Messungen.length; i++) {
-    Summe = Summe + Messungen[i].value;
-  }
-  return Summe / Messungen.length;
-}
-
-/**
- * Fetcht die neuen Daten
- * @param doc zu postende Daten
- */
-function postData(doc) {
-  fetch("/addData", {
-    headers: { "Content-Type": "application/json" },
-    method: "post",
-    body: JSON.stringify(doc),
-  });
- 
-  if (aufnahme.length > 50){
-    con.suspend();
-    console.log(aufnahme);
-    tonspurMax(aufnahme)
-  }
-
-  document.getElementById("hinzufuegen").addEventListener("click", function () {
-  getValues();
-  });
-}
 
 function getValues() {
   // Daten einlesen
@@ -311,51 +289,99 @@ function postData(doc) {
 //// Array kürzen
 ///////////////////////////////////////////////////////////////////////////
 
-/**
- * Searches for the first maximum decible value
- * inside the given soundarray 
- * @param {Array} soundArray 
- * @returns {Number} max - is the indice of the first maximum decible value
- */
-function soundArrayMax(soundArray) {
-  if (soundArray.length > 0) {
-      let max = soundArray[0];
-      let maxIndex = 0;
-      // search for maximum
-      for (var i = 1; i < soundArray.length; i++) {
-          if (soundArray[i] > max) {
-              maxIndex = i;
-              max = soundArray[i];
-          }
-      }
-  
-      var realMaxIndex = maxIndex
-      // check that this value is really the last of the starting sound, as this sound is one secound long
-      for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 as time for the maximum length of the starting sound 
-          if(soundArray[maxIndex] - 2 < soundArray[i]) { // maximum 2 decibles difference as varianz
-              realMaxIndex = i 
-          }
-      }
-      return realMaxIndex;
+// Tonspur Startton(Maximum) finden
+function tonspurMax(tonspur) {
+  console.log("Array Laenge ist: " + tonspur.length);
+
+  // Maximum berechnen
+  // überprüfen von Array
+  if (tonspur.length === 0) {
+    return -1;
   }
-  else{
-      console.error("Fehlerhafter Lautstärke-Array übergeben") // Error handling
-      // @todo  response auf der Website anzeigen
+  var max = tonspur[0];
+  var maxIndex = 0;
+  // nach Maximum suchen
+  for (var i = 1; i < tonspur.length; i++) {
+    if (tonspur[i] > max) {
+      maxIndex = i;
+      max = tonspur[i];
+    }
+  }
+  console.log("Max Index ist: " + maxIndex);
+
+  var realMaxIndex = maxIndex;
+  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
+  for (i = maxIndex + 1; i < maxIndex + 10; i++) {
+    // 10 als Zeiteinheit für maximale Länge des Starttons
+    if (tonspur[maxIndex] - 5 < tonspur[i]) {
+      // Maximal 5dB unterschied als zugelassene Varianz
+      realMaxIndex = i;
+    }
+  }
+  console.log("Real Max Index ist: " + realMaxIndex);
+
+  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
+  if (tonspur.length - realMaxIndex + 30 > 0) {
+    // 30 Testzeiteinheit für zu kalibrierendes Audio
+    tonspurKuerzen(realMaxIndex, tonspur);
+  } else {
+    console.log("Aufnahme ist zu kurz");
   }
 }
 
-/**
-* Slices the soundArray starting from the 
-* first max decible value down to 100 sound values
-* @param {Array} soundArray is the array that needs to be shortend
-*/
-function sliceSoundArray(soundArray) {
-  const max = soundArrayMax(soundArray)
-  if(soundArray[max] === undefined || soundArray[max+100] === undefined){
-      console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
-      // @todo  response auf der Website anzeigen
+// Tonspur kürzen
+function tonspurKuerzen(max, tonspur) {
+  console.log("Bereit zum kuerzen");
+  // Array kürzen auf richtige Länge
+  tonspur = tonspur.slice(max, max + 30);
+  console.log(tonspur);
+}
+
+function anzahlMessungenErhoehen() {
+  anzahlMessungen = anzahlMessungen + 1;
+}
+
+function openPopup() {
+  // Get the information to display in the popup
+  var deviceName = document.getElementById("NameDiv").value;
+  var osbId = document.getElementById("OpenSenseBoxDiv").value;
+  var location = document.getElementById("demo").innerHTML;
+  var soundLevel = document.getElementById("db").value;
+  // Update the information in the popup
+  document.getElementById("device-name").innerHTML = deviceName;
+  document.getElementById("osb-id").innerHTML = osbId;
+  document.getElementById("location").innerHTML = location;
+  document.getElementById("sound-level").innerHTML = gemessenesdB;
+  document.getElementById("measurement-mean").innerHTML = ausgabedurchschnitt;
+  // Show the popup
+  document.getElementById("popup").style.display = "block";
+}
+function closePopup() {
+  // Hide the popup
+  document.getElementById("popup").style.display = "none";
+}
+
+setInterval(function () {
+  //calculate the end time
+  let endTime = performance.now();
+  let timeInterval = (endTime - startTime) / 1000;
+  if (mitzaehlen == true) {
+    anzahlMessungenProSekunde = measurementCount / timeInterval;
+    //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
   }
-  else{
-      soundArray = soundArray.slice(max, max + 100) // shorten Array to 30 values
-  }
+}, 1000);
+
+function kopieren() {
+  // Get the text field
+  var copyText = document.getElementById("sbid");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  // Alert the copied text
+  alert("Copied the text: " + copyText.value);
 }

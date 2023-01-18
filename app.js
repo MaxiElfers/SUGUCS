@@ -75,10 +75,6 @@ app.post("/addData", function (req, res, next) {
     .finally(() => client.close());
 });
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
-});
-
 /**
  * Adds the data to the database
  * @param {Object} data

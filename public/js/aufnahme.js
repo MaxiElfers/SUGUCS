@@ -6,6 +6,7 @@ var aufnahme = {
   lon: null,
   boxName: null,
   boxId: null,
+  token: null,
   value: null,
   createdAt: null,
 };
