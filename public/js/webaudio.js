@@ -93,10 +93,10 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
-        if (isFinite(average) && (average>=0)) {
+        if (isFinite(average) && average >= 0) {
           measurementCount++;
           //adding the offset
-          let switchValue = Math.floor(average/10);
+          let switchValue = Math.floor(average / 10);
           switch (switchValue) {
             case 0:
               average += testarray[0];
@@ -133,7 +133,7 @@ function startMessung() {
               break;
           }
 
-          db.innerText = (Math.round(average*1000))/1000;
+          db.innerText = Math.round(average * 1000) / 1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];
@@ -195,25 +195,24 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-    if(anzahlMessungen==1){
-      ausgabedurchschnitt = (Math.round(anzahlMessungenProSekunde * 10))/10 ;
+    if (anzahlMessungen == 1) {
+      ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
       durchschn.innerHTML =
-      "<br>Messung erfolgreich!<br>" +
-      "Gemessener Durchschnitt:<br><b>" +
-      Math.round(summe / modell.length) +
-      "dB<br>" +
-      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-      ausgabedurchschnitt;
+        "<br>Messung erfolgreich!<br>" +
+        "Gemessener Durchschnitt:<br><b>" +
+        Math.round(summe / modell.length) +
+        "dB<br>" +
+        "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+        ausgabedurchschnitt;
       messungButton.textContent = "Neue Messung";
-    }
-    else {
+    } else {
       durchschn.innerHTML =
-      "<br>Messung erfolgreich!<br>" +
-      "Gemessener Durchschnitt:<br><b>" +
-      Math.round(summe / modell.length) +
-      "dB<br>" +
-      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-      ausgabedurchschnitt;
+        "<br>Messung erfolgreich!<br>" +
+        "Gemessener Durchschnitt:<br><b>" +
+        Math.round(summe / modell.length) +
+        "dB<br>" +
+        "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+        ausgabedurchschnitt;
     }
   }
 
@@ -348,12 +347,27 @@ function anzahlMessungenErhoehen() {
   anzahlMessungen = anzahlMessungen + 1;
 }
 
-setInterval(function(){
+setInterval(function () {
   //calculate the end time
   let endTime = performance.now();
-  let timeInterval = (endTime - startTime)/1000;
-  if(mitzaehlen == true){
-  anzahlMessungenProSekunde = measurementCount/timeInterval;
-  //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
+  let timeInterval = (endTime - startTime) / 1000;
+  if (mitzaehlen == true) {
+    anzahlMessungenProSekunde = measurementCount / timeInterval;
+    //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
   }
 }, 1000);
+
+function kopieren() {
+  // Get the text field
+  var copyText = document.getElementById("sbid");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  // Alert the copied text
+  alert("Copied the text: " + copyText.value);
+}
