@@ -43,12 +43,11 @@ block content
           meter#volumeMeterEl(high='0.25' max='0.3' value='0')
           p
           #stopbtn
-
-    //- 3. Daten abschicken
             button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false; document.getElementById('infobtn').style.display='block'; document.getElementById('volumeMeterEl').style.display='none'; document.getElementById('db').style.display='none'; document.getElementById('stopbtn').style.display='none';") Messung stoppen
 
           #infobtn(style='display: none;')
             button.btn.btn-primary.btn-sm.mt-3(onclick='openPopup()') Details
+    //- 3. Daten abschicken
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h2.card-title 3. Open Sense Map
