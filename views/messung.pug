@@ -38,8 +38,10 @@ block content
           meter#volumeMeterEl(high='0.25' max='0.3' value='0')
           p
           #stopbtn
-            button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false; document.getElementById('volumeMeterEl').style.display='none'; document.getElementById('db').style.display='none'; document.getElementById('stopbtn').style.display='none';") Messung stoppen
+            button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false; document.getElementById('infobtn').style.display='block'; document.getElementById('volumeMeterEl').style.display='none'; document.getElementById('db').style.display='none'; document.getElementById('stopbtn').style.display='none';") Messung stoppen
           p#ausg
+          #infobtn(style='display: none;')
+            button.btn.btn-primary.btn-sm.mt-3(onclick='openPopup()') Information
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h2.card-title 3. Open Sense Map
@@ -49,10 +51,30 @@ block content
           #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
           #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
           #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
+    #popup(style='display: none;')
+      h3 Informationen zur Messung:
+      p
+        | Gerätename: 
+        span#device-name
+      p
+        | OpenSenseBox ID: 
+        span#osb-id
+      p
+        | Standort: 
+        span#location
+      p
+        | Lautstärke (dB): 
+        span#sound-level
+      p
+        | Durchschnittliche Messungen pro Sekunde: 
+        span#measurement-mean        
+      button.btn.btn-secondary.btn-sm(onclick='closePopup()') Schließen
     .col-lg-12.col-sm-12.mb-3
       .card.shadow.p-4
         .leaflet-container#map
 
+
+  
 
   script(src='/js/webaudio.js')
   script(src='/js/leaflet.js')
