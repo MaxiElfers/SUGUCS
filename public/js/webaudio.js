@@ -11,6 +11,8 @@ let measurementCount = 0;
 let startTime;
 let mitzaehlen = false;
 let anzahlMessungenProSekunde = 0;
+let anzahlMessungen = 0;
+let ausgabedurchschnitt = 0;
 
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
@@ -193,14 +195,26 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-    durchschn.innerHTML =
+    if(anzahlMessungen==1){
+      ausgabedurchschnitt = (Math.round(anzahlMessungenProSekunde * 10))/10 ;
+      durchschn.innerHTML =
       "<br>Messung erfolgreich!<br>" +
       "Gemessener Durchschnitt:<br><b>" +
       Math.round(summe / modell.length) +
       "dB<br>" +
       "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-      (Math.round(anzahlMessungenProSekunde * 10))/10 ;
-    messungButton.textContent = "Neue Messung";
+      ausgabedurchschnitt;
+      messungButton.textContent = "Neue Messung";
+    }
+    else {
+      durchschn.innerHTML =
+      "<br>Messung erfolgreich!<br>" +
+      "Gemessener Durchschnitt:<br><b>" +
+      Math.round(summe / modell.length) +
+      "dB<br>" +
+      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+      ausgabedurchschnitt;
+    }
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
@@ -330,6 +344,9 @@ function tonspurKuerzen(max, tonspur) {
   console.log(tonspur);
 }
 
+function anzahlMessungenErhoehen() {
+  anzahlMessungen = anzahlMessungen + 1;
+}
 
 setInterval(function(){
   //calculate the end time
