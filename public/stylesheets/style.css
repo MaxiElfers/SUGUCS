@@ -40,3 +40,9 @@ body {
 #volumeMeterEl::-webkit-meter-bar {
   background: #4CAF50;
 }
+
+.copyButton {
+  cursor: pointer;
+  background: #f1bb3a;
+}
+
