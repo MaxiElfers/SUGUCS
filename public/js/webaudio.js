@@ -396,9 +396,9 @@ setInterval(function () {
   }
 }, 1000);
 
-function kopieren() {
+function kopieren(event) {
   // Get the text field
-  var copyText = document.getElementById("sbid");
+  var copyText = document.getElementById(event.srcElement.id + "Input");
 
   // Select the text field
   copyText.select();
