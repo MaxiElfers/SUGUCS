@@ -8,72 +8,88 @@ block content
         document.querySelectorAll(".nav-link")[1].classList.add("active");
 
     div.container
-        br
+        div.col-auto.allign-middle
+          p.allign-middle
+            u.fs-2.fw-bold Teilnehmer
         div.row.justify-content-center 
-          .col-9
+          .col-6.allign-middle
             div.row.justify-content-center
-              div.col-auto.allign-middle
-                p.allign-middle
-                  u.fs-2.fw-bold Teilnehmer
-                div.card.shadow-lg(style='width: 30rem;')
+                div.card.shadow-lg(style='width: 37rem;')
                   div.card-body
                     h5.card-title Anleitung 
                     h6.card-subtitle.mb-2.text-muted Bitte befolgen Sie die folgenden Schritte
                     p.card-text
                       | Hier wird in kürze eine Anleitung für das Teilnehmen Gruppenkalibrierung eingefügt.
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
+                      | bla bla bla bla bla bla bla bla bla bla bla
                     h6.card-subtitle.mb-2.text-muted WICHTIG!!! Folgen Sie auch immer den Anweisungen der Person, welche diese Kalibrierung leitet
                 br
-                br    
-          .col-5  
-            div.row.justify-content-center
-              .col-10.allign-middle
-                div.input-group.mb-3
-                  span.input-group-text Group-Code
-                  input#input_GroupCode.form-control(placeholder='1234567') 
-                div.btn.btn-primary#btn_Gruppenkalibrierung Kalibrierungsraum speichern 
-                br 
-                p#output_Error_Cal.allign-middle.text-danger.fs-5
-          .col-5
-            div.row.justify-content-center
-              .col-10.allign-middle
-                .pb-3
-                  .card.shadow-lg
-                    .card-body
-                      h4.card-title Soundaufnahme
-                      div
-                        meter#volumeMeterEl(high='0.25' max='0.5' value='0')
-                        //textarea#db(name='db')
-                        p
-                        button.btn.btn-success.btn-sm#messung Messung starten
-                        //meter#volumeMeterEl(high='0.25' max='0.5' value='0')
-                        p
-                        button.btn.btn-secondary.btn-sm#messungStoppen Messung stoppen
+                br  
+          .col-6(style='width: 37rem;')
+            .col
+              div.row.justify-content-center
+                .col-10.allign-middle
+                  .pb-3
+                    .card.shadow-lg
+                      .card-body
+                        h4.card-title Soundaufnahme
+                        div
+                          meter#volumeMeterEl(high='0.25' max='0.5' value='0')
+                          //textarea#db(name='db')
+                          p
+                          button.btn.btn-success.btn-sm#messung Messung starten
+                          //meter#volumeMeterEl(high='0.25' max='0.5' value='0')
+                          p
+                          button.btn.btn-secondary.btn-sm#messungStoppen Messung stoppen
 
 
-                //div
-                //  input.form-control#db(name='db' rows='1' cols='50' type="text" readonly)
-                //  p
-                //  div.row.justify-content-center
-                //    .col-6
-                //      div.btn.btn-primary#messung Aufnahme starten!
-                //    .col-6
-                //      div.btn.btn-secondary.disabled#messungStoppen Aufnahme stoppen!
-            br
-            br
-          .col-4 
-            .row.justify-content-center
-              div.btn.btn-success.btn-lg#btn_Kalibrierung Kalibrierung starten
+                  //div
+                  //  input.form-control#db(name='db' rows='1' cols='50' type="text" readonly)
+                  //  p
+                  //  div.row.justify-content-center
+                  //    .col-6
+                  //      div.btn.btn-primary#messung Aufnahme starten!
+                  //    .col-6
+                  //      div.btn.btn-secondary.disabled#messungStoppen Aufnahme stoppen!
               br
-              div#output_Error_Down.allign-middle.text-danger.fs-5
+              br
+            .col
+              div.row.justify-content-center
+                .col-10.allign-middle
+                  div.input-group.mb-3
+                    span.input-group-text Group-Code
+                    input#input_GroupCode.form-control(placeholder='1234567') 
+                  div.btn.btn-primary#btn_Gruppenkalibrierung Kalibrierungsraum speichern 
+                  br 
+                  p#output_Error_Cal.allign-middle.text-danger.fs-5
+                  br
+            .col
+              .col-12.allign-middle
+                div.btn.btn-success.btn-lg#btn_Kalibrierung Kalibrierung starten
+                br
+                div#output_Error_Down.allign-middle.text-danger.fs-5
           .col-10
-            br
             br
             .row.justify-content-center
               div#out_finished.text-success.fs-2.fw-bold.visually-hidden.allign-middle
                 span Kalibrierung wurde abgeschlossen!
                 br
                 span Sie können nun zur Startseite zurückkehren.
-            br
+              br
 
     //script(src='/js/webaudio.js')
     script(src='/js/kal-atten.js')

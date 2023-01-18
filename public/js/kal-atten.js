@@ -130,7 +130,6 @@ function estimateAllDelta(){
             // there is a number: calculate the mean between the new and the given value
             else{
                 allDeltas[i] = (allDeltas[i] + allDeltas[value]) / 2;
-                console.error(allDeltas[i]);
             }
             allDeltas[i] = +allDeltas[i].toFixed(2); // rounds the delta down to two after komma numbers
             helpVar++;
@@ -170,22 +169,23 @@ function getReferenceData() {
         }
         console.log(xl2Array)
         if(xl2Array[0] === group_code){
-            xl2Array = xl2Array.slice(1,101);
-            btn_Gcal.classList.remove("btn-primary");
-            btn_Cal.classList.remove("btn-success");
-            output_error_down.classList.remove("text-danger");
-            btn_Cal.classList.add("btn-secondary", "disabled");
-            btn_Gcal.classList.add("btn-secondary", "disabled");
-            output_error_down.classList.add("text-success");
-            output_error_cal.innerHTML = "";
-            calibration(xl2Array, soundArray);
-            estimateAllDelta();
-            createCalibrationObject();
-            console.log(calibrationObject);
-            out_fin.classList.remove("visually-hidden");
+          xl2Array = xl2Array.slice(1,101);
+          btn_Gcal.classList.remove("btn-primary");
+          btn_Cal.classList.remove("btn-success");
+          output_error_down.classList.remove("text-danger");
+          btn_Cal.classList.add("btn-secondary", "disabled");
+          btn_Gcal.classList.add("btn-secondary", "disabled");
+          output_error_down.classList.add("text-success");
+          output_error_cal.innerHTML = "";
+          calibration(xl2Array, soundArray);
+          estimateAllDelta();
+          createCalibrationObject();
+          console.log(calibrationObject);
+          out_fin.classList.remove("visually-hidden");
         }
         else{
-            output_error_down.innerHTML = "Zu dem angegebenen Code konnte kein Raum gefunden werden";
+          xl2Array = [];
+          output_error_down.innerHTML = "Zu dem angegebenen Code konnte kein Raum gefunden werden";
         }
     })
 }

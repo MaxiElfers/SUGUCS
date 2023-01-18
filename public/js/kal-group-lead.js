@@ -23,6 +23,18 @@ let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
 let AT = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
 let preparedXL2Data = [];
+//let xl2Tonspur = [71, 58, 47, 47, 49, 48, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
+
+// build the site dependand if the xl2 data was already recorded
+if(xl2Tonspur[0] != ''){
+    btn_xl2.classList.remove("btn-primary");
+    btn_xl2.classList.add("btn-secondary", "disabled");
+    btn_Gcal.classList.remove("btn-secondary", "disabled");
+    btn_Gcal.classList.add("btn-primary");
+    btn_upload.classList.remove("btn-secondary", "disabled");
+    btn_upload.classList.add("btn-primary");
+    in_GroupCode.readOnly = false;
+}
 
 /***** all functionalities ******/
 
