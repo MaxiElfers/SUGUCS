@@ -34,14 +34,14 @@ block content
           p
           #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
           #startbtn
-            button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green" onclick="mitzaehlen = true; anzahlMessungenErhoehen(); document.getElementById('Div').style.display='none'; document.getElementById('volumeMeterEl').style.display='block'; document.getElementById('db').style.display='block'; document.getElementById('stopbtn').style.display='block';") Messung starten
+            button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green" onclick="mitzaehlen = true; closePopup(); anzahlMessungenErhoehen(); document.getElementById('Div').style.display='none'; document.getElementById('volumeMeterEl').style.display='block'; document.getElementById('db').style.display='block'; document.getElementById('stopbtn').style.display='block';") Messung starten
           meter#volumeMeterEl(high='0.25' max='0.3' value='0')
           p
           #stopbtn
             button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false; document.getElementById('infobtn').style.display='block'; document.getElementById('volumeMeterEl').style.display='none'; document.getElementById('db').style.display='none'; document.getElementById('stopbtn').style.display='none';") Messung stoppen
           p#ausg
           #infobtn(style='display: none;')
-            button.btn.btn-primary.btn-sm.mt-3(onclick='openPopup()') Information
+            button.btn.btn-primary.btn-sm.mt-3(onclick='openPopup()') Details
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h2.card-title 3. Open Sense Map
@@ -63,7 +63,7 @@ block content
         | Standort: 
         span#location
       p
-        | Lautstärke (dB): 
+        | Durchschnittliche Lautstärke (dB): 
         span#sound-level
       p
         | Durchschnittliche Messungen pro Sekunde: 
