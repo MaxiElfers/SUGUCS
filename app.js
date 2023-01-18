@@ -11,6 +11,7 @@ var kalibrierungRouter = require("./routes/kalibrierung");
 var messungRouter = require("./routes/messung");
 
 const app = express();
+const port = 4000;
 
 var bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();

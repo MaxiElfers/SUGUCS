@@ -18,6 +18,7 @@ let gemessenesdB = 0;
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
+
 const db = document.getElementById("db");
 var con;
 var con;
@@ -28,6 +29,7 @@ messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
+
 nameDiv.value = "SUGUCS";
 osbDiv.value = "";
 
@@ -94,6 +96,7 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
+
         if (isFinite(average) && average >= 0) {
           measurementCount++;
           //adding the offset

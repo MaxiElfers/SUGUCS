@@ -1,53 +1,96 @@
-let btn_calibration = document.getElementById("btn_Kalibrierung");
-let input_GroupCode = document.getElementById("input_GroupCode");
-let output_error = document.getElementById("output_Error");
+/***** all getElements *****/
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
-let in_file = document.getElementById("in_file");
+let btn_upload = document.getElementById("uploadData");
 let btn_xl2 = document.getElementById("btn_XL2");
-let in_soundArray = document.getElementById("soundArray")
+let in_GroupCode = document.getElementById("input_GroupCode");
+let in_file = document.getElementById("in_file");
+let in_soundArray = document.getElementById("soundArray");
+let output_error_cal = document.getElementById("output_Error_Cal");
+let output_error_up = document.getElementById("output_Error_Up");
+let out_fin = document.getElementById("out_finished");
 
-btn_Gcal.addEventListener("click", function(){checkError("group");});
-btn_xl2.addEventListener("click", function(){window.location = '/kalibrierung/XL2';});
+/***** all EventListeners ******/
+btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal");});
+btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
+btn_xl2.addEventListener("click", function(){playSound(); window.location = '/kalibrierung/XL2';});
 
-const audio_steig = new Audio('/sounds/DB_steigend.mpeg');
-const audio_const = new Audio('/sounds/DB_konstant.mpeg');
-const audio_schwan = new Audio('/sounds/DB_schwankend.mpeg');
-let xl2Daten = in_soundArray.innerHTML.split(',');
-var counter = 0;
+/***** all Variables ******/
+const audio_calibration = new Audio('/sounds/Calibration_sound.mpeg');
+let xl2Tonspur = in_soundArray.innerHTML.split(',');
+let counter = 0;
+let group_code;
+let SBID = "63c3f0c9a122c30008268cc0";
+let SBSensor = "63c3f0c9a122c30008268cc1";
+let AT = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
+let preparedXL2Data = [];
+//let xl2Tonspur = [71, 58, 47, 47, 49, 48, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
 
+// build the site dependand if the xl2 data was already recorded
+if(xl2Tonspur[0] != ''){
+    btn_xl2.classList.remove("btn-primary");
+    btn_xl2.classList.add("btn-secondary", "disabled");
+    btn_Gcal.classList.remove("btn-secondary", "disabled");
+    btn_Gcal.classList.add("btn-primary");
+    btn_upload.classList.remove("btn-secondary", "disabled");
+    btn_upload.classList.add("btn-primary");
+    in_GroupCode.readOnly = false;
+}
+
+/***** all functionalities ******/
 
 /**
  * tests that the preconditions are given, so 
- * the calibration can be done without a problem 
- * @param {*} art Array of which calibration method will be used
+ * the functionalities can work without problems
+ * This function also starts the workflows 
+ * @param {String} type - what buton called this function
  */
-function checkError(art){
-    if(art === "group"){
-        let code = input_GroupCode.value;
+function checkErrorAndStartWorkflow(type){
+    let error = false;
+    // Here start the code for the groupcalibration button (btn_Gcal)
+    if(type === "Cal"){
+        let code = in_GroupCode.value;
         if(code.length > 7){
-            output_error.innerHTML = "Input zu lang!"
+            output_error_cal.innerHTML = "Input zu lang!";
         }
         else if(code.length < 7){
-            output_error.innerHTML = "Input zu kurz!"
+            output_error_cal.innerHTML = "Input zu kurz!"
         }
         else{
             for(var i = 0; i < code.length; i++){
                 if(isNaN(code[i])){
-                    output_error.innerHTML = "Nur Zahlen erlaubt!"
+                    output_error_cal.innerHTML = "Nur Zahlen erlaubt!"
+                    error = true;
                 }
             }
+            if(error === false){
+                group_code = in_GroupCode.value;
+                btn_Gcal.classList.remove("btn-primary")
+                btn_Gcal.classList.add("btn-secondary", "disabled")
+                output_error_cal.classList.remove("text-danger");
+                output_error_cal.classList.add("text-success");
+                output_error_cal.innerHTML = "Lade Teilnehmer ein mit dem Code: " + group_code; 
+            }
         }
-        // Here is the space where the function that will be called for
-        // the group calibration will end up
     }
-    else if(art === "single"){
-        return;
-        // Here is some space so the error check for the single 
-        // calibration can be added
-        
-        // Here is the space where the function that will be called for 
-        // the single calibration will end up
+    // Here start the code for the upload button (btn_upload)
+    else if(type === "Up"){
+        if(xl2Tonspur[0] === ""){
+            output_error_up.innerHTML = "Keine Tonspur vorhanden";
+        }
+        else if(group_code === undefined){
+            output_error_up.innerHTML = "Keine Gruppe erstellt";
+        }
+        else{
+            output_error_up.innerHTML = "";
+            prepareXL2Data();
+            sendReferenceData();
+            output_error_cal.innerHTML = " "; 
+            btn_upload.classList.remove("btn-success");
+            btn_upload.classList.add("disabled", "btn-secondary");
+            out_fin.classList.remove("visually-hidden");
+        }
     }
+    
     // Posibility to add more error checks
 }
 
@@ -56,173 +99,92 @@ function checkError(art){
  * if button "Sound Starten" is clicked
  */
 function playSound(){
-    audio_schwan.play();
+    setTimeout(audio_calibration.play(), 1000);
 }
 
 /**
- * function starts the demo of the calibration of the an
- * groupcalibration and logs it in the console
+ * takes the recorded XL2 Soundarray and converts it into 
+ * a new Array, which corresponds to the OpenSenseMap standards
  */
-function startDEMO(){
-    console.clear();
-    console.log("Entgegengenommen Daten", gelieferteDaten1);
-    console.log("Reference Daten", referenceDaten1)
-    multiDeltaKali();
-    console.log("Erstelltes Delta:", multiDelta);
-}
-
-
-function startCalDEMO(mode){
-    console.clear();
-    let spur = [];
-    spur.push(parseInt(input1.value));
-    spur.push(parseInt(input2.value));
-    console.log(spur);
-    deltaAnwenden(mode, spur);
-    console.log(spur);
-}
-
-
-
-let referenceDaten1 = [10, 40];
-let referenceDaten2 = [4, 7];
-let referenceDaten3 = [20, 31];
-let gelieferteDaten1 = [4, 42];
-let gelieferteDaten2 = [5, 10];
-let gelieferteDaten3 = [24, 30];
-let singleDelta = 0;
-let multiDelta = [];
-let soundDatei;
-
-/**
- * function starts the system
- */
-function startSystem(){
-    // to-do: Wert bekommen
-    console.clear();
-    console.log("Entgegengenommen Daten", gelieferteDaten1);
-    console.log("Reference Daten", referenceDaten1)
-    calibration();
-    console.log("Erstelltes Delta:", singleDelta);
-}
-
-/**
- * function to start the system when data is given from the user
- */
-function startSystemWithInputData() {
-    gelieferteDaten1 = input_user.value;
-    console.log("Entgegengenommen Daten", gelieferteDaten1);
-    console.log("Reference Daten", referenceDaten1)
-    calibration();
-    console.log("Erstelltes Delta:", singleDelta);
-}
-/**
- * Starts the calibration process
- * Maybe you can choose the method of the
- * calibration
- */
-function calibration(){
-    let lieferStack = [gelieferteDaten1, gelieferteDaten2, gelieferteDaten3];
-    let referStack = [referenceDaten1, referenceDaten2, referenceDaten3];
-    oneDeltaKali(referenceDaten1, gelieferteDaten1);
-}
-
-/**
- * This function averages the check array
- * and the array to calibrate and calculates 
- * one single delte which then will be used to
- * add onto the whole array
- * @param {Array} 
- * @param {Array} 
- */
-function oneDeltaKali(referenceAry, geliefertAry){
-    let reference = ArrayAvg(referenceAry);
-    let geliefert = ArrayAvg(geliefertAry);
-
-    singleDelta = reference - geliefert;
-}
-
-/**
- * This function calculates an Array of deltas,
- * which then can be added to all the collected 
- * data to calibrate them
- * For this function the sound must be exactly 
- * the same lenght every time
- */
-function multiDeltaKali(){
-    gelieferteDaten1.forEach((Wert, index) => {
-        multiDelta[index] = referenceDaten1[index] - Wert;
-    })
-}
-
-/**
- * !!!ACHTUNG!!! funktioniert noch nicht
- * @param {*} referenceStack 
- * @param {*} geliefertStack 
- */
-function multiReferenceDeltaKali(referenceStack, geliefertStack){
-    let deltaArray = [];
-    let hilfsArray = [];
-    geliefertStack.forEach((Daten, index) => {
-        let hilfsArrayReference = referenceStack[index];
-        Daten.forEach((dat, index) => {
-            hilfsArray[index] = hilfsArrayReference[index] - dat;
-        })
-        deltaArray[index] = hilfsArray;
-    })
-    console.log(deltaArray)
-}
-
-/**
- * Berechnet durchschnitt der Übergebenen Array
- * @param {Array} myArray 
- * @returns number
- */
-function ArrayAvg(myArray) {
-    let i = 0, summ = 0, ArrayLen = myArray.length;
-    while (i < ArrayLen) {
-        summ = summ + myArray[i++];
+function prepareXL2Data(){
+    // add the group code as first element
+    const groupCode = {
+        "sensor":"63c3f0c9a122c30008268cc1",
+        "value": group_code
     }
-    return summ / ArrayLen;
+    preparedXL2Data.push(groupCode);
+    // add all the sound values to the Array
+    xl2Tonspur.forEach(value => {
+        const data = {
+            "sensor":"63c3f0c9a122c30008268cc1",
+            "value": value
+        }
+        preparedXL2Data.push(data);
+    })
 }
-
-
-
+  
 /**
- * This function adds the calculated Delta to the data of 
- * a single calibration or groupcalibration
- * @param {*} delta 
- * @param {*} data 
+ * Searches for the first maximum decible value
+ * inside the given soundarray 
+ * @param {Array} soundArray 
+ * @returns {Number} max - is the indice of the first maximum decible value
  */
-function deltaAnwenden(delta, data){
-    if(delta === "single"){
-        data.forEach((number,index) => {
-            data[index] = number + singleDelta;
-        })
+function soundArrayMax(soundArray) {
+    if (soundArray.length > 0) {
+        let max = soundArray[0];
+        let maxIndex = 0;
+        // search for maximum
+        for (var i = 1; i < soundArray.length; i++) {
+            if (soundArray[i] > max) {
+                maxIndex = i;
+                max = soundArray[i];
+            }
+        }
+    
+        var realMaxIndex = maxIndex
+        // check that this value is really the last of the starting sound, as this sound is one secound long
+        for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 as time for the maximum length of the starting sound 
+            if(soundArray[maxIndex] - 2 < soundArray[i]) { // maximum 2 decibles difference as varianz
+                realMaxIndex = i 
+            }
+        }
+        return realMaxIndex;
     }
     else{
-        data.forEach((number, index) => {
-            data[index] = number + multiDelta[index]; 
-        })
+        console.error("Fehlerhafter Lautstärke-Array übergeben") // Error handling
+        // @todo  response auf der Website anzeigen
+    }
+}
+  
+/**
+ * Slices the soundArray starting from the 
+ * first max decible value down to 100 sound values
+ * @param {Array} soundArray is the array that needs to be shortend
+ */
+function sliceSoundArray(soundArray) {
+    const max = soundArrayMax(soundArray)
+    if(soundArray[max] === undefined || soundArray[max+100] === undefined){
+        console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
+        // @todo  response auf der Website anzeigen
+    }
+    else{
+        soundArray = soundArray.slice(max, max + 100) // shorten Array to 30 values
     }
 }
 
-
-function getAudioFile(){
-    var reader = new FileReader();
-    reader.onload = (event) => {
-        soundDatei = event.target.result;
-        console.log(soundDatei);
-    };
-    reader.readAsArrayBuffer(in_file.files[0]);
-}
-
-async function getAudio(){
-    let audioData = await fetch('/sounds/Testaudio_XL2.wav').then(r => r.arrayBuffer());
-    let audioCtx = new AudioContext({sampleRate:44100});
-    let decodedData = await audioCtx.decodeAudioData(audioData); // audio is resampled to the AudioContext's sampling rate
-    console.log(decodedData.length, decodedData.duration, decodedData.sampleRate, decodedData.numberOfChannels);
-    let float32Data = decodedData.getChannelData(0); // Float32Array for channel 0
-    
-    console.log(float32Data);
+/**
+ * Uploads the measured sound array to the
+ * OpenSenseMap Server as the reference data
+ */
+function sendReferenceData() {
+    fetch(`https://api.opensensemap.org/boxes/${SBID}/data`, {
+        method: 'POST',
+        headers: {
+            'Authorization': AT,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(preparedXL2Data)
+    })
+    .then(response => response.json())
+    .then(response => console.log(JSON.stringify(response)))
 }
