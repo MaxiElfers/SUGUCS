@@ -1,6 +1,7 @@
 // Source:
 //https://github.com/takispig/db-meter
 
+// Variablendefinitionen
 var refresh_rate = 500;
 var stream;
 var offset = 30;
@@ -17,8 +18,8 @@ let ausgabedurchschnitt = 0;
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
+// Einlesen der eingegebenen Werte
 const db = document.getElementById("db");
-var con;
 var con;
 let durchschn = document.getElementById("ausg");
 let maxim = document.getElementById("maxima");
@@ -30,12 +31,14 @@ var osbDiv = document.getElementById("OpenSenseBoxDiv");
 nameDiv.value = "SUGUCS";
 osbDiv.value = "";
 
+// Buttons disablen
 messungButton.disabled = true;
 messungStoppenButton.disabled = true;
 
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
+// Button zur Messung disablen solange nicht alle anderen Werte eingegeben wurden
 nameDiv.addEventListener("change", function () {
   if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
     messungButton.disabled = true;
@@ -51,6 +54,10 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
+/**
+ * Funktion zum Durchführen der Soundmessung
+ * Quelle: s.o.
+ */
 function startMessung() {
   startTime = performance.now();
   messungStoppenButton.disabled = false;
@@ -93,10 +100,10 @@ function startMessung() {
         }
 
         average = 20 * Math.log10(values / data.length);
-        if (isFinite(average) && (average>=0)) {
+        if (isFinite(average) && average >= 0) {
           measurementCount++;
           //adding the offset
-          let switchValue = Math.floor(average/10);
+          let switchValue = Math.floor(average / 10);
           switch (switchValue) {
             case 0:
               average += testarray[0];
@@ -133,7 +140,7 @@ function startMessung() {
               break;
           }
 
-          db.innerText = (Math.round(average*1000))/1000;
+          db.innerText = Math.round(average * 1000) / 1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];
@@ -175,8 +182,9 @@ function startMessung() {
   var interval = window.setInterval(updateDb, refresh_rate);
 }
 
-// change update rate
-
+/**
+ * Funktion zum Ändern der UpdateRate
+ */
 function changeUpdateRate() {
   refresh_rate = Number(document.getElementById("refresh_rate").value);
   document.getElementById("refresh_value").innerText = refresh_rate;
@@ -185,9 +193,12 @@ function changeUpdateRate() {
   }, refresh_rate);
 }
 
-// stopping measurment
+/**
+ * Funktion zum Stoppen der Soundaufnahme
+ */
 function stoppMessung() {
   messungStoppenButton.disabled = true;
+  // sicherstellen, dass Mindestanzahl an Datenwerten vorliegt
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
     console.log(modell);
@@ -195,25 +206,25 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-    if(anzahlMessungen==1){
-      ausgabedurchschnitt = (Math.round(anzahlMessungenProSekunde * 10))/10 ;
+    // Nachricht mit Durchschnittlicher Anzahl an Werten pro Sekunde zurückgeben
+    if (anzahlMessungen == 1) {
+      ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
       durchschn.innerHTML =
-      "<br>Messung erfolgreich!<br>" +
-      "Gemessener Durchschnitt:<br><b>" +
-      Math.round(summe / modell.length) +
-      "dB<br>" +
-      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-      ausgabedurchschnitt;
+        "<br>Messung erfolgreich!<br>" +
+        "Gemessener Durchschnitt:<br><b>" +
+        Math.round(summe / modell.length) +
+        "dB<br>" +
+        "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+        ausgabedurchschnitt;
       messungButton.textContent = "Neue Messung";
-    }
-    else {
+    } else {
       durchschn.innerHTML =
-      "<br>Messung erfolgreich!<br>" +
-      "Gemessener Durchschnitt:<br><b>" +
-      Math.round(summe / modell.length) +
-      "dB<br>" +
-      "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-      ausgabedurchschnitt;
+        "<br>Messung erfolgreich!<br>" +
+        "Gemessener Durchschnitt:<br><b>" +
+        Math.round(summe / modell.length) +
+        "dB<br>" +
+        "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
+        ausgabedurchschnitt;
     }
   }
 
@@ -227,6 +238,11 @@ document.getElementById("hinzufuegen").addEventListener("click", function () {
   getValues();
 });
 
+/**
+ * Funktion zum Einlesen aller Daten auf der Seite
+ * Daten werden in einem GeoJSON gespeichert und in der Konsole ausgegeben
+ * Fehler, dass Daten unvollständig sind, wird abgefangen
+ */
 function getValues() {
   // Daten einlesen
   var newName = document.getElementById("NameDiv").value;
@@ -237,6 +253,7 @@ function getValues() {
   document.getElementById("FehlerDiv").style.display = "none";
   document.getElementById("FehlerDiv2").style.display = "none";
   document.getElementById("FehlerDiv3").style.display = "none";
+  // Fehler, dass Daten unvollständig, abfangen
   if (newName == "") {
     document.getElementById("FehlerDiv3").style.display = "block";
   } else if (newModell.length == 0) {
@@ -246,6 +263,7 @@ function getValues() {
   } else {
     var durchschnitt = getDurchschnitt(newModell);
 
+    // GeoJSON mit Werten
     data = {
       name: newName,
       geometry: {
@@ -256,6 +274,7 @@ function getValues() {
       Durchschnitt: durchschnitt,
       OpenSenseBoxID: osbID,
     };
+    // GeoJSON ausgeben
     console.log(data);
     postData(data);
   }
@@ -336,7 +355,11 @@ function tonspurMax(tonspur) {
   }
 }
 
-// Tonspur kürzen
+/**
+ * Funktion zum Kürzen der Tonspur
+ * @param max maximaler Datenwert
+ * @param {*} tonspur Tonspur
+ */
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
@@ -344,16 +367,19 @@ function tonspurKuerzen(max, tonspur) {
   console.log(tonspur);
 }
 
+/**
+ * Funktion zum Erhöhen der Messung um 1
+ */
 function anzahlMessungenErhoehen() {
   anzahlMessungen = anzahlMessungen + 1;
 }
 
-setInterval(function(){
+setInterval(function () {
   //calculate the end time
   let endTime = performance.now();
-  let timeInterval = (endTime - startTime)/1000;
-  if(mitzaehlen == true){
-  anzahlMessungenProSekunde = measurementCount/timeInterval;
-  //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
+  let timeInterval = (endTime - startTime) / 1000;
+  if (mitzaehlen == true) {
+    anzahlMessungenProSekunde = measurementCount / timeInterval;
+    //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
   }
 }, 1000);

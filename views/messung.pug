@@ -3,11 +3,13 @@ extends layout
 block content
 
   script.
-    // Set active Button
+    // Buttons aktiv setzen
     document.querySelectorAll(".active")[0].classList.remove("active");
     document.querySelectorAll(".nav-link")[2].classList.add("active");
 
+    // Reihe von Kacheln (cards) mit verschiedenen Eingaben:
   .row.gy-4.gx-lg-3.justify-content-md-center.mt-3 
+    //- 1. Name, Box ID und Standort
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h2.card-title 1. Neue Messung hinzufügen
@@ -26,6 +28,7 @@ block content
             | : 
             p#demo
             a.btn.btn-primary.btn-sm(onclick='getLocation()') mein Standort
+    //- 2. Soundaufnahme machen
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h2.card-title 2. Soundaufnahme
@@ -40,6 +43,7 @@ block content
           #stopbtn
             button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false; document.getElementById('volumeMeterEl').style.display='none'; document.getElementById('db').style.display='none'; document.getElementById('stopbtn').style.display='none';") Messung stoppen
           p#ausg
+    //- 3. Daten abschicken
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
         h2.card-title 3. Open Sense Map
@@ -49,10 +53,11 @@ block content
           #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
           #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
           #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
+    //- Leaflet in Card unterhalb hinzufügen
     .col-lg-12.col-sm-12.mb-3
       .card.shadow.p-4
         .leaflet-container#map
-
+    //- Sense Box Ids in Card unterhalb hinzufügen
     .col-lg-12.col-sm-12.mb-3
       .card.shadow.p-4
         h2.card-title SenseBox IDs
@@ -189,5 +194,6 @@ block content
         b|Access Token:
         |0c8fe73f1b680d8078faac6b2b44ca26d93e7898da95e3615e1c4dab5e10aaae
         p
+  //- Skripte ausführen
   script(src='/js/webaudio.js')
   script(src='/js/leaflet.js')
