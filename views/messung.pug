@@ -34,7 +34,7 @@ block content
           span.textarea-unit-dB dB
           p
           #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
-          button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green") Messung starten
+          button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green" onclick="mitzaehlen = true;") Messung starten
           meter#volumeMeterEl(high='0.25' max='0.3' value='0')
           p
           button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false;") Messung stoppen

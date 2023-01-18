@@ -41,8 +41,13 @@ body {
   background: #4CAF50;
 }
 
-.textarea-unit-dB{
+.form-control-lg {
+  position: relative;
+}
+
+span.textarea-unit-dB {
   position: absolute;
-  right: 5vw;
-  top: 11vh;
+  right: 10%;
+  top: 29%;
+  transform: translateY(-50%);
 }
