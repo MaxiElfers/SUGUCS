@@ -199,11 +199,11 @@ function stoppMessung() {
     if (anzahlMessungen == 1) {
       ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
       gemessenesdB = Math.round(summe / modell.length);
-      durchschn.innerHTML = "<br>Messung erfolgreich!<br>";
+      durchschn.innerHTML = "Messung erfolgreich!";
       messungButton.textContent = "Neue Messung";
     } else {
       gemessenesdB = Math.round(summe / modell.length);
-      durchschn.innerHTML = "<br>Messung erfolgreich!<br>";
+      durchschn.innerHTML = "Messung erfolgreich!";
     }
   }
 
