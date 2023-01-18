@@ -14,6 +14,7 @@ let mitzaehlen = false;
 let anzahlMessungenProSekunde = 0;
 let anzahlMessungen = 0;
 let ausgabedurchschnitt = 0;
+let gemessenesdB = 0;
 
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
@@ -206,25 +207,16 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
+
     // Nachricht mit Durchschnittlicher Anzahl an Werten pro Sekunde zurückgeben
     if (anzahlMessungen == 1) {
       ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
-      durchschn.innerHTML =
-        "<br>Messung erfolgreich!<br>" +
-        "Gemessener Durchschnitt:<br><b>" +
-        Math.round(summe / modell.length) +
-        "dB<br>" +
-        "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-        ausgabedurchschnitt;
+      gemessenesdB = Math.round(summe / modell.length);
+      durchschn.innerHTML = "<br>Messung erfolgreich!<br>";
       messungButton.textContent = "Neue Messung";
     } else {
-      durchschn.innerHTML =
-        "<br>Messung erfolgreich!<br>" +
-        "Gemessener Durchschnitt:<br><b>" +
-        Math.round(summe / modell.length) +
-        "dB<br>" +
-        "</b>Durchschnittliche Messungen pro Sekunde:<br><b>" +
-        ausgabedurchschnitt;
+      gemessenesdB = Math.round(summe / modell.length);
+      durchschn.innerHTML = "<br>Messung erfolgreich!<br>";
     }
   }
 
@@ -374,6 +366,26 @@ function anzahlMessungenErhoehen() {
   anzahlMessungen = anzahlMessungen + 1;
 }
 
+function openPopup() {
+  // Get the information to display in the popup
+  var deviceName = document.getElementById("NameDiv").value;
+  var osbId = document.getElementById("OpenSenseBoxDiv").value;
+  var location = document.getElementById("demo").innerHTML;
+  var soundLevel = document.getElementById("db").value;
+  // Update the information in the popup
+  document.getElementById("device-name").innerHTML = deviceName;
+  document.getElementById("osb-id").innerHTML = osbId;
+  document.getElementById("location").innerHTML = location;
+  document.getElementById("sound-level").innerHTML = gemessenesdB;
+  document.getElementById("measurement-mean").innerHTML = ausgabedurchschnitt;
+  // Show the popup
+  document.getElementById("popup").style.display = "block";
+}
+function closePopup() {
+  // Hide the popup
+  document.getElementById("popup").style.display = "none";
+}
+
 setInterval(function () {
   //calculate the end time
   let endTime = performance.now();
@@ -383,3 +395,18 @@ setInterval(function () {
     //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
   }
 }, 1000);
+
+function kopieren() {
+  // Get the text field
+  var copyText = document.getElementById("sbid");
+
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  // Alert the copied text
+  alert("Copied the text: " + copyText.value);
+}
