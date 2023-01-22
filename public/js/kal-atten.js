@@ -61,6 +61,8 @@ function checkError(type){
         }
         else{
             output_error_down.innerHTML = "";
+            tonspurBearbeiten(modell);
+            console.log(modell)
             getReferenceData();
         }
     }
@@ -164,7 +166,7 @@ function getReferenceData() {
     }).then(function(data) {
         console.log(data);
         // Filter die letzten 100 Einträge + 1 Group-Code heraus
-        for(let i = 0; i < 101; i++) {
+        for(let i = 0; i < 201; i++) {
             xl2Array.push(parseInt(data[i].value))
         }
         console.log(xl2Array)
@@ -190,10 +192,11 @@ function getReferenceData() {
     })
 }
 
-
-
-
-/******************** */
+/**
+ * The following is mostly (except the shotening of the array)
+ * copied and changed for our needs from the App groups webaudio
+ * For more information about this code please refer to the App/Messung Group
+ */
 
 // Source:
 //https://github.com/takispig/db-meter
@@ -213,18 +216,21 @@ let ausgabedurchschnitt = 0;
 let gemessenesdB = 0;
 
 //Testarray for offest
-var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
+var testarray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var con;
 
 messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
+ausgabeMessung = document.getElementById("AusgabeMessung");
 
 messungStoppenButton.disabled = true;
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
 function startMessung() {
+  modell = [];
   startTime = performance.now();
+  messungButton.disabled = true;
   messungStoppenButton.disabled = false;
   anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
 
@@ -303,12 +309,7 @@ function startMessung() {
               average += testarray[10];
               break;
           }
-
-          //db.innerText = Math.round(average * 1000) / 1000;
-          //Klonen der Aufnahmestruktur aus modell.js
-          let a = Object.assign({}, aufnahme);
-          a.value = average;
-          modell.push(a);
+          modell.push(average);
         }
       };
       const analyserNode = context.createAnalyser();
@@ -339,6 +340,7 @@ function changeUpdateRate() {
 
 // stopping measurment
 function stoppMessung() {
+  messungButton.disabled = false;
   messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
@@ -350,11 +352,10 @@ function stoppMessung() {
     if (anzahlMessungen == 1) {
       ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
       gemessenesdB = Math.round(summe / modell.length);
-      durchschn.innerHTML = "Messung erfolgreich!";
       messungButton.textContent = "Neue Messung";
     } else {
       gemessenesdB = Math.round(summe / modell.length);
-      durchschn.innerHTML = "Messung erfolgreich!";
+      ausgabeMessung.innerHTML = "Messung erfolgreich!";
     }
   }
 
@@ -369,7 +370,7 @@ function stoppMessung() {
 ///////////////////////////////////////////////////////////////////////////
 
 // Tonspur Startton(Maximum) finden
-function tonspurMax(tonspur) {
+function tonspurBearbeiten(tonspur) {
   console.log("Array Laenge ist: " + tonspur.length);
 
   // Maximum berechnen
@@ -390,7 +391,7 @@ function tonspurMax(tonspur) {
 
   var realMaxIndex = maxIndex;
   // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
-  for (i = maxIndex + 1; i < maxIndex + 10; i++) {
+  for (i = maxIndex + 1; i < maxIndex + 20; i++) {
     // 10 als Zeiteinheit für maximale Länge des Starttons
     if (tonspur[maxIndex] - 5 < tonspur[i]) {
       // Maximal 5dB unterschied als zugelassene Varianz
@@ -400,8 +401,8 @@ function tonspurMax(tonspur) {
   console.log("Real Max Index ist: " + realMaxIndex);
 
   // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if (tonspur.length - realMaxIndex + 30 > 0) {
-    // 30 Testzeiteinheit für zu kalibrierendes Audio
+  if (tonspur.length - realMaxIndex + 200 > 0) {
+    // 200 Testzeiteinheit für zu kalibrierendes Audio
     tonspurKuerzen(realMaxIndex, tonspur);
   } else {
     console.log("Aufnahme ist zu kurz");
@@ -412,55 +413,6 @@ function tonspurMax(tonspur) {
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 30);
+  tonspur = tonspur.slice(max, max + 200);
   console.log(tonspur);
-}
-
-function anzahlMessungenErhoehen() {
-  anzahlMessungen = anzahlMessungen + 1;
-}
-
-function openPopup() {
-  // Get the information to display in the popup
-  var deviceName = document.getElementById("NameDiv").value;
-  var osbId = document.getElementById("OpenSenseBoxDiv").value;
-  var location = document.getElementById("demo").innerHTML;
-  var soundLevel = document.getElementById("db").value;
-  // Update the information in the popup
-  document.getElementById("device-name").innerHTML = deviceName;
-  document.getElementById("osb-id").innerHTML = osbId;
-  document.getElementById("location").innerHTML = location;
-  document.getElementById("sound-level").innerHTML = gemessenesdB;
-  document.getElementById("measurement-mean").innerHTML = ausgabedurchschnitt;
-  // Show the popup
-  document.getElementById("popup").style.display = "block";
-}
-function closePopup() {
-  // Hide the popup
-  document.getElementById("popup").style.display = "none";
-}
-
-setInterval(function () {
-  //calculate the end time
-  let endTime = performance.now();
-  let timeInterval = (endTime - startTime) / 1000;
-  if (mitzaehlen == true) {
-    anzahlMessungenProSekunde = measurementCount / timeInterval;
-    //console.log(`Number of measurements per second: ${measurementCount/timeInterval}`);
-  }
-}, 1000);
-
-function kopieren() {
-  // Get the text field
-  var copyText = document.getElementById("sbid");
-
-  // Select the text field
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); // For mobile devices
-
-  // Copy the text inside the text field
-  navigator.clipboard.writeText(copyText.value);
-
-  // Alert the copied text
-  alert("Copied the text: " + copyText.value);
 }

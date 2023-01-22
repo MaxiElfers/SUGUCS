@@ -41,7 +41,7 @@ router.get("/XL2", function (req, res, next){
       setTimeout(function(){
         serialPort.close() // closes the port
         sounddatenBearbeiten();
-      }, 13000)
+      }, 12000)
     });
 
 
@@ -53,7 +53,7 @@ router.get("/XL2", function (req, res, next){
     var counter = 0;
     for(var i = 0; i< dbArray.length; i++){
       soundArray[counter] = (parseFloat(dbArray[i].slice(15, 19)) +4);
-      i += 9; // thus only 10 values will be used for every secound 
+      i += 4; // thus only 10 values will be used for every secound 
       counter++;
     }
     console.log(soundArray);

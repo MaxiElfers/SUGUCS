@@ -143,7 +143,7 @@ function soundArrayMax(soundArray) {
     
         var realMaxIndex = maxIndex
         // check that this value is really the last of the starting sound, as this sound is one secound long
-        for(i = maxIndex + 1; i < maxIndex + 10; i++) { // 10 as time for the maximum length of the starting sound 
+        for(i = maxIndex + 1; i < maxIndex + 20; i++) { // 20 as time for the maximum length of the starting sound 
             if(soundArray[maxIndex] - 2 < soundArray[i]) { // maximum 2 decibles difference as varianz
                 realMaxIndex = i 
             }
@@ -163,12 +163,12 @@ function soundArrayMax(soundArray) {
  */
 function sliceSoundArray(soundArray) {
     const max = soundArrayMax(soundArray)
-    if(soundArray[max] === undefined || soundArray[max+100] === undefined){
+    if(soundArray[max] === undefined || soundArray[max+200] === undefined){
         console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
         // @todo  response auf der Website anzeigen
     }
     else{
-        soundArray = soundArray.slice(max, max + 100) // shorten Array to 30 values
+        soundArray = soundArray.slice(max, max + 200) // shorten Array to 30 values
     }
 }
 
