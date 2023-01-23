@@ -255,7 +255,7 @@ function getReferenceData() {
         return response.json();
     }).then(function(data) {
         // Filter die letzten 100 Einträge + 1 Group-Code heraus
-        for(let i = 0; i < 201; i++) {
+        for(let i = 0; i < 170; i++) {
             xl2Array.push(parseInt(data[i].value))
         }
         console.log("xl2Array:",xl2Array)
@@ -469,9 +469,9 @@ function tonspurBearbeiten(tonspur) {
 
   var realMaxIndex = maxIndex;
   // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
-  for (i = maxIndex + 1; i < maxIndex + 20; i++) {
+  for (i = maxIndex + 1; i < maxIndex + 30; i++) {
     // 10 als Zeiteinheit für maximale Länge des Starttons
-    if (tonspur[maxIndex] - 5 < tonspur[i]) {
+    if (tonspur[maxIndex] - 1 < tonspur[i]) {
       // Maximal 5dB unterschied als zugelassene Varianz
       realMaxIndex = i;
     }
