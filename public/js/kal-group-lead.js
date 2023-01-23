@@ -130,7 +130,7 @@ function handleAnleitung(Seite){
         an_s3.classList.add("btn-outline-secondary");
         an_s4.classList.remove("btn-success");
         an_s4.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '3. Stellen Sie sicher, dass alle Teilnehemr die korrekte Position eingenommen haben </br></br> 4. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 5. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
+        an_txt.innerHTML = '3. Stellen Sie sicher, dass alle Teilnehmer die korrekte Position eingenommen haben </br></br> 4. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 5. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
     }
     else if(Seite === "s3"){
         an_s3.classList.remove("btn-outline-secondary");
@@ -141,7 +141,7 @@ function handleAnleitung(Seite){
         an_s2.classList.add("btn-outline-secondary");
         an_s4.classList.remove("btn-success");
         an_s4.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '6. Überlegen Sie sich nun einem siebenstellugen Code im Feld "Group-Code" </br></br> 7. Erstellen Sie den Kalibrierungsraum indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 8. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
+        an_txt.innerHTML = '6. Überlegen Sie sich nun einen siebenstelligen Code im Feld "Group-Code" </br></br> 7. Erstellen Sie den Kalibrierungsraum, indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 8. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
     }
     else if(Seite === "s4"){
         an_s4.classList.remove("btn-outline-secondary");
@@ -152,7 +152,7 @@ function handleAnleitung(Seite){
         an_s2.classList.add("btn-outline-secondary");
         an_s3.classList.remove("btn-success");
         an_s3.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '9. Geben Sie nun die aufgenommenen Daten von ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 10. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 11. Sie können nun diese Seite verlassen </br></br></br>'
+        an_txt.innerHTML = '9. Geben Sie nun die aufgenommenen Daten von Ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 10. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 11. Sie können nun diese Seite verlassen </br></br></br>'
     }
 }
 
