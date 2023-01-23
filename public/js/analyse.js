@@ -194,7 +194,7 @@ function fetchbox() {
             }
 
             // herunterladen als CSV Datei über DOM
-            var csv = dbdata.map(row => Object.values(row).join(",")).join("\n");
+            var csv = timedata.map(row => Object.values(row).join(",")).join("\n");
             var filename = "Lautstärkedaten.csv";
             var blob = new Blob([csv], {
                 type: "text/csv"
@@ -206,12 +206,13 @@ function fetchbox() {
             var containercsv = document.getElementById('containercsv');
             containercsv.appendChild(link);
 
-            // herunterladen als JSON Datei über DOM
+
+            // herunterladen als json Datei über DOM
             var boxinfos = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timedata));
             var a = document.createElement('a');
             a.href = boxinfos;
             a.download = 'Lautstärkedaten.json';
-            a.innerHTML = "Herunterladen als JSON <br>"
+            a.innerHTML = "Herunterladen als JSON Datei <br>"
             var containerjson = document.getElementById('containerjson');
             containerjson.appendChild(a);
 
@@ -221,6 +222,6 @@ function fetchbox() {
             }
             console.log(timedata)
         });
-        //}
+        
     }
 }
