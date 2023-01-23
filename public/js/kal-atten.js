@@ -128,7 +128,7 @@ else if(Seite === "s3"){
     an_s1.classList.add("btn-outline-secondary");
     an_s2.classList.remove("btn-success");
     an_s2.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br> 8. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 9. Sie können nun diese Seite verlassen </br></br></br>'
+    an_txt.innerHTML = '7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br></br></br></br></br></br></br>'
 }
 }
 
