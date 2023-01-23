@@ -15,6 +15,8 @@ let anzahlMessungen = 0;
 let ausgabedurchschnitt = 0;
 let gemessenesdB = 0;
 
+Sens2Delta = "63ce890239ae8400078b2eaf";
+ID = "63ce890239ae8400078b2eae";
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
@@ -54,6 +56,12 @@ osbDiv.addEventListener("change", function () {
 });
 
 function startMessung() {
+  fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SBSensor}?`).then(
+    function (response) {
+      return response.json();
+    }
+  );
+
   startTime = performance.now();
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
