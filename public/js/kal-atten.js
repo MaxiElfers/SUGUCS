@@ -29,9 +29,9 @@ let userID;
 let calibrationObject;
 let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
-let SBID2 = "63c3f0c9a122c30008268cc0";
-let SBSensor2 = "63c3f0c9a122c30008268cc1";
-let AT2 = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
+let SBID2 = "63ce890239ae8400078b2eae";
+let SBSensor2 = "63ce890239ae8400078b2eaf";
+let AT2 = "eb7affe1d25eee7f0a4aa62bcdbd4130a22f3338bf5fc3635fd4464bc491ccea";
 // Tests
 //let soundArray = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
 
@@ -74,6 +74,7 @@ function checkError(type){
       userID = in_UserID.value;
       if(userID === " "){
         output_error_down.innerHTML = "Keine UserID angegeben";
+        userID.parseInt(in_UserID.value)
       }
       else{
           output_error_down.innerHTML = "";
@@ -214,13 +215,25 @@ function createCalibrationObject(){
     }
     const preparedCalibrationO = [
       {
-        "sensor": SBSensor2,
+        "sensor": "63ce890239ae8400078b2eaf",
         "value": userID
-      },
-      {
-        "sensor": SBSensor2,
-        "value": calibrationObject
-      }]
+      }];
+    for(var i = 1; i < 120; i++){
+      if(allDeltas[i] === undefined){
+        value = {
+          "sensor": "63ce890239ae8400078b2eaf",
+          "value": 0.001
+        }
+        preparedCalibrationO.push(value)
+      }
+      else{
+        value = {
+          "sensor": "63ce890239ae8400078b2eaf",
+          "value": allDeltas[i]
+        }
+        preparedCalibrationO.push(value)
+      }
+    }
     fetch(`https://api.opensensemap.org/boxes/${SBID2}/data`, {
       method: 'POST',
       headers: {
