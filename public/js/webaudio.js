@@ -28,6 +28,7 @@ let maxim = document.getElementById("maxima");
 
 messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
+var userIDDiv = document.getElementById("userID");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
 nameDiv.value = "SUGUCS";
@@ -40,15 +41,38 @@ messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
 
 // Button zur Messung disablen solange nicht alle anderen Werte eingegeben wurden
+
+userIDDiv.addEventListener("change", function () {
+  if (
+    userIDDiv.value == "" ||
+    osbDiv.value == "" ||
+    nameDiv.value == "" ||
+    pos == undefined
+  ) {
+    messungButton.disabled = true;
+  } else {
+    messungButton.disabled = false;
+  }
+});
 nameDiv.addEventListener("change", function () {
-  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
+  if (
+    userIDDiv.value == "" ||
+    osbDiv.value == "" ||
+    nameDiv.value == "" ||
+    pos == undefined
+  ) {
     messungButton.disabled = true;
   } else {
     messungButton.disabled = false;
   }
 });
 osbDiv.addEventListener("change", function () {
-  if (osbDiv.value == "" || nameDiv.value == "" || pos == undefined) {
+  if (
+    userIDDiv.value == "" ||
+    osbDiv.value == "" ||
+    nameDiv.value == "" ||
+    pos == undefined
+  ) {
     messungButton.disabled = true;
   } else {
     messungButton.disabled = false;
@@ -396,17 +420,15 @@ setInterval(function () {
   }
 }, 1000);
 
-function kopieren() {
+function kopieren(event) {
   // Get the text field
-  var copyText = document.getElementById("sbid");
+  var copyText = document.getElementById(event.rangeParent.id + "Input");
 
   // Select the text field
   copyText.select();
   copyText.setSelectionRange(0, 99999); // For mobile devices
-
   // Copy the text inside the text field
   navigator.clipboard.writeText(copyText.value);
-
   // Alert the copied text
   alert("Copied the text: " + copyText.value);
 }
