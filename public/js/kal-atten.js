@@ -111,7 +111,7 @@ function handleAnleitung(Seite){
     an_s2.classList.add("btn-outline-secondary");
     an_s3.classList.remove("btn-success");
     an_s3.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '1. Stellen Sie sicher, dass alle Teilnehemr die korrekte Position eingenommen haben </br></br> 2. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 3. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
+    an_txt.innerHTML = '1. Wenn der Leiter bescheid gibt, drücken Sie bitte „Messung starten“ </br></br> 2. Stoppen Sie die Messung, indem Sie auf „Messung stoppen“ klicken, nachdem Ihnen der Leiter mit einem Handzeichen Bescheid gegeben hat </br></br> 3. Geben Sie nun den vom Leiter erstellten Gruppen Code ein'
 }
 else if(Seite === "s2"){
     an_s2.classList.remove("btn-outline-secondary");
@@ -120,7 +120,7 @@ else if(Seite === "s2"){
     an_s1.classList.add("btn-outline-secondary");
     an_s3.classList.remove("btn-success");
     an_s3.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '4. Überlegen Sie sich nun einem siebenstellugen Code im Feld "Group-Code" </br></br> 5. Erstellen Sie den Kalibrierungsraum indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 6. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
+    an_txt.innerHTML = '4. Speichern Sie Gruppen Code für den Kalibrierungsraum ab, indem Sie auf „Kalibrierungsraum speichern“ klicken </br></br> 5. Danach geben Sie bitte eine selbstüberlegte individuelle User ID ein </br></br> 6. Merken Sie sich diese User ID </br></br>'
 }
 else if(Seite === "s3"){
     an_s3.classList.remove("btn-outline-secondary");
@@ -129,7 +129,7 @@ else if(Seite === "s3"){
     an_s1.classList.add("btn-outline-secondary");
     an_s2.classList.remove("btn-success");
     an_s2.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '7. Geben Sie nun die aufgenommenen Daten von ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 8. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 9. Sie können nun diese Seite verlassen </br></br></br>'
+    an_txt.innerHTML = '7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br></br></br></br></br></br></br>'
 }
 }
 
