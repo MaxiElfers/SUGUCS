@@ -6,10 +6,17 @@ let output_error_cal = document.getElementById("output_Error_Cal");
 let output_error_down = document.getElementById("output_Error_Down");
 let output_error_spin = document.getElementById("output_Error_Spin");
 let out_fin = document.getElementById("out_finished");
+let an_s1 = document.getElementById("s1");
+let an_s2 = document.getElementById("s2");
+let an_s3 = document.getElementById("s3");
+let an_txt = document.getElementById("AnleitungText");
 
 /***** all EventListeners ******/
 btn_Gcal.addEventListener("click", function(){checkError("Cal");});
 btn_Cal.addEventListener("click", function(){checkError("Down");});
+an_s1.addEventListener("click", function(){handleAnleitung("s1");});
+an_s2.addEventListener("click", function(){handleAnleitung("s2");});
+an_s3.addEventListener("click", function(){handleAnleitung("s3");});
 
 /***** all Variables ******/
 let allDeltas = {};
@@ -73,6 +80,39 @@ function checkError(type){
     // Posibility to add more error checks
 }
 
+/**
+ * Handles the changing of the sites from the Anleitung
+ * @param {String} Seite which should be displayed
+ */
+function handleAnleitung(Seite){
+  if(Seite === "s1"){
+      an_s1.classList.remove("btn-outline-secondary");
+      an_s1.classList.add("btn-outline-success");
+      an_s2.classList.remove("btn-outline-success");
+      an_s2.classList.add("btn-outline-secondary");
+      an_s3.classList.remove("btn-outline-success");
+      an_s3.classList.add("btn-outline-secondary");
+      an_txt.innerHTML = '1. Stellen Sie sicher, dass alle Teilnehemr die korrekte Position eingenommen haben </br></br> 2. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 3. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
+  }
+  else if(Seite === "s2"){
+      an_s2.classList.remove("btn-outline-secondary");
+      an_s2.classList.add("btn-outline-success");
+      an_s1.classList.remove("btn-outline-success");
+      an_s1.classList.add("btn-outline-secondary");
+      an_s3.classList.remove("btn-outline-success");
+      an_s3.classList.add("btn-outline-secondary");
+      an_txt.innerHTML = '4. Überlegen Sie sich nun einem siebenstellugen Code im Feld "Group-Code" </br></br> 5. Erstellen Sie den Kalibrierungsraum indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 6. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
+  }
+  else if(Seite === "s3"){
+      an_s3.classList.remove("btn-outline-secondary");
+      an_s3.classList.add("btn-outline-success");
+      an_s1.classList.remove("btn-outline-success");
+      an_s1.classList.add("btn-outline-secondary");
+      an_s2.classList.remove("btn-outline-success");
+      an_s2.classList.add("btn-outline-secondary");
+      an_txt.innerHTML = '7. Geben Sie nun die aufgenommenen Daten von ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 8. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 9. Sie können nun diese Seite verlassen </br></br></br>'
+  }
+}
 
 /**
  * Takes the soundArray of the xl2 and the soundArray of
