@@ -55,6 +55,8 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
+var mindestDatenProAufnahme = 50;
+
 function startMessung() {
   fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SBSensor}?`).then(
     function (response) {
