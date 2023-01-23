@@ -119,7 +119,7 @@ function handleAnleitung(Seite){
         an_s3.classList.add("btn-outline-secondary");
         an_s4.classList.remove("btn-success");
         an_s4.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '1. Verbinden Sie ihr Endgerät mit dem XL2-Gerät </br></br> 2. Wählen Sie auf dem XL2 das Feld COM-Port aus </br></br> Fahren Sie auf der nächsten Seite fort</br></br></br></br>'
+        an_txt.innerHTML = '1. verbinden Sie ihr Endgerät mit dem XL2-Gerät </br></br> 2. Wählen Sie auf dem XL2 das Feld COM-Port aus </br></br> Fahren Sie auf der nächsten Seite fort</br></br></br></br>'
     }
     if(Seite === "s2"){
         an_s2.classList.remove("btn-outline-secondary");
