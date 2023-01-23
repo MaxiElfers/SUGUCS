@@ -50,8 +50,10 @@ block content
     //- 3. Daten abschicken
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
-        h2.card-title 3. Open Sense Map
+        h2.card-title 3. OpenSenseMap
         div.mt-3
+          | OpenSenseBox ID:
+          input#osbID.form-control.mt-3.mb-3(type='text')
           | Füge deine Messung zur Open Sense Map hinzu:
           a.btn.btn-primary.btn-sm.mt-3(type='button' id="hinzufuegen") Hinzufügen
           #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
@@ -362,7 +364,7 @@ block content
         |0c8fe73f1b680d8078faac6b2b44ca26d93e7898da95e3615e1c4dab5e10aaae
         p
 
-        
+
   //- Skripte ausführen
   script(src='/js/webaudio.js')
   script(src='/js/leaflet.js')
