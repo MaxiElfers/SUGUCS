@@ -111,7 +111,7 @@ function handleAnleitung(Seite){
     an_s2.classList.add("btn-outline-secondary");
     an_s3.classList.remove("btn-success");
     an_s3.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '1. Wenn der Leiter bescheid gibt, drücken Sie bitte „Messung starten“ </br></br> 2. Stoppen Sie die Messung, indem Sie auf „Messung stoppen“ klicken, nachdem Ihnen der Leiter mit einem Handzeichen Bescheid gegeben hat </br></br> 3. Geben Sie nun den vom Leiter erstellten Gruppen Code ein'
+    an_txt.innerHTML = '1. Wenn der Leiter bescheid gibt, drücken Sie bitte „Messung starten“ </br></br> 2. Stoppen Sie die Messung, indem Sie auf „Messung stoppen“ klicken, nachdem Ihnen der Leiter mit einem Handzeichen Bescheid gegeben hat </br></br></br> Fahren Sie auf der nächsten Seite fort </br>'
 }
 else if(Seite === "s2"){
     an_s2.classList.remove("btn-outline-secondary");
@@ -120,7 +120,7 @@ else if(Seite === "s2"){
     an_s1.classList.add("btn-outline-secondary");
     an_s3.classList.remove("btn-success");
     an_s3.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '4. Speichern Sie Gruppen Code für den Kalibrierungsraum ab, indem Sie auf „Kalibrierungsraum speichern“ klicken </br></br> 5. Danach geben Sie bitte eine selbstüberlegte individuelle User ID ein </br></br> 6. Merken Sie sich diese User ID </br></br>'
+    an_txt.innerHTML = '3. Geben Sie nun den vom Leiter erstellten Gruppen Code ein </br></br></br> 4. Speichern Sie Gruppen Code für den Kalibrierungsraum ab, indem Sie auf „Kalibrierungsraum speichern“ klicken   </br></br></br></br> Fahren Sie auf der nächsten Seite fort </br>'
 }
 else if(Seite === "s3"){
     an_s3.classList.remove("btn-outline-secondary");
@@ -129,7 +129,7 @@ else if(Seite === "s3"){
     an_s1.classList.add("btn-outline-secondary");
     an_s2.classList.remove("btn-success");
     an_s2.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br></br></br></br></br></br></br>'
+    an_txt.innerHTML = '5. Danach geben Sie bitte eine selbstüberlegte individuelle User ID ein </br></br> 6. Merken Sie sich diese User ID </br></br></br> 7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br></br>'
 }
 }
 
