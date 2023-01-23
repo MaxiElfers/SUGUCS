@@ -15,14 +15,14 @@ btn_Cal.addEventListener("click", function(){checkError("Down");});
 let allDeltas = {};
 let deltaArr = [];
 let xl2Array = [];
-//let soundArray = [];
+let soundArray = [];
 let group_code;
 const userArray = "?";
 let calibrationObject;
 let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
 // Tests
-let soundArray = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
+//let soundArray = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
 
 /***** all functionalities ******/
 
@@ -61,8 +61,8 @@ function checkError(type){
         }
         else{
             output_error_down.innerHTML = "";
-            tonspurBearbeiten(modell);
-            console.log(modell)
+            soundArray = tonspurBearbeiten(modell);
+            console.log("soundArray:",soundArray)
             getReferenceData();
         }
     }
@@ -118,7 +118,7 @@ function estimateAllDelta(){
         // calculates the deltas for all values +- 5 of the measured decible values
         for(var i = value - 5; i <= value + 5; i++){
             // empty: than just add the calculated value
-            if(allDeltas[i] === undefined){ 
+            if(allDeltas[i] === undefined){
                 allDeltas[i] = allDeltas[value] - (allDeltas[value] * (1 / (helpVar)));
             }
             // same index: reset helpVar
@@ -164,12 +164,11 @@ function getReferenceData() {
     fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SBSensor}?`).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         // Filter die letzten 100 Einträge + 1 Group-Code heraus
         for(let i = 0; i < 201; i++) {
             xl2Array.push(parseInt(data[i].value))
         }
-        console.log(xl2Array)
+        console.log("xl2Array:",xl2Array)
         if(xl2Array[0] === group_code){
           xl2Array = xl2Array.slice(1,101);
           btn_Gcal.classList.remove("btn-primary");
@@ -344,24 +343,16 @@ function stoppMessung() {
   messungStoppenButton.disabled = true;
   if (modell.length > mindestDatenProAufnahme) {
     con.suspend();
-    console.log(modell);
+    console.log("modell: ", modell);
     var summe = 0;
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-    if (anzahlMessungen == 1) {
-      ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
-      gemessenesdB = Math.round(summe / modell.length);
-      messungButton.textContent = "Neue Messung";
-    } else {
-      gemessenesdB = Math.round(summe / modell.length);
-      ausgabeMessung.innerHTML = "Messung erfolgreich!";
-    }
   }
-
-  if (aufnahme.length > mindestDatenProAufnahme) {
-    con.suspend();
-    console.log(aufnahme);
+  if (anzahlMessungen == 1) {
+    ausgabeMessung.innerHTML = "Bitte neue Messung starten";
+  } else {
+    ausgabeMessung.innerHTML = "Messung erfolgreich!";
   }
 }
 
@@ -371,8 +362,6 @@ function stoppMessung() {
 
 // Tonspur Startton(Maximum) finden
 function tonspurBearbeiten(tonspur) {
-  console.log("Array Laenge ist: " + tonspur.length);
-
   // Maximum berechnen
   // überprüfen von Array
   if (tonspur.length === 0) {
@@ -387,7 +376,6 @@ function tonspurBearbeiten(tonspur) {
       max = tonspur[i];
     }
   }
-  console.log("Max Index ist: " + maxIndex);
 
   var realMaxIndex = maxIndex;
   // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
@@ -398,12 +386,11 @@ function tonspurBearbeiten(tonspur) {
       realMaxIndex = i;
     }
   }
-  console.log("Real Max Index ist: " + realMaxIndex);
 
   // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
   if (tonspur.length - realMaxIndex + 200 > 0) {
     // 200 Testzeiteinheit für zu kalibrierendes Audio
-    tonspurKuerzen(realMaxIndex, tonspur);
+    return tonspurKuerzen(realMaxIndex, tonspur);
   } else {
     console.log("Aufnahme ist zu kurz");
   }
@@ -414,5 +401,6 @@ function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
   tonspur = tonspur.slice(max, max + 200);
-  console.log(tonspur);
+  return tonspur;
+  console.log("tonspur: ", tonspur);
 }
