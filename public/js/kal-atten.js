@@ -2,6 +2,7 @@
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
 let btn_Cal = document.getElementById("btn_Kalibrierung");
 let in_GroupCode = document.getElementById("input_GroupCode");
+let in_UserID = document.getElementById("input_UserID");
 let output_error_cal = document.getElementById("output_Error_Cal");
 let output_error_down = document.getElementById("output_Error_Down");
 let output_error_spin = document.getElementById("output_Error_Spin");
@@ -24,10 +25,13 @@ let deltaArr = [];
 let xl2Array = [];
 let soundArray = [];
 let group_code;
-const userArray = "?";
+let userID;
 let calibrationObject;
 let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
+let SBID2 = "63c3f0c9a122c30008268cc0";
+let SBSensor2 = "63c3f0c9a122c30008268cc1";
+let AT2 = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
 // Tests
 //let soundArray = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
 
@@ -59,19 +63,33 @@ function checkError(type){
                 output_error_cal.classList.remove("text-danger");
                 output_error_cal.classList.add("text-success");
                 output_error_cal.innerHTML = "Aktueller Raum-Code: " + group_code; 
+                btn_Cal.classList.add("btn-primary");
+                btn_Cal.classList.remove("btn-secondary", "disabled");
+                in_UserID.readOnly = false;
+                handleAnleitung("s3");
             }
         }
     }
     else if(type === "Down"){
-        if(group_code === undefined){
-            output_error_down.innerHTML = "Kein Gruppen-Code angegeben";
-        }
-        else{
-            output_error_down.innerHTML = "";
-            soundArray = tonspurBearbeiten(modell);
-            console.log("soundArray:",soundArray)
-            getReferenceData();
-        }
+      userID = in_UserID.value;
+      if(userID === " "){
+        output_error_down.innerHTML = "Keine UserID angegeben";
+      }
+      else{
+          output_error_down.innerHTML = "";
+          soundArray = tonspurBearbeiten(modell);
+          console.log("soundArray:",soundArray)
+          getReferenceData();
+      }
+    }
+    else if(type === "messung"){
+      if(ausgabeMessung.innerHTML === "Messung erfolgreich!"){
+        handleAnleitung("s2");
+        btn_Gcal.classList.remove("btn-secondary", "disabled");
+        btn_Gcal.classList.add("btn-primary");
+        in_GroupCode.readOnly = false;
+        messungButton.classList.add("disabled");
+      } 
     }
     
     // Here is the space where the function that will be called for
@@ -86,32 +104,32 @@ function checkError(type){
  */
 function handleAnleitung(Seite){
   if(Seite === "s1"){
-      an_s1.classList.remove("btn-outline-secondary");
-      an_s1.classList.add("btn-outline-success");
-      an_s2.classList.remove("btn-outline-success");
-      an_s2.classList.add("btn-outline-secondary");
-      an_s3.classList.remove("btn-outline-success");
-      an_s3.classList.add("btn-outline-secondary");
-      an_txt.innerHTML = '1. Stellen Sie sicher, dass alle Teilnehemr die korrekte Position eingenommen haben </br></br> 2. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 3. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
-  }
-  else if(Seite === "s2"){
-      an_s2.classList.remove("btn-outline-secondary");
-      an_s2.classList.add("btn-outline-success");
-      an_s1.classList.remove("btn-outline-success");
-      an_s1.classList.add("btn-outline-secondary");
-      an_s3.classList.remove("btn-outline-success");
-      an_s3.classList.add("btn-outline-secondary");
-      an_txt.innerHTML = '4. Überlegen Sie sich nun einem siebenstellugen Code im Feld "Group-Code" </br></br> 5. Erstellen Sie den Kalibrierungsraum indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 6. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
-  }
-  else if(Seite === "s3"){
-      an_s3.classList.remove("btn-outline-secondary");
-      an_s3.classList.add("btn-outline-success");
-      an_s1.classList.remove("btn-outline-success");
-      an_s1.classList.add("btn-outline-secondary");
-      an_s2.classList.remove("btn-outline-success");
-      an_s2.classList.add("btn-outline-secondary");
-      an_txt.innerHTML = '7. Geben Sie nun die aufgenommenen Daten von ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 8. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 9. Sie können nun diese Seite verlassen </br></br></br>'
-  }
+    an_s1.classList.remove("btn-outline-secondary");
+    an_s1.classList.add("btn-success");
+    an_s2.classList.remove("btn-success");
+    an_s2.classList.add("btn-outline-secondary");
+    an_s3.classList.remove("btn-success");
+    an_s3.classList.add("btn-outline-secondary");
+    an_txt.innerHTML = '1. Stellen Sie sicher, dass alle Teilnehemr die korrekte Position eingenommen haben </br></br> 2. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 3. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
+}
+else if(Seite === "s2"){
+    an_s2.classList.remove("btn-outline-secondary");
+    an_s2.classList.add("btn-success");
+    an_s1.classList.remove("btn-success");
+    an_s1.classList.add("btn-outline-secondary");
+    an_s3.classList.remove("btn-success");
+    an_s3.classList.add("btn-outline-secondary");
+    an_txt.innerHTML = '4. Überlegen Sie sich nun einem siebenstellugen Code im Feld "Group-Code" </br></br> 5. Erstellen Sie den Kalibrierungsraum indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 6. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
+}
+else if(Seite === "s3"){
+    an_s3.classList.remove("btn-outline-secondary");
+    an_s3.classList.add("btn-success");
+    an_s1.classList.remove("btn-success");
+    an_s1.classList.add("btn-outline-secondary");
+    an_s2.classList.remove("btn-success");
+    an_s2.classList.add("btn-outline-secondary");
+    an_txt.innerHTML = '7. Geben Sie nun die aufgenommenen Daten von ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 8. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 9. Sie können nun diese Seite verlassen </br></br></br>'
+}
 }
 
 /**
@@ -124,7 +142,7 @@ function handleAnleitung(Seite){
  * @returns allDeltas - an Array of Deltas for different decibles
  */
 function calibration(xl2Array, userArray){
-    if(xl2Array.length === userArray.length){
+    if((xl2Array.length-1) === userArray.length){
         // calculates the delta for each known value
         userArray.forEach((sound, index) => {
             let delta = xl2Array[index] - sound;
@@ -194,6 +212,25 @@ function createCalibrationObject(){
         deltas: allDeltas,
         lengthTheCalibration: "10 secounds"
     }
+    const preparedCalibrationO = [
+      {
+        "sensor": SBSensor2,
+        "value": userID
+      },
+      {
+        "sensor": SBSensor2,
+        "value": calibrationObject
+      }]
+    fetch(`https://api.opensensemap.org/boxes/${SBID2}/data`, {
+      method: 'POST',
+      headers: {
+          'Authorization': AT2,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(preparedCalibrationO)
+    })
+    .then(response => response.json())
+    .then(response => console.log(JSON.stringify(response)))
 }
 
 /**
@@ -210,7 +247,7 @@ function getReferenceData() {
         }
         console.log("xl2Array:",xl2Array)
         if(xl2Array[0] === group_code){
-          xl2Array = xl2Array.slice(1,101);
+          xl2Array = xl2Array.slice(1,201);
           btn_Gcal.classList.remove("btn-primary");
           btn_Cal.classList.remove("btn-success");
           output_error_down.classList.remove("text-danger");
@@ -244,7 +281,7 @@ var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
-var mindestDatenProAufnahme = 50;
+var mindestDatenProAufnahme = 200;
 var anzahlDatenProAufnahme = 50;
 let measurementCount = 0;
 let startTime;
@@ -265,6 +302,7 @@ ausgabeMessung = document.getElementById("AusgabeMessung");
 messungStoppenButton.disabled = true;
 messungButton.addEventListener("click", startMessung);
 messungStoppenButton.addEventListener("click", stoppMessung);
+messungStoppenButton.addEventListener("click", function(){checkError("messung");});
 
 function startMessung() {
   modell = [];
@@ -388,11 +426,10 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-  }
-  if (anzahlMessungen == 1) {
-    ausgabeMessung.innerHTML = "Bitte neue Messung starten";
-  } else {
     ausgabeMessung.innerHTML = "Messung erfolgreich!";
+  }
+  else{
+    ausgabeMessung.innerHTML = "Messung fehlgeschlagen. Wenden Sie sich an ihren Leiter";
   }
 }
 
@@ -428,9 +465,13 @@ function tonspurBearbeiten(tonspur) {
   }
 
   // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if (tonspur.length - realMaxIndex + 200 > 0) {
-    // 200 Testzeiteinheit für zu kalibrierendes Audio
-    return tonspurKuerzen(realMaxIndex, tonspur);
+  if (tonspur.length - realMaxIndex + 199 > 0) {
+    // 150 Testzeiteinheit für zu kalibrierendes Audio
+    var tonspur_short = tonspurKuerzen(realMaxIndex, tonspur);
+    tonspur_short.forEach((ton, index) => {
+      tonspur_short[index] = Math.round(ton);
+    })
+    return tonspur_short;
   } else {
     console.log("Aufnahme ist zu kurz");
   }
@@ -440,7 +481,7 @@ function tonspurBearbeiten(tonspur) {
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 200);
-  return tonspur;
+  tonspur = tonspur.slice(max, max + 199);
   console.log("tonspur: ", tonspur);
+  return tonspur;
 }

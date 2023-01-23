@@ -36,7 +36,7 @@ block content
                     h6.card-subtitle.mb-2.text-muted WICHTIG!!! Folgen Sie auch immer den Anweisungen der Person, welche diese Kalibrierung leitet  
                     br
                     div 
-                      button.btn.btn-sm.btn-outline-success.me-2#s1 Seite 1
+                      button.btn.btn-sm.btn-success.me-2#s1 Seite 1
                       button.btn.btn-sm.btn-outline-secondary.me-2#s2 Seite 2  
                       button.btn.btn-sm.btn-outline-secondary#s3 Seite 3 
                 br
@@ -65,14 +65,17 @@ block content
                 .col-10.allign-middle
                   div.input-group.mb-3
                     span.input-group-text Group-Code
-                    input#input_GroupCode.form-control(placeholder='1234567') 
-                  div.btn.btn-primary#btn_Gruppenkalibrierung Kalibrierungsraum speichern 
+                    input#input_GroupCode.form-control(placeholder='1234567' readonly) 
+                  div.btn.btn-secondary.disabled#btn_Gruppenkalibrierung Kalibrierungsraum speichern 
                   br 
                   p#output_Error_Cal.allign-middle.text-danger.fs-5
                   br
             .col
               .col-12.allign-middle
-                div.btn.btn-success.btn-lg#btn_Kalibrierung Kalibrierung starten
+                div.input-group.mb-3
+                  span.input-group-text UserID
+                  input#input_UserID.form-control(placeholder='MaxMuster123' readonly) 
+                div.btn.btn-secondary.btn-lg.disabled#btn_Kalibrierung Kalibrierung starten
                 br
                 div#output_Error_Down.allign-middle.text-danger.fs-5
           .col-10
