@@ -8,13 +8,13 @@ Die App bietet Ihnen umfangreiche Tools zum Einsehen und Einmessung von Lärmdat
 
 Um die App zu starten, tippen Sie einfach nur "npm install" und "npm start" in die Konsole. Die App ist dann auf localhost:4000 erreichbar.
 
-Über die Navigationsleiste am oberen Bildschirmrand können Sie zwischen den einzelnen Modulen navigieren. 
-Zuerst sollten Sie Ihr Gerät kalibrieren um eine Lärmmessung vorzunehmen, dafür nutzen Sie bitte den Reiter "Kalibrierung".
-Um eine aussagekräftige Kalibrierung durchzuführen benötigen Sie ein gutes Referenzmikro. Es gibt einen Leiter, der das XL2-Mikrofon anschließt und die Durchführung der Kalibrierung leitet. Die anderen Teilnehmer nehmen über den Button "Teilnehmer" an der Kalibrierung Teil und folgen den Anweisungen der Anleitung.  
-Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen Sie bitte den Reiter "Messung".
-***** Hier Text Messung *****
-Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".
-***** Hier Text OpenSenseMap *****
+Über die Navigationsleiste am oberen Bildschirmrand können Sie zwischen den einzelnen Modulen navigieren.   
+Zuerst sollten Sie Ihr Gerät kalibrieren um eine Lärmmessung vorzunehmen, dafür nutzen Sie bitte den Reiter "Kalibrierung".  
+Um eine aussagekräftige Kalibrierung durchzuführen benötigen Sie ein gutes Referenzmikro. Es gibt einen Leiter, der das XL2-Mikrofon anschließt und die Durchführung der Kalibrierung leitet. Die anderen Teilnehmer nehmen über den Button "Teilnehmer" an der Kalibrierung Teil und folgen den Anweisungen der Anleitung.    
+Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen Sie bitte den Reiter "Messung".  
+***** Hier Text Messung *****  
+Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".  
+***** Hier Text OpenSenseMap *****  
 
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
 
