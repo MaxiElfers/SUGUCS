@@ -25,14 +25,14 @@ an_s4.addEventListener("click", function(){handleAnleitung("s4");});
 
 /***** all Variables ******/
 const audio_calibration = new Audio('/sounds/Calibration_sound.mp3');
-//let xl2Tonspur = in_soundArray.innerHTML.split(',');
+let xl2Tonspur = in_soundArray.innerHTML.split(',');
 let counter = 0;
 let group_code;
 let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
 let AT = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
 let preparedXL2Data = [];
-let xl2Tonspur = [71, 58, 47, 47, 49, 48, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
+//let xl2Tonspur = [71, 58, 47, 47, 49, 48, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
 
 // build the site dependand if the xl2 data was already recorded
 if(xl2Tonspur[0] != ''){

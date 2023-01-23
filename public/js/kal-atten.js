@@ -33,7 +33,7 @@ let SBID2 = "63ce890239ae8400078b2eae";
 let SBSensor2 = "63ce890239ae8400078b2eaf";
 let AT2 = "eb7affe1d25eee7f0a4aa62bcdbd4130a22f3338bf5fc3635fd4464bc491ccea";
 // Tests
-//let soundArray = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
+let soundArrayT = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 55, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
 
 /***** all functionalities ******/
 
@@ -143,7 +143,7 @@ else if(Seite === "s3"){
  * @returns allDeltas - an Array of Deltas for different decibles
  */
 function calibration(xl2Array, userArray){
-    if((xl2Array.length-1) === userArray.length){
+    if(xl2Array.length === userArray.length){
         // calculates the delta for each known value
         userArray.forEach((sound, index) => {
             let delta = xl2Array[index] - sound;
@@ -167,7 +167,7 @@ function calibration(xl2Array, userArray){
 function estimateAllDelta(){
     // takes out every double variable
     let soundArrayNoDouble = soundArray.filter((element, index) => {
-    return soundArray.indexOf(element) === index;
+      return soundArray.indexOf(element) === index;
     })
     // sorts the array from smallest to biggest
     soundArrayNoDouble.sort();
@@ -192,7 +192,7 @@ function estimateAllDelta(){
             else{
                 allDeltas[i] = (allDeltas[i] + allDeltas[value]) / 2;
             }
-            allDeltas[i] = +allDeltas[i].toFixed(2); // rounds the delta down to two after komma numbers
+            //allDeltas[i] = +allDeltas[i].toFixed(2); // rounds the delta down to two after komma numbers
             helpVar++;
         }
     })
@@ -222,7 +222,7 @@ function createCalibrationObject(){
       if(allDeltas[i] === undefined){
         value = {
           "sensor": "63ce890239ae8400078b2eaf",
-          "value": 0.001
+          "value": 0
         }
         preparedCalibrationO.push(value)
       }
