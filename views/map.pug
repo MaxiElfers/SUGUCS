@@ -1,13 +1,62 @@
 extends layout
 
 block content
+    h2 Analyse Seite
+    br
+    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
+    h5 Eingabe der SenseBox ID zur Abfrage und Visualisierung:
+    input#userInput(style="width: 30%", type='text' placeholder='Sensebox ID')
+    h5 Eingabe der SenseBoxID und SensorID zur Abfrage der letzten 100 gemessenen Werte
+    input#sid(style="width: 30%", type='text' placeholder='Sensor ID')
+    p
+    button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
+    p 
+    .row.justify-content-md-left
+        .col-lg-6.col-xs-12.mb-3
+            .card.text-dark.p-4.border-success.cardanalysemap
+                h3 Karte
+                p Karte zur Visualisierung der vom Nutzer verlangten Messtation
+                br
+                #analysemap
 
+            .card.text-dark.p-4.border-success.cardplotting
+                h5 Plotting 
+                p Hier werden Plots dargestellt wie diese:
+                p Plot 1:
+                  img(src= ueblink , alt="")
+                p Plot 2:
+                  img(src= weblink , alt="")
+                  
+
+        .col-lg-6.col-xs-12.mb-3
+            .card.text-dark.p-4.border-success.cardanalysen
+                .card.text-dark.p-4.border-success.card
+                  h4 Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit
+                  h5 Eingabe der Start und Endzeit zur Abfrage und Ausgabe der in der Zeit gemessenen Lautstärken:
+                  h6 Startzeit:
+                  input#starttimeInput(style="width: 100%", type='text' placeholder='Startzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-23T08:00')
+                  h6 Endzeit:
+                  input#endtimeInput(style="width: 100%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-22T10:00')
+                  button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
+                  br
+                  table#resultTable
+                    tr
+                      th
+                        | Datum der Messung
+                      th
+                        | Dezibelwert
+
+                  br
+                  | Herunterladen der Lautstärkedaten:
+                  br
+                  a.i.fa.fa-download.button-dark#containerjson
+                  br
+                  p Herunterladen als CSV Datei:
+                  a.i.fa.fa-download.btn.btndownload.btn-dark(role='button', href='https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1/data/60f077874fb91e001c71b3b2?download=true&format=csv')
+                    
+                
     script.
         // Set active Button
         document.querySelectorAll(".active")[0].classList.remove("active");
         document.querySelectorAll(".nav-link")[3].classList.add("active");
-
-    a(href='https://opensensemap.org/') OpenSenseMap
-    
-    #map(style='width: 600px; height: 400px;')
-      
+    script(src='/js/analyse.js')

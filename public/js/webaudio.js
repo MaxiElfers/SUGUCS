@@ -5,6 +5,18 @@ var refresh_rate = 500;
 var stream;
 var offset = 30;
 var average = 0;
+var mindestDatenProAufnahme = 50;
+var anzahlDatenProAufnahme = 50;
+let measurementCount = 0;
+let startTime;
+let mitzaehlen = false;
+let anzahlMessungenProSekunde = 0;
+let anzahlMessungen = 0;
+let ausgabedurchschnitt = 0;
+let gemessenesdB = 0;
+
+//Testarray for offest
+var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
 const db = document.getElementById("db");
 var con;
@@ -16,6 +28,7 @@ messungButton = document.getElementById("messung");
 messungStoppenButton = document.getElementById("messungStoppen");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
+
 nameDiv.value = "SUGUCS";
 osbDiv.value = "";
 
@@ -40,9 +53,8 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
-var mindestDatenProAufnahme = 50;
-
 function startMessung() {
+  startTime = performance.now();
   messungStoppenButton.disabled = false;
   var newName = document.getElementById("NameDiv").value;
   var osbID = document.getElementById("OpenSenseBoxDiv").value;
@@ -82,9 +94,49 @@ function startMessung() {
           values += data[i];
         }
 
-        average = 20 * Math.log10(values / data.length) + offset;
-        if (isFinite(average)) {
-          db.innerText = average;
+        average = 20 * Math.log10(values / data.length);
+
+        if (isFinite(average) && average >= 0) {
+          measurementCount++;
+          //adding the offset
+          let switchValue = Math.floor(average / 10);
+          switch (switchValue) {
+            case 0:
+              average += testarray[0];
+              break;
+            case 1:
+              average += testarray[1];
+              break;
+            case 2:
+              average += testarray[2];
+              break;
+            case 3:
+              average += testarray[3];
+              break;
+            case 4:
+              average += testarray[4];
+              break;
+            case 5:
+              average += testarray[5];
+              break;
+            case 6:
+              average += testarray[6];
+              break;
+            case 7:
+              average += testarray[7];
+              break;
+            case 8:
+              average += testarray[8];
+              break;
+            case 9:
+              average += testarray[9];
+              break;
+            case 10:
+              average += testarray[10];
+              break;
+          }
+
+          db.innerText = Math.round(average * 1000) / 1000;
           //Klonen der Aufnahmestruktur aus modell.js
           let a = Object.assign({}, aufnahme);
           a.lat = pos[0];
@@ -146,12 +198,15 @@ function stoppMessung() {
     for (let i = 0; i < modell.length; i++) {
       summe = summe + modell[i].value;
     }
-    durchschn.innerHTML =
-      "<br>Messung erfolgreich!<br>" +
-      "Gemessener Durchschnitt:<br><b>" +
-      Math.round(summe / modell.length) +
-      "</b> dB";
-    messungButton.textContent = "Neue Messung";
+    if (anzahlMessungen == 1) {
+      ausgabedurchschnitt = Math.round(anzahlMessungenProSekunde * 10) / 10;
+      gemessenesdB = Math.round(summe / modell.length);
+      durchschn.innerHTML = "Messung erfolgreich!";
+      messungButton.textContent = "Neue Messung";
+    } else {
+      gemessenesdB = Math.round(summe / modell.length);
+      durchschn.innerHTML = "Messung erfolgreich!";
+    }
   }
 
   if (aufnahme.length > mindestDatenProAufnahme) {
@@ -227,56 +282,4 @@ function postData(doc) {
     console.log(aufnahme);
     tonspurMax(aufnahme);
   }
-}
-
-///////////////////////////////////////////////////////////////////////////
-//// Array kürzen
-///////////////////////////////////////////////////////////////////////////
-
-// Tonspur Startton(Maximum) finden
-function tonspurMax(tonspur) {
-  console.log("Array Laenge ist: " + tonspur.length);
-
-  // Maximum berechnen
-  // überprüfen von Array
-  if (tonspur.length === 0) {
-    return -1;
-  }
-  var max = tonspur[0];
-  var maxIndex = 0;
-  // nach Maximum suchen
-  for (var i = 1; i < tonspur.length; i++) {
-    if (tonspur[i] > max) {
-      maxIndex = i;
-      max = tonspur[i];
-    }
-  }
-  console.log("Max Index ist: " + maxIndex);
-
-  var realMaxIndex = maxIndex;
-  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
-  for (i = maxIndex + 1; i < maxIndex + 10; i++) {
-    // 10 als Zeiteinheit für maximale Länge des Starttons
-    if (tonspur[maxIndex] - 5 < tonspur[i]) {
-      // Maximal 5dB unterschied als zugelassene Varianz
-      realMaxIndex = i;
-    }
-  }
-  console.log("Real Max Index ist: " + realMaxIndex);
-
-  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if (tonspur.length - realMaxIndex + 30 > 0) {
-    // 30 Testzeiteinheit für zu kalibrierendes Audio
-    tonspurKuerzen(realMaxIndex, tonspur);
-  } else {
-    console.log("Aufnahme ist zu kurz");
-  }
-}
-
-// Tonspur kürzen
-function tonspurKuerzen(max, tonspur) {
-  console.log("Bereit zum kuerzen");
-  // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 30);
-  console.log(tonspur);
 }
