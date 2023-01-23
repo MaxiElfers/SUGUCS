@@ -225,12 +225,12 @@ function soundArrayMax(soundArray) {
  */
 function sliceSoundArray(soundArray) {
     const max = soundArrayMax(soundArray)
-    if(soundArray[max] === undefined || soundArray[max+199] === undefined){
+    if(soundArray[max] === undefined || soundArray[max+169] === undefined){
         console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
         // @todo  response auf der Website anzeigen
     }
     else{
-        soundArray = soundArray.slice(max, max + 199) // shorten Array to 30 values
+        soundArray = soundArray.slice(max, max + 169) // shorten Array to 30 values
     }
 }
 

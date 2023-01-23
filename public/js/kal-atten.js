@@ -465,7 +465,7 @@ function tonspurBearbeiten(tonspur) {
   }
 
   // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if (tonspur.length - realMaxIndex + 199 > 0) {
+  if (tonspur.length - realMaxIndex + 169 > 0) {
     // 150 Testzeiteinheit für zu kalibrierendes Audio
     var tonspur_short = tonspurKuerzen(realMaxIndex, tonspur);
     tonspur_short.forEach((ton, index) => {
@@ -481,7 +481,7 @@ function tonspurBearbeiten(tonspur) {
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 199);
+  tonspur = tonspur.slice(max, max + 169);
   console.log("tonspur: ", tonspur);
   return tonspur;
 }
