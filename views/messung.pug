@@ -16,17 +16,17 @@ block content
         div.mt-3
           #EingabeDiv
             | User ID:
-            .small.text-muted Gebe hier die User ID von deiner Kalibrierung an. Wenn du keine hast, musst Du erst eine Kalibrierung durchführen.
+            .small.text-muted Gebe hier die User ID von deiner Kalibrierung an. Wenn Du keine hast, musst Du erst eine Kalibrierung durchführen.
             input#userID.form-control.mt-3.mb-3(type='text')
             |Gerätename 
-            i (z.B SUGUCS12)
+            i (z.B. SUGUCS12)
             |:
             input#NameDiv.form-control.mt-3(type='text' maxLength = "9")
             p
             |OpenSenseBox ID: 
             input#OpenSenseBoxDiv.form-control.mt-3(type='text' maxLength = "24" placeholder= " 638b1a8f11467c001b6b1af3")
             p 
-            | Ermittle Deine Browser Koordinaten
+            | Ermittle deinen Standort
             span.Eingabe
             | : 
             p#demo
@@ -55,7 +55,7 @@ block content
       .card.shadow.p-4.h-100
         h2.card-title 3. OpenSenseMap
         div.mt-3
-          | Füge deine Messung zur Open Sense Map hinzu:
+          | Füge deine Messung zur OpenSenseMap hinzu:
           br
           a.btn.btn-primary.btn-sm.mt-3(type='button' id="hinzufuegen" onClick="messungHinzufuegen()") Hinzufügen
           #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
