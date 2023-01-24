@@ -127,7 +127,7 @@ senseBoxIds.forEach((item) => {
   inner +=
     "<span class='copyButton input-group-addon btn' id='" +
     item.senseBoxID +
-    "' title='In die Zwischenablage kopieren' onclick='kopieren(event)'>";
+    "' title='In die Zwischenablage kopieren' onclick='kopieren(this)'>";
   inner += "<img src='images/copy.svg' style='height:25px'>";
   inner += "</span><br>";
   inner += "<b> Access Token: </b>" + item.token + "<p></p>";
