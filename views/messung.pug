@@ -25,12 +25,14 @@ block content
             p
             |OpenSenseBox ID: 
             input#OpenSenseBoxDiv.form-control.mt-3(type='text' maxLength = "24" placeholder= " 638b1a8f11467c001b6b1af3")
-            p 
-            | Ermittle deinen Standort
-            span.Eingabe
-            | : 
-            p#demo
-            a.btn.btn-primary.btn-sm(onclick='getLocation()') mein Standort
+            #ermittleDeinenStandort
+              p
+              | Ermittle deinen Standort
+              span.Eingabe
+              | : 
+            p#demo(style.display = "none")
+            #locationbtn
+              a.btn.btn-primary.btn-sm(onclick="getLocation(); document.getElementById('locationbtn').style.display='none'; document.getElementById('demo').style.display='none';document.getElementById('ermittleDeinenStandort').style.display='none';") mein Standort
       //- 2. Soundaufnahme machen
     .col-lg-4.col-xs-12.mb-3
       .card.shadow.p-4.h-100
