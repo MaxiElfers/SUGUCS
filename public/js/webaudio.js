@@ -429,7 +429,7 @@ function kopieren(event) {
 }
 
 function messungHinzufuegen() {
-  fetch(`https://api.opensensemap.org/boxes/${SBID}/data`, {
+  fetch(`https://api.opensensemap.org/boxes/${ID}/data`, {
     method: "POST",
     headers: {
       Authorization: AT,
