@@ -161,11 +161,11 @@ function startMessung() {
                 db.innerText = messungDelta;
                 //Klonen der Aufnahmestruktur aus modell.js
                 let a = Object.assign({}, aufnahme);
-                a.lat = pos[0];
-                a.lon = pos[1];
+                //a.lat = pos[0];
+                //a.lon = pos[1];
                 a.value = messungDelta;
-                a.boxName = newName;
-                a.boxId = osbID;
+                //a.boxName = newName;
+                a.sensor = osbID;
                 modell.push(a);
               }
             };
@@ -439,7 +439,7 @@ function messungHinzufuegen() {
       token = item.token;
     }
   });
-  fetch(`https://api.opensensemap.org/boxes/${ID}/data`, {
+  fetch("https://api.opensensemap.org/boxes/" + osbDiv.value + "/data", {
     method: "POST",
     headers: {
       Authorization: token,

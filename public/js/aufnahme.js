@@ -2,11 +2,11 @@ var modell = []; // array to store db values for each loop withing the refresh_r
 
 // Struktur einer Opensensebox
 var aufnahme = {
-  lat: null,
-  lon: null,
-  boxName: null,
-  boxId: null,
-  token: null,
+  //lat: null,
+  //lon: null,
+  //boxName: null,
+  sensor: null,
+  //token: null,
   value: null,
-  createdAt: null,
+  //createdAt: null,
 };
