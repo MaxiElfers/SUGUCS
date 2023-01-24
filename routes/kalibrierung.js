@@ -16,10 +16,11 @@ router.get("/kal-atten", function (req, res, next) {
 });
 
 router.get("/XL2", function (req, res, next){
-  var port = "COM3"; // @ToDo: needs a way of how to decide for the right port
+  var port = "COM4"; // @ToDo: needs a way of how to decide for the right port
   let dbArray = [];
   let soundArray = [];
 
+  // create a SerialPort with the port used by the XL2
   var serialPort = new SerialPort({
       path: port,
       baudRate: 9600, 
@@ -41,7 +42,7 @@ router.get("/XL2", function (req, res, next){
       setTimeout(function(){
         serialPort.close() // closes the port
         sounddatenBearbeiten();
-      }, 10000)
+      }, 9000)
     });
 
 
@@ -51,16 +52,10 @@ router.get("/XL2", function (req, res, next){
   */
   function sounddatenBearbeiten(){
     var counter = 0;
-    var hilfe = 0;
     for(var i = 0; i< dbArray.length; i++){
       soundArray[counter] = (parseFloat(dbArray[i].slice(15, 19)) +4);
-      if(hilfe === 5){
-        hilfe = 0;
-        i = i + 4;
-      }
-      i = i + 3; // thus only 20 values will be used for every secound 
+      i += 4; // thus only 20 values will be used for every secound 
       counter++;
-      hilfe++;
     }
     console.log(soundArray);
     res.render("kal-lead", {titel: "Kalibrierung", array: soundArray})

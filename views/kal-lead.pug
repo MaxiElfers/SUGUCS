@@ -28,14 +28,15 @@ block content
                     p.card-text#AnleitungText 1. Verbinden Sie ihr Endgerät mit dem XL2-Gerät 
                       br
                       br
-                      | 2. Wählen Sie auf dem XL2 das Feld COM-Port aus /
+                      | 2. Wählen Sie auf dem XL2 das Feld COM-Port aus und geben Sie unten ihren verwendeten 
+                      | COM-Port an
                       br
-                      br 
-                      | Fahren Sie auf der nächsten Seite fort   
+                      .input-group.mb-3#in_COM
+                        input#input_COM.form-control(type='text' placeholder="COM1")
+                        button#btn_COM.btn.btn-outline-secondary(type='button') Speichern
                       br
-                      br
-                      br
-                      br
+                      p.card-text#hideText Fahren Sie auf der nächsten Seite fort   
+                        br
                     div 
                       button.btn.btn-sm.btn-success.me-2#s1 Seite 1
                       button.btn.btn-sm.btn-outline-secondary.me-2#s2 Seite 2

@@ -32,17 +32,19 @@ let SBSensor = "63c3f0c9a122c30008268cc1";
 let SBID2 = "63ce890239ae8400078b2eae";
 let SBSensor2 = "63ce890239ae8400078b2eaf";
 let AT2 = "eb7affe1d25eee7f0a4aa62bcdbd4130a22f3338bf5fc3635fd4464bc491ccea";
-// Tests
-let soundArrayT = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 55, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57]
+// Demo
+//let soundArray = [71, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 55, 56, 45, 45, 47, 46, 56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55, 57, 56,56, 55, 55]
 
 /***** all functionalities ******/
 
 /**
  * tests that the preconditions are given, so 
  * the calibration can be done without a problem 
+ * @param {String} type - what button called this function
  */
 function checkError(type){
     let error = false;
+    // Here start the code for the groupcalibration button (btn_Gcal)
     if(type === "Cal"){
         let code = in_GroupCode.value;
         if(code.length > 7){
@@ -70,19 +72,35 @@ function checkError(type){
             }
         }
     }
+    // Here start the code for the calibration button (btn_Cal)
     else if(type === "Down"){
       userID = in_UserID.value;
       if(userID === " "){
         output_error_down.innerHTML = "Keine UserID angegeben";
-        userID.parseInt(in_UserID.value)
       }
       else{
-          output_error_down.innerHTML = "";
-          soundArray = tonspurBearbeiten(modell);
-          console.log("soundArray:",soundArray)
-          getReferenceData();
+        if(userID.length != 10){
+          output_error_down.innerHTML = "UserID muss 10 zeichen lang sein"
+        }
+        else{
+          var problem = false;
+          for(var i = 0; i < 10; i++){
+            if(isNaN(userID[i])){
+              output_error_down.innerHTML = "Nur Zahlen erlaubt!";
+              problem = true;
+            }
+          }
+          if(!problem){
+            parseInt(in_UserID.value);
+            output_error_down.innerHTML = "";
+            soundArray = tonspurBearbeiten(modell);
+            console.log("soundArray:",soundArray)
+            getReferenceData(); 
+          }
+        }
       }
     }
+    // Here start the code for the messung stoppen button (messungStoppenButton)
     else if(type === "messung"){
       if(ausgabeMessung.innerHTML === "Messung erfolgreich!"){
         handleAnleitung("s2");
@@ -92,12 +110,7 @@ function checkError(type){
         messungButton.classList.add("disabled");
       } 
     }
-    
-    // Here is the space where the function that will be called for
-    // the group calibration will end up
-
-    // Posibility to add more error checks
-}
+  }
 
 /**
  * Handles the changing of the sites from the Anleitung
@@ -111,7 +124,7 @@ function handleAnleitung(Seite){
     an_s2.classList.add("btn-outline-secondary");
     an_s3.classList.remove("btn-success");
     an_s3.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '1. Wenn der Leiter bescheid gibt, drücken Sie bitte „Messung starten“ </br></br> 2. Stoppen Sie die Messung, indem Sie auf „Messung stoppen“ klicken, nachdem Ihnen der Leiter mit einem Handzeichen Bescheid gegeben hat </br></br></br> Fahren Sie auf der nächsten Seite fort </br>'
+    an_txt.innerHTML = '1. Wenn der Leiter bescheid gibt, drücken Sie bitte „Messung starten“ </br></br> 2. Stoppen Sie die Messung, indem Sie auf „Messung stoppen“ klicken, nachdem Ihnen der Leiter mit einem Handzeichen Bescheid gegeben hat </br></br> Fahren Sie auf der nächsten Seite fort </br>'
 }
 else if(Seite === "s2"){
     an_s2.classList.remove("btn-outline-secondary");
@@ -120,7 +133,7 @@ else if(Seite === "s2"){
     an_s1.classList.add("btn-outline-secondary");
     an_s3.classList.remove("btn-success");
     an_s3.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '3. Geben Sie nun den vom Leiter erstellten Gruppen Code ein </br></br></br> 4. Speichern Sie Gruppen Code für den Kalibrierungsraum ab, indem Sie auf „Kalibrierungsraum speichern“ klicken   </br></br></br></br> Fahren Sie auf der nächsten Seite fort </br>'
+    an_txt.innerHTML = '3. Geben Sie nun den vom Leiter erstellten Gruppen Code ein </br></br></br> 4. Speichern Sie Gruppen Code für den Kalibrierungsraum ab, indem Sie auf „Kalibrierungsraum speichern“ klicken   </br></br></br> Fahren Sie auf der nächsten Seite fort </br>'
 }
 else if(Seite === "s3"){
     an_s3.classList.remove("btn-outline-secondary");
@@ -129,7 +142,7 @@ else if(Seite === "s3"){
     an_s1.classList.add("btn-outline-secondary");
     an_s2.classList.remove("btn-success");
     an_s2.classList.add("btn-outline-secondary");
-    an_txt.innerHTML = '5. Danach geben Sie bitte eine selbstüberlegte individuelle User ID ein </br></br> 6. Merken Sie sich diese User ID </br></br></br> 7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br></br>'
+    an_txt.innerHTML = '5. Danach geben Sie bitte eine selbstüberlegte individuelle User ID ein </br></br> 6. Merken Sie sich diese User ID </br></br></br> 7. Zum Schluss drücken Sie auf „Kalibrierung starten“ </br></br>'
 }
 }
 
@@ -166,8 +179,8 @@ function calibration(xl2Array, userArray){
  */
 function estimateAllDelta(){
     // takes out every double variable
-    let soundArrayNoDouble = soundArray.filter((element, index) => {
-      return soundArray.indexOf(element) === index;
+    let soundArrayNoDouble = soundArrayT.filter((element, index) => {
+      return soundArrayT.indexOf(element) === index;
     })
     // sorts the array from smallest to biggest
     soundArrayNoDouble.sort();
@@ -202,6 +215,8 @@ function estimateAllDelta(){
  * create the calibrationObject, which will be used 
  * for all further sound measurements of the current 
  * user
+ * This funciton also posts the created calibration object
+ * onto the OpenSenseMap Server  
  */
 function createCalibrationObject(){
     calibrationObject = {
@@ -213,12 +228,14 @@ function createCalibrationObject(){
         deltas: allDeltas,
         lengthTheCalibration: "10 secounds"
     }
+    // start the object with the user ID
     const preparedCalibrationO = [
       {
         "sensor": "63ce890239ae8400078b2eaf",
         "value": userID
       }];
     for(var i = 1; i < 120; i++){
+      // when there is no awailable delta, use 0
       if(allDeltas[i] === undefined){
         value = {
           "sensor": "63ce890239ae8400078b2eaf",
@@ -226,6 +243,7 @@ function createCalibrationObject(){
         }
         preparedCalibrationO.push(value)
       }
+      // if there is an availably delta, use it
       else{
         value = {
           "sensor": "63ce890239ae8400078b2eaf",
@@ -268,7 +286,7 @@ function getReferenceData() {
           btn_Gcal.classList.add("btn-secondary", "disabled");
           output_error_down.classList.add("text-success");
           output_error_cal.innerHTML = "";
-          calibration(xl2Array, soundArray);
+          calibration(xl2Array, soundArrayT);
           estimateAllDelta();
           createCalibrationObject();
           console.log(calibrationObject);
@@ -281,21 +299,18 @@ function getReferenceData() {
     })
 }
 
-/**
- * The following is mostly (except the shotening of the array)
+/*****************************************************************************
+ * The following is mostly (except the shortening of the array)
  * copied and changed for our needs from the App groups webaudio
  * For more information about this code please refer to the App/Messung Group
- */
+ *****************************************************************************/
 
 // Source:
 //https://github.com/takispig/db-meter
 
-var refresh_rate = 500;
 var stream;
-var offset = 30;
 var average = 0;
 var mindestDatenProAufnahme = 200;
-var anzahlDatenProAufnahme = 50;
 let measurementCount = 0;
 let startTime;
 let mitzaehlen = false;
@@ -322,7 +337,6 @@ function startMessung() {
   startTime = performance.now();
   messungButton.disabled = true;
   messungStoppenButton.disabled = false;
-  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
 
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
@@ -419,15 +433,6 @@ function startMessung() {
     });
 }
 
-// change update rate
-function changeUpdateRate() {
-  refresh_rate = Number(document.getElementById("refresh_rate").value);
-  document.getElementById("refresh_value").innerText = refresh_rate;
-  intervalId = window.setInterval(function () {
-    updateDb;
-  }, refresh_rate);
-}
-
 // stopping measurment
 function stoppMessung() {
   messungButton.disabled = false;
@@ -450,7 +455,11 @@ function stoppMessung() {
 //// Array kürzen
 ///////////////////////////////////////////////////////////////////////////
 
-// Tonspur Startton(Maximum) finden
+/**
+ * Changes the given tonspur, so that is has exactly 169 values
+ * @param {Array} tonspur 
+ * @returns  
+ */
 function tonspurBearbeiten(tonspur) {
   // Maximum berechnen
   // überprüfen von Array
@@ -490,7 +499,13 @@ function tonspurBearbeiten(tonspur) {
   }
 }
 
-// Tonspur kürzen
+/**
+ * Shortens the given tonspur beginning at the given MaxIndex
+ * to 169 values
+ * @param {Number} max - Index of the max dB
+ * @param {Array} tonspur - Array that will be shortend
+ * @returns the tonspur that is shorter
+ */
 function tonspurKuerzen(max, tonspur) {
   console.log("Bereit zum kuerzen");
   // Array kürzen auf richtige Länge
