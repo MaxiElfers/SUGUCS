@@ -7,15 +7,15 @@ block content
         document.querySelectorAll(".active")[0].classList.remove("active");
         document.querySelectorAll(".nav-link")[1].classList.add("active");
 
-    div.container
-        div.col-auto.allign-middle
+    div.container.allign-middle
+        .col-auto
           p
             u.fs-2.fw-bold Leiter
-        div.row.justify-content-center 
+        .row.justify-content-center 
           .col-6
-            div.row.justify-content-center
-                div.card.shadow-lg.allign-middle(style='width: 37rem;')
-                  div.card-body
+            .row.justify-content-center.mx-1
+                .card.shadow-lg
+                  .card-body
                     h4.fw-bold.card-title Anleitung
                     h6.card-subtitle.mb-2.text-muted Hinweise für die Kalibrierung:
                     h7.card-subtitle.mb-2.text-muted - Bitte Verhalten Sie sich während der Kalibrierung leise
@@ -44,14 +44,14 @@ block content
                       button.btn.btn-sm.btn-outline-secondary#s4 Seite 4 
                 br
                 br
-          .col-6(style='width: 37rem;')
-            .col.allign-middle
+          .col-6
+            .col
               br
               br
-              div.row.justify-content-center
-                .col-5.allign-middle
+              .row.justify-content-center
+                .col-5
                   div.btn.btn-primary#btn_XL2 Kalibrierungsprozess starten
-                .col-10.allign-middle
+                .col-10
                   br
                   br
                   div.input-group.mb-3
@@ -59,17 +59,16 @@ block content
                       input#input_GroupCode.form-control(placeholder='1234567' readonly)
                   div.btn.btn-secondary.disabled#btn_Gruppenkalibrierung Kalibrierungsraum erstellen 
                   br
-                  p#output_Error_Cal.allign-middle.text-danger.fs-5
+                  p#output_Error_Cal.text-danger.fs-5
               br
-              br
-            .col.allign-middle
+            .col
               .btn.btn-secondary.btn-lg.disabled#uploadData Daten für Teilnehmer freigeben
               br
-              p#output_Error_Up.allign-middle.text-danger.fs-5
-          .col.allign-middle
+              p#output_Error_Up.text-danger.fs-5
+          .col
             .row.justify-content-center
               br
-              div#out_finished.text-success.fs-2.fw-bold.visually-hidden.allign-middle
+              div#out_finished.text-success.fs-2.fw-bold.visually-hidden
                 span Sounddatein wurde freigegeben!
                 br
                 span Sie können nun zur Startseite zurückkehren.
