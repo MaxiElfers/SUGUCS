@@ -159,13 +159,22 @@ function startMessung() {
                   average + parseInt(deltas[average - 1].value);
 
                 db.innerText = messungDelta;
+
+                // FIltern der SensorID
+                let sensor;
+                senseBoxIDs.forEach((item) => {
+                  if (item.senseBoxID == osbDiv.value) {
+                    sensor = item.sensorID;
+                  }
+                });
+
                 //Klonen der Aufnahmestruktur aus modell.js
                 let a = Object.assign({}, aufnahme);
                 //a.lat = pos[0];
                 //a.lon = pos[1];
                 a.value = messungDelta;
                 //a.boxName = newName;
-                a.sensor = osbID;
+                a.sensor = sensor;
                 modell.push(a);
               }
             };
@@ -434,7 +443,7 @@ function kopieren(event) {
 function messungHinzufuegen() {
   //Token filtern
   let token;
-  senseBoxIds.forEach((item) => {
+  senseBoxIDs.forEach((item) => {
     if (item.senseBoxID == osbDiv.value) {
       token = item.token;
     }
