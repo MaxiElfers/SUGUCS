@@ -1,3 +1,13 @@
+/**
+ * @function hideLoadingElement
+ * @desc hides the loading element as soon as the image is loaded
+ * @param {*} 
+ */
+function hideLoadingElement() {
+  document.getElementById("loading-element").classList.add("d-none");
+}
+
+// hinzufügen einer Karte über Leaflet
 var map = L.map('analysemap').setView([51.919, 7.5], 10);
 
 L.tileLayer(
@@ -76,14 +86,11 @@ function fetchbox() {
         console.log('Fetch Error :', err);
     })
 
-    // test box: Senden: 60f077874fb91e001c71b3b1 TestBox: 63c3f0c9a122c30008268cc0
-    // test sensor: Senden: 60f077874fb91e001c71b3b2 TestBox: 63c3f0c9a122c30008268cc1
-    // Beispielzeiten: 2022-11-22T08:00 und 2022-11-22T12:00
     let starttime = document.getElementById("starttimeInput").value;
     let endtime = document.getElementById("endtimeInput").value;
     console.log(SBID)
     if (starttime == 0 || endtime == 0) {
-        ////https://api.opensensemap.org/boxes/data?boxId=60f077874fb91e001c71b3b1&phenomenon=Lautst%C3%A4rke&format=json
+        // wenn Start und Endzeit nicht gegeben sind:
         fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&phenomenon=Lautst%C3%A4rke&format=json`).then(function (response) {
             return response.json();
         }).then(function (dbdata) {

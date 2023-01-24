@@ -22,7 +22,7 @@ let an_txt = document.getElementById("AnleitungText");
 btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal"); handleAnleitung("s4");});
 btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
 btn_xl2.addEventListener("click", function(){playSound(); window.location = '/kalibrierung/XL2';});
-btn_COM.addEventListener("click", function(){console.log("yeah");com = input_COM.value});
+btn_COM.addEventListener("click", function(){com = input_COM.value});
 an_s1.addEventListener("click", function(){handleAnleitung("s1");});
 an_s2.addEventListener("click", function(){handleAnleitung("s2");});
 an_s3.addEventListener("click", function(){handleAnleitung("s3");});
@@ -222,6 +222,7 @@ function soundArrayMax(soundArray) {
                 realMaxIndex = i 
             }
         }
+        console.log(realMaxIndex)
         return realMaxIndex;
     }
     else{
@@ -236,13 +237,13 @@ function soundArrayMax(soundArray) {
  */
 function sliceSoundArray(soundArray) {
     const max = soundArrayMax(soundArray)
-    if(soundArray[max] === undefined || soundArray[max+169] === undefined){
+    if(soundArray[max] === undefined || soundArray[max+149] === undefined){
         console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
         output_error_cal.innerHTML = "Fehlerhafte Soundaufnahme. Versuchen Sie erneut."
     }
     else{
         output_error_cal.innerHTML = "";
-        soundArray = soundArray.slice(max, max + 169) // shorten Array to 30 values
+        soundArray = soundArray.slice(max, max + 149) // shorten Array to 30 values
     }
 }
 

@@ -10,6 +10,7 @@ router.get("/", function(req, res, next) {
     });
 });
 
+/* POST users listing. */
 router.post("/", function(req, res, next) {
 
     sid = req.body.sbidinput
@@ -20,7 +21,7 @@ router.post("/", function(req, res, next) {
     tag = req.body.tag
     nacht = req.body.nacht
 
-    // Mittelwert:
+    // Mittelwert festlegen:
     if (mean == "on") {
         mean = "TRUE"
         console.log(mean)
@@ -30,7 +31,7 @@ router.post("/", function(req, res, next) {
         console.log(mean)
     }
 
-    // Durchschnitt:
+    // Durchschnitt festlegen:
     if (ma == "on") {
         ma = "TRUE"
         console.log(ma)
@@ -40,7 +41,7 @@ router.post("/", function(req, res, next) {
         console.log(ma)
     }
 
-    // Tag:
+    // Tag festlegen:
     if (tag == "on") {
         tag = "TRUE"
         console.log(tag)
@@ -50,7 +51,7 @@ router.post("/", function(req, res, next) {
         console.log(tag)
     }
 
-    // Nacht:
+    // Nacht festlegen:
     if (nacht == "on") {
         nacht = "TRUE"
         console.log(nacht)
@@ -60,7 +61,7 @@ router.post("/", function(req, res, next) {
         console.log(nacht)
     }
 
-
+    // Lädt die Seite neu und fragt die Plumber API nach dem Plot an
     res.render("map", {
         title: "Karte",
         weblink: `http://127.0.0.1:8000/structurePlot?boxID=${sid}&from=${start}:00Z&to=${end}:00Z&Day=${tag}&Night=${nacht}&MA=${ma}&Mean=${mean}`,

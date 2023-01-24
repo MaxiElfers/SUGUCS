@@ -3,7 +3,7 @@ extends layout
 block content
     h2 Analyse Seite
     br
-    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch analysieren.
+    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und statistisch analysieren.
     .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
@@ -23,13 +23,13 @@ block content
                       h6 2.1 Eingabe der SenseBox ID (Beispiele: Senden: 60f077874fb91e001c71b3b1, TestBox: 63c3f0c9a122c30008268cc0)
                       input#sbidinput.form-control(type='text' name='sbidinput' placeholder='Sensebox ID')
                       h6 2.2. Eingabe der Start und Endzeit:
-                      h6 2.2.1 Startzeit: (Beispiel: 2022-11-22T08:00)
+                      h6 2.2.1 Startzeit: (Beispiel:2022-11-22T08:00)
                       input#startInput(style="width: 100%", type='text' name='startInput' placeholder='Startzeit in YYYY-MM-DDThh:mm')
-                      h6 2.2.2 Endzeit: (Beispiel: 2022-11-22T12:00)
+                      h6 2.2.2 Endzeit: (Beispiel:2022-11-22T12:00)
                       input#endInput(style="width: 100%", type='text' name='endInput' placeholder='Endzeit in YYYY-MM-DDThh:mm')
                       
                       h6 2.2.3 Wählen Sie aus, welche zusätzlichen Analysemethoden auf dem Plot angezeigt werden sollen:
-                        p Mittelwert: Durschnitt:
+                        p Mittelwert: Durchschnitt:
                           .form-check.form-check-inline.form-switch
                             input#mittel(type='checkbox' class="form-check-input" name="mittel") 
                           .form-check.form-check-inline.form-switch
@@ -41,10 +41,15 @@ block content
                             input#tag(type='checkbox' class="form-check-input" name="tag") 
                           .form-check.form-check-inline.form-switch
                             input#nacht(type='checkbox' class="form-check-input" name="nacht")
-
+                    
                       button.btn-dark(style="width: 30%") Bestätigen
                 br
-                img(src= weblink,style="height: 50%; width: 80%", alt="")
+                .d-flex.align-items-center.justify-content-center#loading-element
+                  .spinner-border.text-primary
+                  | 
+                img(src=weblink, style="height: 50%; width: 70%", alt="", onload="hideLoadingElement()")
+                p Falls kein Plot angezeigt wird, der Ladekreis aber verschwunden ist, war Ihre Eingabe ungültig! Bei einem leeren Plot sind in der vorhandenen Zeitspanne keine gemessenen Daten vorhanden!
+
     .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
@@ -53,13 +58,13 @@ block content
                   input#userinput.form-control(style="width: 55%" type='text' name='userinput' placeholder='Sensebox ID')
                   
                   h6 3.2. Eingabe der Start und Endzeit zur Abfrage und Ausgabe der in der Zeit gemessenen Lautstärken:
-                  h6 3.2.1 Startzeit: (Beispiel: 2022-11-22T08:00)
+                  h6 3.2.1 Startzeit: (Beispiel:2022-11-22T08:00)
                   input#starttimeInput(style="width: 55%", type='text' placeholder='Startzeit in YYYY-MM-DDThh:mm')
-                  h6 3.2.2 Endzeit: (Beispiel: 2022-11-22T12:00)
+                  h6 3.2.2 Endzeit: (Beispiel:2022-11-22T12:00)
                   input#endtimeInput(style="width: 55%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm')
                   button.btn-dark(style="width: 30%", onclick='fetchbox()') Bestätigen
                   br
-                  p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärkedaten!
+                  p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärke Daten!
                   table#resultTable
                     tr
                       th
@@ -72,8 +77,6 @@ block content
                   download#containercsv
                   download#containerjson
                   
-
-
     script.
         // Set active Button
         document.querySelectorAll(".active")[0].classList.remove("active");
