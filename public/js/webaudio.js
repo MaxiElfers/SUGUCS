@@ -100,7 +100,7 @@ function startMessung() {
     })
     .then(function (data) {
       //Finden der UserID
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i = i + 120) {
         if (data[i].value == userID.value) {
           userID_i = i;
           break;
