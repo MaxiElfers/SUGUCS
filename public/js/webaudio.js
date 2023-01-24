@@ -170,11 +170,12 @@ function startMessung() {
 
                 //Klonen der Aufnahmestruktur aus modell.js
                 let a = Object.assign({}, aufnahme);
-                //a.lat = pos[0];
-                //a.lon = pos[1];
+                a.lat = pos[0];
+                a.lon = pos[1];
                 a.value = messungDelta;
                 //a.boxName = newName;
                 a.sensor = sensor;
+                a.createdAt = new Date().toISOString();
                 modell.push(a);
               }
             };
