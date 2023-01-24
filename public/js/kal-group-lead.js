@@ -2,9 +2,13 @@
 let btn_Gcal = document.getElementById("btn_Gruppenkalibrierung");
 let btn_upload = document.getElementById("uploadData");
 let btn_xl2 = document.getElementById("btn_XL2");
+let btn_COM = document.getElementById("btn_COM");
+let input_COM = document.getElementById("input_COM");
 let in_GroupCode = document.getElementById("input_GroupCode");
 let in_file = document.getElementById("in_file");
 let in_soundArray = document.getElementById("soundArray");
+let in_COM = document.getElementById("in_COM");
+let hideText = document.getElementById("hideText");
 let output_error_cal = document.getElementById("output_Error_Cal");
 let output_error_up = document.getElementById("output_Error_Up");
 let out_fin = document.getElementById("out_finished");
@@ -18,6 +22,7 @@ let an_txt = document.getElementById("AnleitungText");
 btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal"); handleAnleitung("s4");});
 btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
 btn_xl2.addEventListener("click", function(){playSound(); window.location = '/kalibrierung/XL2';});
+btn_COM.addEventListener("click", function(){com = input_COM.value});
 an_s1.addEventListener("click", function(){handleAnleitung("s1");});
 an_s2.addEventListener("click", function(){handleAnleitung("s2");});
 an_s3.addEventListener("click", function(){handleAnleitung("s3");});
@@ -28,6 +33,7 @@ const audio_calibration = new Audio('/sounds/Calibration_sound.mp3');
 let xl2Tonspur = in_soundArray.innerHTML.split(',');
 let counter = 0;
 let group_code;
+let com = "";
 let SBID = "63c3f0c9a122c30008268cc0";
 let SBSensor = "63c3f0c9a122c30008268cc1";
 let AT = "e435ff67dd967d7211a529463861c5497025e410465f7c68935563ac54b6e62c";
@@ -52,7 +58,7 @@ if(xl2Tonspur[0] != ''){
  * tests that the preconditions are given, so 
  * the functionalities can work without problems
  * This function also starts the workflows 
- * @param {String} type - what buton called this function
+ * @param {String} type - what button called this function
  */
 function checkErrorAndStartWorkflow(type){
     let error = false;
@@ -101,8 +107,6 @@ function checkErrorAndStartWorkflow(type){
             out_fin.classList.remove("visually-hidden");
         }
     }
-    
-    // Posibility to add more error checks
 }
 
 /**
@@ -111,6 +115,8 @@ function checkErrorAndStartWorkflow(type){
  */
 function handleAnleitung(Seite){
     if(Seite === "s1"){
+        in_COM.classList.remove("visually-hidden");
+        hideText.classList.remove("visually-hidden");
         an_s1.classList.remove("btn-outline-secondary");
         an_s1.classList.add("btn-success");
         an_s2.classList.remove("btn-success");
@@ -119,9 +125,11 @@ function handleAnleitung(Seite){
         an_s3.classList.add("btn-outline-secondary");
         an_s4.classList.remove("btn-success");
         an_s4.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '1. Verbinden Sie ihr Endgerät mit dem XL2-Gerät </br></br> 2. Wählen Sie auf dem XL2 das Feld COM-Port aus </br></br> Fahren Sie auf der nächsten Seite fort</br></br></br></br>'
+        an_txt.innerHTML = '1. Verbinden Sie ihr Endgerät mit dem XL2-Gerät </br></br> 2. Wählen Sie auf dem XL2 das Feld COM-Port aus und geben Sie unten ihren verwendeten COM-Port an </br>'
     }
     if(Seite === "s2"){
+        in_COM.classList.add("visually-hidden");
+        hideText.classList.add("visually-hidden");
         an_s2.classList.remove("btn-outline-secondary");
         an_s2.classList.add("btn-success");
         an_s1.classList.remove("btn-success");
@@ -130,9 +138,11 @@ function handleAnleitung(Seite){
         an_s3.classList.add("btn-outline-secondary");
         an_s4.classList.remove("btn-success");
         an_s4.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '3. Stellen Sie sicher, dass alle Teilnehmer die korrekte Position eingenommen haben </br></br> 4. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 5. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie bis das Audio abgespielt wurde)'
+        an_txt.innerHTML = '3. Stellen Sie sicher, dass alle Teilnehmer die korrekte Position eingenommen haben </br></br> 4. Stellen Sie sicher, dass ihr Gerät mit der Box verbunden </br></br> 5. Starten Sie den Kalibrierungsprozess, indem Sie den Knopf "Kalibrierungsprozess starten" drücken (Bitte warten Sie)'
     }
     else if(Seite === "s3"){
+        in_COM.classList.add("visually-hidden");
+        hideText.classList.add("visually-hidden");
         an_s3.classList.remove("btn-outline-secondary");
         an_s3.classList.add("btn-success");
         an_s1.classList.remove("btn-success");
@@ -141,9 +151,11 @@ function handleAnleitung(Seite){
         an_s2.classList.add("btn-outline-secondary");
         an_s4.classList.remove("btn-success");
         an_s4.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '6. Überlegen Sie sich nun einen siebenstelligen Code im Feld "Group-Code" </br></br> 7. Erstellen Sie den Kalibrierungsraum, indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 8. Geben Sie diesen Code an alle Teilnehmer weiter </br></br>'
+        an_txt.innerHTML = '6. Überlegen Sie sich nun einen siebenstelligen Code im Feld "Group-Code" </br></br> 7. Erstellen Sie den Kalibrierungsraum, indem Sie den Knopf "Kalibrierungsraum erstellen" drücken </br></br> 8. Geben Sie diesen Code an alle Teilnehmer weiter </br>'
     }
     else if(Seite === "s4"){
+        in_COM.classList.add("visually-hidden");
+        hideText.classList.add("visually-hidden");
         an_s4.classList.remove("btn-outline-secondary");
         an_s4.classList.add("btn-success");
         an_s1.classList.remove("btn-success");
@@ -152,7 +164,7 @@ function handleAnleitung(Seite){
         an_s2.classList.add("btn-outline-secondary");
         an_s3.classList.remove("btn-success");
         an_s3.classList.add("btn-outline-secondary");
-        an_txt.innerHTML = '9. Geben Sie nun die aufgenommenen Daten von Ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 10. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 11. Sie können nun diese Seite verlassen </br></br></br>'
+        an_txt.innerHTML = '9. Geben Sie nun die aufgenommenen Daten von Ihnen frei, indem Sie den Knopf "Daten für Teilnehmer freigeben" drücken </br></br> 10. Nun können alle Teilnehmer ihre Kalibrierungsprozess starten </br></br> 11. Sie können nun diese Seite verlassen </br></br>'
     }
 }
 
@@ -210,11 +222,11 @@ function soundArrayMax(soundArray) {
                 realMaxIndex = i 
             }
         }
+        console.log(realMaxIndex)
         return realMaxIndex;
     }
     else{
         console.error("Fehlerhafter Lautstärke-Array übergeben") // Error handling
-        // @todo  response auf der Website anzeigen
     }
 }
   
@@ -225,12 +237,13 @@ function soundArrayMax(soundArray) {
  */
 function sliceSoundArray(soundArray) {
     const max = soundArrayMax(soundArray)
-    if(soundArray[max] === undefined || soundArray[max+169] === undefined){
+    if(soundArray[max] === undefined || soundArray[max+149] === undefined){
         console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
-        // @todo  response auf der Website anzeigen
+        output_error_cal.innerHTML = "Fehlerhafte Soundaufnahme. Versuchen Sie erneut."
     }
     else{
-        soundArray = soundArray.slice(max, max + 169) // shorten Array to 30 values
+        output_error_cal.innerHTML = "";
+        soundArray = soundArray.slice(max, max + 149) // shorten Array to 30 values
     }
 }
 
