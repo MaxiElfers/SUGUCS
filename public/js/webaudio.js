@@ -92,6 +92,8 @@ osbDiv.addEventListener("change", function () {
 var deltas = [];
 var userID_i = null;
 function startMessung() {
+  document.getElementById("FehlerDiv").style.display = "none";
+
   fetch(`https://api.opensensemap.org/boxes/${ID}/data/${Sens2Delta}?`)
     .then(function (response) {
       return response.json();
@@ -108,6 +110,7 @@ function startMessung() {
         console.log("UserID falsch");
         fehlerDiv0.style.display = "block";
       } else {
+        fehlerDiv0.style.display = "none";
         //Filtern der 120 Werte
         for (let i = userID_i + 1; i < userID_i + 120; i++) {
           deltas.push(data[i]);
@@ -351,5 +354,8 @@ function messungHinzufuegen() {
     body: JSON.stringify(modell),
   })
     .then((response) => response.json())
-    .then((response) => console.log(JSON.stringify(response)));
+    .then((response) => {
+      console.log(JSON.stringify(response));
+      document.getElementById("erfolgreichHochgeladen").style.display = "block";
+    });
 }
