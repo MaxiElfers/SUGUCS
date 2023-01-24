@@ -1,3 +1,7 @@
+function hideLoadingElement() {
+  document.getElementById("loading-element").classList.add("d-none");
+}
+
 var map = L.map('analysemap').setView([51.919, 7.5], 10);
 
 L.tileLayer(
