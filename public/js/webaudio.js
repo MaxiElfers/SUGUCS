@@ -432,3 +432,16 @@ function kopieren(event) {
   // Alert the copied text
   alert("Copied the text: " + copyText.value);
 }
+
+function messungHinzufuegen() {
+  fetch(`https://api.opensensemap.org/boxes/${SBID}/data`, {
+    method: "POST",
+    headers: {
+      Authorization: AT,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(preparedXL2Data),
+  })
+    .then((response) => response.json())
+    .then((response) => console.log(JSON.stringify(response)));
+}
