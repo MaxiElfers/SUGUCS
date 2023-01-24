@@ -195,6 +195,7 @@ function prepareXL2Data(){
         }
         preparedXL2Data.push(data);
     })
+    console.log(preparedXL2Data)
 }
   
 /**
@@ -262,4 +263,37 @@ function sendReferenceData() {
     })
     .then(response => response.json())
     .then(response => console.log(JSON.stringify(response)))
+}
+
+
+
+/**********************
+ * Notfalls Demo      *
+ **********************/
+
+let btn_notfalls_demo1 = document.getElementById("btn_demo1");
+let btn_notfalls_demo2 = document.getElementById("btn_demo2");
+btn_notfalls_demo1.addEventListener("click", startDemo);
+btn_notfalls_demo2.addEventListener("click", continueDemo);
+let xl2DemoData = [80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,34,34,34,34,34,34,34,34,34,34,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,56,56,56,56,56,56,56,56,56,56,34,34,34,34,34,34,34,34,34,34,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,48,34,34,34,34,34,34,34,34,34,34,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,34,34,34,34,34,34,34,34,34,34,34,71,71,71,71,71,71,71,71,71,71]
+
+function startDemo(){
+    console.log(xl2DemoData);
+    btn_xl2.classList.remove("btn-primary");
+    btn_xl2.classList.add("btn-secondary", "disabled");
+    btn_Gcal.classList.remove("btn-secondary", "disabled");
+    btn_Gcal.classList.add("btn-primary");
+    in_GroupCode.readOnly = false;
+    handleAnleitung("s3");
+}
+
+function continueDemo(){
+    xl2Tonspur = xl2DemoData;
+    prepareXL2Data();
+    sendReferenceData();
+}
+
+function showNotfall(){
+    btn_notfalls_demo1.classList.remove("visually-hidden")
+    btn_notfalls_demo2.classList.remove("visually-hidden")
 }
