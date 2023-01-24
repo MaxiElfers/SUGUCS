@@ -222,6 +222,7 @@ function soundArrayMax(soundArray) {
                 realMaxIndex = i 
             }
         }
+        console.log(realMaxIndex)
         return realMaxIndex;
     }
     else{
@@ -236,13 +237,13 @@ function soundArrayMax(soundArray) {
  */
 function sliceSoundArray(soundArray) {
     const max = soundArrayMax(soundArray)
-    if(soundArray[max] === undefined || soundArray[max+169] === undefined){
+    if(soundArray[max] === undefined || soundArray[max+149] === undefined){
         console.error("Die Soundaufnahme ab dem Kalibrierungsstart ist zu kurz"); // Error handling
         output_error_cal.innerHTML = "Fehlerhafte Soundaufnahme. Versuchen Sie erneut."
     }
     else{
         output_error_cal.innerHTML = "";
-        soundArray = soundArray.slice(max, max + 169) // shorten Array to 30 values
+        soundArray = soundArray.slice(max, max + 149) // shorten Array to 30 values
     }
 }
 
