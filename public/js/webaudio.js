@@ -33,6 +33,7 @@ var userIDDiv = document.getElementById("userID");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
 
+userIDDiv.value = "12345";
 nameDiv.value = "SUGUCS";
 osbDiv.value = "";
 
@@ -160,11 +161,11 @@ function startMessung() {
                 db.innerText = messungDelta;
                 //Klonen der Aufnahmestruktur aus modell.js
                 let a = Object.assign({}, aufnahme);
-                a.lat = pos[0];
-                a.lon = pos[1];
+                //a.lat = pos[0];
+                //a.lon = pos[1];
                 a.value = messungDelta;
-                a.boxName = newName;
-                a.boxId = osbID;
+                //a.boxName = newName;
+                a.sensor = osbID;
                 modell.push(a);
               }
             };
@@ -417,7 +418,9 @@ setInterval(function () {
 
 function kopieren(event) {
   // Get the text field
-  var copyText = document.getElementById(event.rangeParent.id + "Input");
+  var copyText = document.getElementById(
+    event.attributes[1].nodeValue + "Input"
+  );
 
   // Select the text field
   copyText.select();
@@ -426,4 +429,24 @@ function kopieren(event) {
   navigator.clipboard.writeText(copyText.value);
   // Alert the copied text
   alert("Copied the text: " + copyText.value);
+}
+
+function messungHinzufuegen() {
+  //Token filtern
+  let token;
+  senseBoxIds.forEach((item) => {
+    if (item.senseBoxID == osbDiv.value) {
+      token = item.token;
+    }
+  });
+  fetch("https://api.opensensemap.org/boxes/" + osbDiv.value + "/data", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(modell),
+  })
+    .then((response) => response.json())
+    .then((response) => console.log(JSON.stringify(response)));
 }
