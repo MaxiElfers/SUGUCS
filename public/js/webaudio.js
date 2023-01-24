@@ -149,7 +149,7 @@ function startMessung() {
                 values += data[i];
               }
 
-              average = Math.round(20 * Math.log10(values / data.length) + 30);
+              average = Math.round(20 * Math.log10(values / data.length) + 25);
 
               if (isFinite(average) && average >= 0) {
                 measurementCount++;
@@ -179,6 +179,7 @@ function startMessung() {
                 modell.push(a);
               }
             };
+            //Anzeigemeter
             const analyserNode = context.createAnalyser();
             source.connect(analyserNode);
             const pcmData = new Float32Array(analyserNode.fftSize);
@@ -194,35 +195,8 @@ function startMessung() {
 
             window.requestAnimationFrame(onFrame);
           });
-
-        // update the volume every refresh_rate m.seconds
-        var updateDb = function () {
-          window.clearInterval(interval);
-
-          var volume = Math.round(
-            modell.reduce((a, b) => a + b) / modell.length
-          );
-          //var volume = Math.round(Math.max.apply(null, aufnahme));
-          if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
-          db.innerText = volume;
-          aufnahme = []; // clear previous values
-
-          interval = window.setInterval(updateDb, refresh_rate);
-        };
-        var interval = window.setInterval(updateDb, refresh_rate);
       }
     });
-}
-
-/**
- * Funktion zum Ändern der UpdateRate
- */
-function changeUpdateRate() {
-  refresh_rate = Number(document.getElementById("refresh_rate").value);
-  document.getElementById("refresh_value").innerText = refresh_rate;
-  intervalId = window.setInterval(function () {
-    updateDb;
-  }, refresh_rate);
 }
 
 /**
@@ -268,7 +242,6 @@ document.getElementById("hinzufuegen").addEventListener("click", function () {
 function getValues() {
   // Daten einlesen
   var newName = document.getElementById("NameDiv").value;
-  var osbID = document.getElementById("OpenSenseBoxDiv").value;
   var newModell = modell;
   var newStandort = pos;
   //console.log(newName, newModell, newStandort);
@@ -283,22 +256,7 @@ function getValues() {
   } else if (newStandort == null) {
     document.getElementById("FehlerDiv2").style.display = "block";
   } else {
-    var durchschnitt = getDurchschnitt(newModell);
-
-    // GeoJSON mit Werten
-    data = {
-      name: newName,
-      geometry: {
-        type: "Point",
-        coordinates: newStandort,
-      },
-      Messung: newModell,
-      Durchschnitt: durchschnitt,
-      OpenSenseBoxID: osbID,
-    };
-    // GeoJSON ausgeben
-    console.log(data);
-    postData(data);
+    messungHinzufuegen();
   }
 }
 
@@ -313,80 +271,6 @@ function getDurchschnitt(Messungen) {
     Summe = Summe + Messungen[i].value;
   }
   return Summe / Messungen.length;
-}
-
-/**
- * Fetcht die neuen Daten
- * @param doc zu postende Daten
- */
-function postData(doc) {
-  fetch("/addData", {
-    headers: { "Content-Type": "application/json" },
-    method: "post",
-    body: JSON.stringify(doc),
-  });
-
-  if (aufnahme.length > 50) {
-    con.suspend();
-    console.log(aufnahme);
-    tonspurMax(aufnahme);
-  }
-}
-
-///////////////////////////////////////////////////////////////////////////
-//// Array kürzen
-///////////////////////////////////////////////////////////////////////////
-
-// Tonspur Startton(Maximum) finden
-function tonspurMax(tonspur) {
-  console.log("Array Laenge ist: " + tonspur.length);
-
-  // Maximum berechnen
-  // überprüfen von Array
-  if (tonspur.length === 0) {
-    return -1;
-  }
-  var max = tonspur[0];
-  var maxIndex = 0;
-  // nach Maximum suchen
-  for (var i = 1; i < tonspur.length; i++) {
-    if (tonspur[i] > max) {
-      maxIndex = i;
-      max = tonspur[i];
-    }
-  }
-  console.log("Max Index ist: " + maxIndex);
-
-  var realMaxIndex = maxIndex;
-  // gucken, dass es wirklich der letzte aufgenommene dB-Wert des Starttons ist
-  for (i = maxIndex + 1; i < maxIndex + 10; i++) {
-    // 10 als Zeiteinheit für maximale Länge des Starttons
-    if (tonspur[maxIndex] - 5 < tonspur[i]) {
-      // Maximal 5dB unterschied als zugelassene Varianz
-      realMaxIndex = i;
-    }
-  }
-  console.log("Real Max Index ist: " + realMaxIndex);
-
-  // überprüfen ob Array groß genug ist bzw. ganze Zeit aufgenommen hat
-  if (tonspur.length - realMaxIndex + 30 > 0) {
-    // 30 Testzeiteinheit für zu kalibrierendes Audio
-    tonspurKuerzen(realMaxIndex, tonspur);
-  } else {
-    console.log("Aufnahme ist zu kurz");
-  }
-}
-
-/**
- * Funktion zum Kürzen der Tonspur
- * @param max maximaler Datenwert
- * @param {*} tonspur Tonspur
- */
-function tonspurKuerzen(max, tonspur) {
-  console.log("Bereit zum kuerzen");
-  // Array kürzen auf richtige Länge
-  tonspur = tonspur.slice(max, max + 30);
-  console.log(tonspur);
 }
 
 /**
@@ -426,6 +310,10 @@ setInterval(function () {
   }
 }, 1000);
 
+/**
+ * Kopieren der IDs über onClick
+ * @param {*} event
+ */
 function kopieren(event) {
   // Get the text field
   var copyText = document.getElementById(
@@ -441,6 +329,9 @@ function kopieren(event) {
   alert("Copied the text: " + copyText.value);
 }
 
+/**
+ * Läd die Daten in die OpenSenseMap
+ */
 function messungHinzufuegen() {
   //Token filtern
   let token;
