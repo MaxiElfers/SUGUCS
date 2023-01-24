@@ -432,10 +432,17 @@ function kopieren(event) {
 }
 
 function messungHinzufuegen() {
+  //Token filtern
+  let token;
+  senseBoxIds.forEach((item) => {
+    if (item.senseBoxID == osbDiv.value) {
+      token = item.token;
+    }
+  });
   fetch(`https://api.opensensemap.org/boxes/${ID}/data`, {
     method: "POST",
     headers: {
-      Authorization: osbDiv.value,
+      Authorization: token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(modell),
