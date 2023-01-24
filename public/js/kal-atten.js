@@ -179,8 +179,8 @@ function calibration(xl2Array, userArray){
  */
 function estimateAllDelta(){
     // takes out every double variable
-    let soundArrayNoDouble = soundArrayT.filter((element, index) => {
-      return soundArrayT.indexOf(element) === index;
+    let soundArrayNoDouble = soundArray.filter((element, index) => {
+      return soundArray.indexOf(element) === index;
     })
     // sorts the array from smallest to biggest
     soundArrayNoDouble.sort();
@@ -286,7 +286,7 @@ function getReferenceData() {
           btn_Gcal.classList.add("btn-secondary", "disabled");
           output_error_down.classList.add("text-success");
           output_error_cal.innerHTML = "";
-          calibration(xl2Array, soundArrayT);
+          calibration(xl2Array, soundArray);
           estimateAllDelta();
           createCalibrationObject();
           console.log(calibrationObject);

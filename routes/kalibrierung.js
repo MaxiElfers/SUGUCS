@@ -16,7 +16,7 @@ router.get("/kal-atten", function (req, res, next) {
 });
 
 router.get("/XL2", function (req, res, next){
-  var port = "COM4"; // @ToDo: needs a way of how to decide for the right port
+  var port = "COM3"; // @ToDo: needs a way of how to decide for the right port
   let dbArray = [];
   let soundArray = [];
 
@@ -42,7 +42,7 @@ router.get("/XL2", function (req, res, next){
       setTimeout(function(){
         serialPort.close() // closes the port
         sounddatenBearbeiten();
-      }, 9000)
+      }, 10000)
     });
 
 

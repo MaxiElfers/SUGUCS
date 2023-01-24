@@ -22,7 +22,7 @@ let an_txt = document.getElementById("AnleitungText");
 btn_Gcal.addEventListener("click", function(){checkErrorAndStartWorkflow("Cal"); handleAnleitung("s4");});
 btn_upload.addEventListener("click", function(){checkErrorAndStartWorkflow("Up");});
 btn_xl2.addEventListener("click", function(){playSound(); window.location = '/kalibrierung/XL2';});
-btn_COM.addEventListener("click", function(){console.log("yeah");com = input_COM.value});
+btn_COM.addEventListener("click", function(){com = input_COM.value});
 an_s1.addEventListener("click", function(){handleAnleitung("s1");});
 an_s2.addEventListener("click", function(){handleAnleitung("s2");});
 an_s3.addEventListener("click", function(){handleAnleitung("s3");});
