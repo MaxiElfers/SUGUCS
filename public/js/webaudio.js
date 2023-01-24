@@ -32,6 +32,7 @@ messungStoppenButton = document.getElementById("messungStoppen");
 var userIDDiv = document.getElementById("userID");
 var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
+var fehlerDiv0 = document.getElementById("FehlerDiv0");
 
 userIDDiv.value = "12345";
 nameDiv.value = "SUGUCS";
@@ -105,6 +106,7 @@ function startMessung() {
       }
       if (userID_i == null) {
         console.log("UserID falsch");
+        fehlerDiv0.style.display = "block";
       } else {
         //Filtern der 120 Werte
         for (let i = userID_i + 1; i < userID_i + 120; i++) {
