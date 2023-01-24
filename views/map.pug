@@ -3,7 +3,7 @@ extends layout
 block content
     h2 Analyse Seite
     br
-    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch analysieren.
+    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und statistisch analysieren.
     .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
@@ -29,7 +29,7 @@ block content
                       input#endInput(style="width: 100%", type='text' name='endInput' placeholder='Endzeit in YYYY-MM-DDThh:mm')
                       
                       h6 2.2.3 Wählen Sie aus, welche zusätzlichen Analysemethoden auf dem Plot angezeigt werden sollen:
-                        p Mittelwert: Durschnitt:
+                        p Mittelwert: Durchschnitt:
                           .form-check.form-check-inline.form-switch
                             input#mittel(type='checkbox' class="form-check-input" name="mittel") 
                           .form-check.form-check-inline.form-switch
@@ -47,8 +47,8 @@ block content
                 .d-flex.align-items-center.justify-content-center#loading-element
                   .spinner-border.text-primary
                   | 
-                img(src=weblink, style="height: 50%; width: 80%", alt="", onload="hideLoadingElement()")
-                p Falls kein Plot angezeigt wird, der Ladekreis aber verschwunden ist war Ihre Eingabe ungültig! Bei einem leeren Plot sind in der Vorhandenen Zeitspanne keine gemessenen Daten vorhanden!
+                img(src=weblink, style="height: 50%; width: 70%", alt="", onload="hideLoadingElement()")
+                p Falls kein Plot angezeigt wird, der Ladekreis aber verschwunden ist, war Ihre Eingabe ungültig! Bei einem leeren Plot sind in der vorhandenen Zeitspanne keine gemessenen Daten vorhanden!
 
     .row
         .col-lg-6.col-xs-12.mb-3
@@ -64,7 +64,7 @@ block content
                   input#endtimeInput(style="width: 55%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm')
                   button.btn-dark(style="width: 30%", onclick='fetchbox()') Bestätigen
                   br
-                  p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärkedaten!
+                  p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärke Daten!
                   table#resultTable
                     tr
                       th
@@ -77,8 +77,6 @@ block content
                   download#containercsv
                   download#containerjson
                   
-
-
     script.
         // Set active Button
         document.querySelectorAll(".active")[0].classList.remove("active");
