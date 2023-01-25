@@ -263,19 +263,6 @@ function getValues() {
 }
 
 /**
- * Berechnet den Durchschnitt aus einem Feld mit int Werten
- * @param {int} Messungen
- * @returns durchschnitt
- */
-function getDurchschnitt(Messungen) {
-  var Summe = 0;
-  for (var i = 0; i < Messungen.length; i++) {
-    Summe = Summe + Messungen[i].value;
-  }
-  return Summe / Messungen.length;
-}
-
-/**
  * Funktion zum Erhöhen der Messung um 1
  */
 function anzahlMessungenErhoehen() {
