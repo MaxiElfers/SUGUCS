@@ -20,7 +20,7 @@ ID = "63ce890239ae8400078b2eae";
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
-// Einlesen der eingegebenen Werte
+
 const db = document.getElementById("db");
 var con;
 var con;
@@ -84,14 +84,56 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
-/**
- * Funktion zum Durchführen der Soundmessung
- * Quelle: s.o.
- */
 
-var deltas = [];
-var userID_i = null;
+var mindestDatenProAufnahme = 50;
+
 function startMessung() {
+  fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SBSensor}?`).then(
+    function (response) {
+      return response.json();
+    }
+  );
+
+  startTime = performance.now();
+  messungStoppenButton.disabled = false;
+  var newName = document.getElementById("NameDiv").value;
+  var osbID = document.getElementById("OpenSenseBoxDiv").value;
+  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
+
+  navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then((stream) => {
+      const context = new AudioContext();
+      con = context;
+      // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
+      // come from the local computer microphone or other sources.
+      const source = context.createMediaStreamSource(stream);
+      // creates a ScriptProcessorNode used for direct audio processing
+      const processor = context.createScriptProcessor(2048, 1, 1);
+      // reates an AnalyserNode, which can be used to expose audio time and frequency data and create data visualizations
+      const analyser = context.createAnalyser();
+
+      // A double value representing the averaging constant with the last analysis frame —
+      // basically, it makes the transition between values over time smoother.
+      analyser.smoothingTimeConstant = 0.8;
+      // An unsigned long value representing the size of the FFT (Fast Fourier Transform)
+      // to be used to determine the frequency domain.
+      analyser.fftSize = 256;
+
+      source.connect(analyser);
+      analyser.connect(processor);
+      processor.connect(context.destination);
+
+      processor.onaudioprocess = () => {
+        var data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        var values = 0;
+
+        for (var i = 0; i < data.length; i++) {
+          //if (data[i]>130) data[i]=130;
+          values += data[i];
+        }
+        
   fetch(`https://api.opensensemap.org/boxes/${ID}/data/${Sens2Delta}?`)
     .then(function (response) {
       return response.json();
@@ -108,6 +150,7 @@ function startMessung() {
         console.log("UserID falsch");
         fehlerDiv0.style.display = "block";
       } else {
+        fehlerDiv0.style.display = "none";
         //Filtern der 120 Werte
         for (let i = userID_i + 1; i < userID_i + 120; i++) {
           deltas.push(data[i]);
@@ -338,5 +381,7 @@ function messungHinzufuegen() {
     body: JSON.stringify(modell),
   })
     .then((response) => response.json())
-    .then((response) => console.log(JSON.stringify(response)));
-}
+    .then((response) => {
+      console.log(JSON.stringify(response));
+      document.getElementById("erfolgreichHochgeladen").style.display = "block";
+    });

@@ -7,9 +7,9 @@ block content
     document.querySelectorAll(".active")[0].classList.remove("active");
     document.querySelectorAll(".nav-link")[1].classList.add("active");
 
-  div.container
-    div.row.justify-content-center
-      div.col-6
+  .container
+    .row.justify-content-center
+      .col-6
         br
         br
         br
@@ -21,12 +21,18 @@ block content
         h1.text-center Kalibrierung
         br
         br
-        div.row.justify-content-center 
-          div.col-auto
-            div.btn.btn-primary.btn-lg#btn_asTeil Als Teilnehmer 
-          div.col-auto
-            div.btn.btn-primary.btn-lg#btn_asLead &nbsp Als Leiter &nbsp
+        .row.allign-middle
+          .col
+            .btn.mt-1.mx-1.btn-primary.btn-lg#btn_asTeil Als Teilnehmer 
+            .btn.mt-1.mx-1.btn-primary.btn-lg#btn_asLead &nbsp Als Leiter &nbsp
   
+
+block footer
+  footer.footer.fixed-bottom.py-5.bg-dark.mt-3
+    .container.px-4.px-lg-5
+      p.m-0.text-center.text-white Copyright &copy; Studienprojekt Umweltbezogener Gesundheitsschutz und Bürgerwissenschaft
+      p.m-0.text-center.text-white Westfälische-Wilhelms-Universität, Heisenbergstraße 2, 48149 Münster
+        
   script(src='/js/kalibrierung.js')
  
 
