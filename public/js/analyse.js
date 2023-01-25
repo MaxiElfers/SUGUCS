@@ -4,11 +4,11 @@
  * @param {*} 
  */
 function hideLoadingElement() {
-  document.getElementById("loading-element").classList.add("d-none");
+    document.getElementById("loading-element").classList.add("d-none");
 }
 
 // hinzufügen einer Karte über Leaflet
-var map = L.map('analysemap').setView([51.919, 7.5], 10);
+var map = L.map('analysemap').setView([51.9, 7.5], 12);
 
 L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -16,9 +16,9 @@ L.tileLayer(
     }).addTo(map);
 
 // abrufen aller openSenseBoxen und hinzufügen zur Leaflet Karte
-fetch("https://api.opensensemap.org/boxes?format=geojson").then(function (response) {
+fetch("https://api.opensensemap.org/boxes?format=geojson").then(function(response) {
     return response.json();
-}).then(function (locations) {
+}).then(function(locations) {
     console.log(locations);
 
     // spezielles Design für die Marker der Messungen
@@ -30,18 +30,18 @@ fetch("https://api.opensensemap.org/boxes?format=geojson").then(function (respon
     });
 
     var boxvisualisierung = new L.geoJSON(locations, {
-        pointToLayer: function (feature, latlng) {
+        pointToLayer: function(feature, latlng) {
             return L.marker(latlng, {
                 icon: boxstandort
             });
         },
 
-        onEachFeature: function (feature, layer) {
+        onEachFeature: function(feature, layer) {
             layer.bindPopup("Sensebox Name: " + feature.properties.name + "<br>" + "SenseBox ID: " + feature.properties._id)
 
         }
     }).addTo(map);
-}).catch(function (err) {
+}).catch(function(err) {
     console.log('Fetch Error :', err);
 })
 
@@ -53,10 +53,10 @@ fetch("https://api.opensensemap.org/boxes?format=geojson").then(function (respon
 function fetchbox() {
     let SBID = document.getElementById("userinput").value;
     console.log(SBID)
-    fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function (response) {
+    fetch(`https://api.opensensemap.org/boxes/${SBID}?format=geojson`).then(function(response) {
         return response.json();
         console.log(SBID)
-    }).then(function (data) {
+    }).then(function(data) {
         console.log(data);
         console.log(JSON.stringify(data));
 
@@ -69,20 +69,20 @@ function fetchbox() {
         });
 
         var boxvisualisierung = new L.geoJSON(data, {
-            pointToLayer: function (feature, latlng) {
+            pointToLayer: function(feature, latlng) {
                 return L.marker(latlng, {
                     icon: boxstandort
                 });
             },
 
-            onEachFeature: function (feature, layer) {
+            onEachFeature: function(feature, layer) {
                 layer.bindPopup("Sensebox Name: " + feature.properties.name + "<br>" + "SenseBox ID: " + feature.properties._id)
 
             }
         }).addTo(map);
 
 
-    }).catch(function (err) {
+    }).catch(function(err) {
         console.log('Fetch Error :', err);
     })
 
@@ -91,25 +91,32 @@ function fetchbox() {
     console.log(SBID)
     if (starttime == 0 || endtime == 0) {
         // wenn Start und Endzeit nicht gegeben sind:
-        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&phenomenon=Lautst%C3%A4rke&format=json`).then(function (response) {
+        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&phenomenon=Lautst%C3%A4rke&format=json`).then(function(response) {
             return response.json();
-        }).then(function (dbdata) {
+        }).then(function(dbdata) {
             console.log(dbdata);
 
             clearTable("resultTable")
             drawTable(dbdata)
-            /**
-             * @function drawTable
-             * @desc inserts the fetched data into the table thats displayed on the page
-             * @param {*} results array of JSON wich containes the data to be displayed
-             */
+                /**
+                 * @function drawTable
+                 * @desc inserts the fetched data into the table thats displayed on the page
+                 * @param {*} results array of JSON wich containes the data to be displayed
+                 */
             function drawTable(results) {
                 var table = document.getElementById("resultTable");
+                table.style.borderCollapse = "collapse";
                 //creates the Table with the direction an distances
                 for (var j = 0; j < results.length; j++) {
                     var newRow = table.insertRow(j + 1);
+                    newRow.style.border = "1px solid black";
+                    newRow.style.padding = "5px";
                     var cel1 = newRow.insertCell(0);
                     var cel2 = newRow.insertCell(1);
+                    cel1.style.border = "1px solid black";
+                    cel1.style.padding = "5px";
+                    cel2.style.border = "1px solid black";
+                    cel2.style.padding = "5px";
                     cel1.innerHTML = dbdata[j].createdAt;
                     cel2.innerHTML = dbdata[j].value;
                 }
@@ -162,27 +169,34 @@ function fetchbox() {
         });
     } else {
         // Wenn Start und Endzeit angegeben wurde werden diese in der Anfrage an die opensensemap API berücksichtigt
-        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&from-date=${starttime}:00Z&to-date=${endtime}:00Z&phenomenon=Lautst%C3%A4rke&format=json`).then(function (response) {
+        fetch(`https://api.opensensemap.org/boxes/data?boxId=${SBID}&from-date=${starttime}:00Z&to-date=${endtime}:00Z&phenomenon=Lautst%C3%A4rke&format=json`).then(function(response) {
             return response.json();
-        }).then(function (timedata) {
+        }).then(function(timedata) {
             console.log(timedata);
             clearTable("resultTable")
 
             drawTable(timedata)
-            /**
-             * @function drawTable
-             * @desc inserts the fetched data into the table thats displayed on the page;
-             * @param {*} results array of JSON wich containes the data to be displayed
-             */
+                /**
+                 * @function drawTable
+                 * @desc inserts the fetched data into the table thats displayed on the page;
+                 * @param {*} results array of JSON wich containes the data to be displayed
+                 */
             function drawTable(results) {
                 var table = document.getElementById("resultTable");
+                table.style.borderCollapse = "collapse";
                 //creates the Table with the direction an distances
                 for (var j = 0; j < results.length; j++) {
                     var newRow = table.insertRow(j + 1);
+                    newRow.style.border = "1px solid black";
+                    newRow.style.padding = "5px";
                     var cel1 = newRow.insertCell(0);
                     var cel2 = newRow.insertCell(1);
-                    cel1.innerHTML = timedata[j].createdAt;
-                    cel2.innerHTML = timedata[j].value;
+                    cel1.style.border = "1px solid black";
+                    cel1.style.padding = "5px";
+                    cel2.style.border = "1px solid black";
+                    cel2.style.padding = "5px";
+                    cel1.innerHTML = dbdata[j].createdAt;
+                    cel2.innerHTML = dbdata[j].value;
                 }
             }
             /**
@@ -229,6 +243,6 @@ function fetchbox() {
             }
             console.log(timedata)
         });
-        
+
     }
 }
