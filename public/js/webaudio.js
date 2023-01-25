@@ -94,6 +94,7 @@ var userID_i = null;
 
 function startMessung() {
   document.getElementById("FehlerDiv").style.display = "none";
+  modell = [];
 
   fetch(`https://api.opensensemap.org/boxes/${ID}/data/${Sens2Delta}?`)
     .then(function (response) {
