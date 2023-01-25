@@ -34,8 +34,8 @@ var nameDiv = document.getElementById("NameDiv");
 var osbDiv = document.getElementById("OpenSenseBoxDiv");
 var fehlerDiv0 = document.getElementById("FehlerDiv0");
 
-userIDDiv.value = "12345";
-nameDiv.value = "SUGUCS";
+userIDDiv.value = "1212121212";
+nameDiv.value = "SUGUCS3";
 osbDiv.value = "";
 
 // Buttons disablen
