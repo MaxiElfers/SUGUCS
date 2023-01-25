@@ -107,6 +107,7 @@ function startMessung() {
           break;
         }
       }
+      console.log(data);
       if (userID_i == null) {
         console.log("UserID falsch");
         fehlerDiv0.style.display = "block";
@@ -155,7 +156,7 @@ function startMessung() {
                 values += data[i];
               }
 
-              average = Math.round(20 * Math.log10(values / data.length) + 25);
+              average = Math.round(20 * Math.log10(values / data.length));
 
               if (isFinite(average) && average >= 0) {
                 measurementCount++;
@@ -264,19 +265,6 @@ function getValues() {
   } else {
     messungHinzufuegen();
   }
-}
-
-/**
- * Berechnet den Durchschnitt aus einem Feld mit int Werten
- * @param {int} Messungen
- * @returns durchschnitt
- */
-function getDurchschnitt(Messungen) {
-  var Summe = 0;
-  for (var i = 0; i < Messungen.length; i++) {
-    Summe = Summe + Messungen[i].value;
-  }
-  return Summe / Messungen.length;
 }
 
 /**
