@@ -20,7 +20,7 @@ ID = "63ce890239ae8400078b2eae";
 //Testarray for offest
 var testarray = [35, 30, 25, 30, 35, 30, 25, 30, 30, 30, 30];
 
-
+// Einlesen der eingegebenen Werte
 const db = document.getElementById("db");
 var con;
 var con;
@@ -84,84 +84,17 @@ osbDiv.addEventListener("change", function () {
   }
 });
 
-<<<<<<< HEAD
-=======
+/**
+ * Funktion zum Durchführen der Soundmessung
+ * Quelle: s.o.
+ */
 
-var mindestDatenProAufnahme = 50;
+var deltas = [];
+var userID_i = null;
 
->>>>>>> 584213b082a9ec5e753e3e436a597e0e4fdb5126
 function startMessung() {
-  fetch(`https://api.opensensemap.org/boxes/${SBID}/data/${SBSensor}?`).then(
-    function (response) {
-      return response.json();
-    }
-  );
+  document.getElementById("FehlerDiv").style.display = "none";
 
-  startTime = performance.now();
-  messungStoppenButton.disabled = false;
-  var newName = document.getElementById("NameDiv").value;
-  var osbID = document.getElementById("OpenSenseBoxDiv").value;
-  anzahlDatenProAufnahme = anzahlDatenProAufnahme + 100;
-
-  navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then((stream) => {
-      const context = new AudioContext();
-      con = context;
-      // Creates a MediaStreamAudioSourceNode associated with a MediaStream representing an audio stream which may
-      // come from the local computer microphone or other sources.
-      const source = context.createMediaStreamSource(stream);
-      // creates a ScriptProcessorNode used for direct audio processing
-      const processor = context.createScriptProcessor(2048, 1, 1);
-      // reates an AnalyserNode, which can be used to expose audio time and frequency data and create data visualizations
-      const analyser = context.createAnalyser();
-
-      // A double value representing the averaging constant with the last analysis frame —
-      // basically, it makes the transition between values over time smoother.
-      analyser.smoothingTimeConstant = 0.8;
-      // An unsigned long value representing the size of the FFT (Fast Fourier Transform)
-      // to be used to determine the frequency domain.
-      analyser.fftSize = 256;
-
-      source.connect(analyser);
-      analyser.connect(processor);
-      processor.connect(context.destination);
-
-      processor.onaudioprocess = () => {
-        var data = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(data);
-        var values = 0;
-
-        for (var i = 0; i < data.length; i++) {
-          //if (data[i]>130) data[i]=130;
-          values += data[i];
-        }
-<<<<<<< HEAD
-
-        average = 20 * Math.log10(values / data.length) + offset;
-        if (isFinite(average)) {
-          db.innerText = average;
-          //Klonen der Aufnahmestruktur aus modell.js
-          let a = Object.assign({}, aufnahme);
-          a.value = average;
-          modell.push(a);
-        }
-        //stoppMessung(context);
-        /*
-        if (
-          context.state === "running" &&
-          modell.length >= anzahlDatenProAufnahme
-        ) {
-          context.suspend().then(() => {
-            messungButton.textContent = "Weiter aufnehmen";
-            console.log(aufnahme);
-          });
-        }
-        */
-      };
-    });
-=======
-        
   fetch(`https://api.opensensemap.org/boxes/${ID}/data/${Sens2Delta}?`)
     .then(function (response) {
       return response.json();
@@ -201,7 +134,6 @@ function startMessung() {
             const processor = context.createScriptProcessor(2048, 1, 1);
             // reates an AnalyserNode, which can be used to expose audio time and frequency data and create data visualizations
             const analyser = context.createAnalyser();
->>>>>>> 584213b082a9ec5e753e3e436a597e0e4fdb5126
 
             // A double value representing the averaging constant with the last analysis frame —
             // basically, it makes the transition between values over time smoother.
@@ -210,27 +142,15 @@ function startMessung() {
             // to be used to determine the frequency domain.
             analyser.fftSize = 256;
 
-<<<<<<< HEAD
-    var volume = Math.round(modell.reduce((a, b) => a + b) / modell.length);
-    //var volume = Math.round(Math.max.apply(null, aufnahme));
-    if (!isFinite(volume)) volume = 0; // we don't want/need negative decibels in that case
-    db.innerText = volume;
-    aufnahme = []; // clear previous values
-=======
             source.connect(analyser);
             analyser.connect(processor);
             processor.connect(context.destination);
->>>>>>> 584213b082a9ec5e753e3e436a597e0e4fdb5126
 
             processor.onaudioprocess = () => {
               var data = new Uint8Array(analyser.frequencyBinCount);
               analyser.getByteFrequencyData(data);
               var values = 0;
 
-<<<<<<< HEAD
-  //messungStoppenButton.addEventListener("click", console.log("hallo"));
-}
-=======
               for (let i = 0; i < data.length; i++) {
                 values += data[i];
               }
@@ -253,7 +173,6 @@ function startMessung() {
                     sensor = item.sensorID;
                   }
                 });
->>>>>>> 584213b082a9ec5e753e3e436a597e0e4fdb5126
 
                 //Klonen der Aufnahmestruktur aus modell.js
                 let a = Object.assign({}, aufnahme);
@@ -290,12 +209,6 @@ function startMessung() {
  * Funktion zum Stoppen der Soundaufnahme
  */
 function stoppMessung() {
-<<<<<<< HEAD
-  if (modell.length > 50) {
-    con.suspend();
-    console.log(modell);
-  }
-=======
   messungStoppenButton.disabled = true;
   // sicherstellen, dass Mindestanzahl an Datenwerten vorliegt
   if (modell.length > mindestDatenProAufnahme) {
@@ -371,7 +284,6 @@ function getDurchschnitt(Messungen) {
  */
 function anzahlMessungenErhoehen() {
   anzahlMessungen = anzahlMessungen + 1;
->>>>>>> 584213b082a9ec5e753e3e436a597e0e4fdb5126
 }
 
 function openPopup() {
@@ -447,3 +359,4 @@ function messungHinzufuegen() {
       console.log(JSON.stringify(response));
       document.getElementById("erfolgreichHochgeladen").style.display = "block";
     });
+}
