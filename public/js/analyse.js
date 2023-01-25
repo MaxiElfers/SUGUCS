@@ -121,6 +121,7 @@ function fetchbox() {
                     cel2.innerHTML = dbdata[j].value;
                 }
             }
+
             /**
              * clearTable
              * @desc removes all table entries and rows except for the header.
@@ -199,6 +200,7 @@ function fetchbox() {
                     cel2.innerHTML = dbdata[j].value;
                 }
             }
+
             /**
              * clearTable
              * @desc removes all table entries and rows except for the header.
