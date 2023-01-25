@@ -287,7 +287,9 @@ function getReferenceData() {
           output_error_down.classList.add("text-success");
           output_error_cal.innerHTML = "";
           calibration(xl2Array, soundArray);
+          console.log(deltaArr)
           estimateAllDelta();
+          console.log(allDeltas)
           createCalibrationObject();
           console.log(calibrationObject);
           out_fin.classList.remove("visually-hidden");
@@ -512,4 +514,35 @@ function tonspurKuerzen(max, tonspur) {
   tonspur = tonspur.slice(max, max + 149);
   console.log("tonspur: ", tonspur);
   return tonspur;
+}
+
+
+
+/**********************
+ * Notfalls Demo      *
+ **********************/
+
+let btn_notfalls_demo1 = document.getElementById("btn_demo1");
+let btn_notfalls_demo2 = document.getElementById("btn_demo2");
+btn_notfalls_demo1.addEventListener("click", startDemo);
+btn_notfalls_demo2.addEventListener("click", continueDemo);
+let userDemoData = [40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,7,7,7,7,7,7,7,7,7,7,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,22,22,22,22,22,22,22,22,22,22,9,9,9,9,9,9,9,9,9,9,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,8,8,8,8,8,8,8,8,8,8,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,7,7,7,7,7,7,7,7,7,31,31,31,31,31,31,31,31,31,31,31,31]
+
+function startDemo(){
+  console.log(userDemoData);
+  btn_Gcal.classList.remove("btn-secondary", "disabled");
+  btn_Gcal.classList.add("btn-primary");
+  in_GroupCode.readOnly = false;
+}
+
+function continueDemo(){
+    soundArray = userDemoData;
+    userID = in_UserID.value;
+    xl2Array.pop();
+    getReferenceData()
+}
+
+function showNotfall(){
+    btn_notfalls_demo1.classList.remove("visually-hidden")
+    btn_notfalls_demo2.classList.remove("visually-hidden")
 }

@@ -2,23 +2,22 @@ body {
   min-height: 100%;
   text-align: justify;
 }
-
-#FehlerDiv{
-  text-align: center;
+#FehlerDiv0 {
   color: red;
   display: none;
 }
-#FehlerDiv2{
-  text-align: center;
+#FehlerDiv {
   color: red;
   display: none;
 }
-#FehlerDiv3{
-  text-align: center;
+#FehlerDiv2 {
   color: red;
   display: none;
 }
-
+#FehlerDiv3 {
+  color: red;
+  display: none;
+}
 
 #volumeMeterEl {
   width: 100%;
@@ -30,7 +29,7 @@ body {
 }
 
 #volumeMeterEl::-webkit-meter-bar {
-  background: #4CAF50;
+  background: #4caf50;
 }
 
 .copyButton {
@@ -38,7 +37,7 @@ body {
   background: #f1bb3a;
 }
 
-.allign-middle{
+.allign-middle {
   text-align: center;
 }
 #analysemap {
