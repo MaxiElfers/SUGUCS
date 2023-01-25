@@ -1,0 +1,86 @@
+extends layout
+
+block content 
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script.
+        // Set active Button
+        document.querySelectorAll(".active")[0].classList.remove("active");
+        document.querySelectorAll(".nav-link")[1].classList.add("active");
+
+    div.container.allign-middle
+        .col-auto
+          p
+            u.fs-2.fw-bold Leiter
+        .row.justify-content-center 
+          .col-6
+            .row.justify-content-center.mx-1
+                .card.shadow-lg
+                  .card-body
+                    h4.fw-bold.card-title Anleitung
+                    h6.card-subtitle.mb-2.text-muted Hinweise für die Kalibrierung:
+                    h7.card-subtitle.mb-2.text-muted - Bitte Verhalten Sie sich während der Kalibrierung leise
+                      br
+                      | - Endgeräte mit gleicher Entfernung zur Box ausrichten
+                      br
+                      | - Möglichst ruhige Umgebung suchen
+                      br
+                      br
+                    p.card-text#AnleitungText 1. Verbinden Sie ihr Endgerät mit dem XL2-Gerät 
+                      br
+                      br
+                      | 2. Wählen Sie auf dem XL2 das Feld COM-Port aus und geben Sie unten ihren verwendeten 
+                      | COM-Port an
+                      br
+                      .input-group.mb-3#in_COM
+                        input#input_COM.form-control(type='text' placeholder="COM1")
+                        button#btn_COM.btn.btn-outline-secondary(type='button') Speichern
+                      br
+                      p.card-text#hideText Fahren Sie auf der nächsten Seite fort   
+                        br
+                    div 
+                      button.btn.btn-sm.btn-success.me-2#s1 Seite 1
+                      button.btn.btn-sm.btn-outline-secondary.me-2#s2 Seite 2
+                      button.btn.btn-sm.btn-outline-secondary.me-2#s3 Seite 3  
+                      button.btn.btn-sm.btn-outline-secondary#s4 Seite 4 
+                br
+                br
+          .col-6
+            .col
+              br
+              br
+              .row.justify-content-center
+                .col-5
+                  div.btn.btn-primary#btn_XL2 Kalibrierungsprozess starten
+                .col-10
+                  br
+                  br
+                  div.input-group.mb-3
+                      span.input-group-text Group-Code
+                      input#input_GroupCode.form-control(placeholder='1234567' readonly)
+                  div.btn.btn-secondary.disabled#btn_Gruppenkalibrierung Kalibrierungsraum erstellen 
+                  br
+                  p#output_Error_Cal.text-danger.fs-5
+              br
+            .col
+              .btn.btn-secondary.btn-lg.disabled#uploadData Daten für Teilnehmer freigeben
+              br
+              p#output_Error_Up.text-danger.fs-5
+          .col
+            .row.justify-content-center
+              br
+              div#out_finished.text-success.fs-2.fw-bold.visually-hidden
+                span Sounddatein wurde freigegeben!
+                br
+                span Sie können nun zur Startseite zurückkehren.
+
+        br
+        br
+        .col.allign-middle
+          .btn.btn-secondary.visually-hidden#btn_demo1 Notfalls Demo 1
+        br
+        .col.allign-middle
+          .btn.btn-secondary.visually-hidden#btn_demo2 Notfalls Demo 2
+        p#soundArray.visually-hidden= array
+
+    script(src='/js/kal-group-lead.js')
+    script(src='/js/qrcode.js')

@@ -1,8 +1,8 @@
-let btn_scannen = document.getElementById("btn_QRScannen");
-let btn_gruppeErstellen = document.getElementById("btn_GruppeErstellen");
+//let btn_scannen = document.getElementById("btn_QRScannen");
+//let btn_gruppeErstellen = document.getElementById("btn_GruppeErstellen");
 
-btn_gruppeErstellen.addEventListener("click",  function(){erstelleGruppe();});
-btn_scannen.addEventListener("click",  function(){scanneQR();});
+//btn_gruppeErstellen.addEventListener("click",  function(){erstelleGruppe();});
+//btn_scannen.addEventListener("click",  function(){scanneQR();});
 
 /**
  * Funktion greift auf Kamera zu

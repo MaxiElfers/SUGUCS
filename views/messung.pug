@@ -3,12 +3,100 @@ extends layout
 block content
 
   script.
-    // Set active Button
+    // Buttons aktiv setzen
     document.querySelectorAll(".active")[0].classList.remove("active");
     document.querySelectorAll(".nav-link")[2].classList.add("active");
 
-  textarea#db(name='db' rows='4' cols='50')
-  a.btn.btn-primary.btn-sm(type='button', id="messung") Messung starten!
-  p
-  a.btn.btn-primary.btn-sm(type='button', id="messungStoppen") Messung stoppen!
+    // Reihe von Kacheln (cards) mit verschiedenen Eingaben
+  .row.gy-4.gx-lg-3.justify-content-md-center.mt-3 
+    //- 1. Name, Box ID und Standort
+    .col-lg-4.col-xs-12.mb-3
+      .card.shadow.p-4.h-100
+        h2.card-title 1. Neue Messung hinzufügen
+        div.mt-3
+          #EingabeDiv
+            | User ID:
+            .small.text-muted Gebe hier die User ID von deiner Kalibrierung an. Wenn Du keine hast, musst Du erst eine Kalibrierung durchführen.
+            input#userID.form-control.mt-3.mb-3(type='text')
+            #FehlerDiv0(style='display: none;') Die User ID ist falsch, versuche es noch einmal.      
+            |Gerätename 
+            i (z.B. SUGUCS12)
+            |:
+            input#NameDiv.form-control.mt-3(type='text' maxLength = "9")
+            p
+            |OpenSenseBox ID: 
+            input#OpenSenseBoxDiv.form-control.mt-3(type='text' maxLength = "24" placeholder= " 638b1a8f11467c001b6b1af3")
+            #ermittleDeinenStandort
+              p
+              | Ermittle deinen Standort
+              span.Eingabe
+              | : 
+            p#demo(style.display = "none")
+            #locationbtn
+              a.btn.btn-primary.btn-sm(onclick="getLocation(); document.getElementById('locationbtn').style.display='none'; document.getElementById('demo').style.display='none';document.getElementById('ermittleDeinenStandort').style.display='none';") mein Standort
+      //- 2. Soundaufnahme machen
+    .col-lg-4.col-xs-12.mb-3
+      .card.shadow.p-4.h-100
+        h2.card-title 2. Soundaufnahme
+        div.mt-3
+          p#ausg
+          textarea#db.form-control-lg(name='db' rows="1" style="resize: none; font-size: 18px; padding: 8px; background-color: #f5f5f5; width: 40%; margin: 0 auto; display: block; text-align: center;")
+          p
+
+          #Div Gib erst die anderen Daten ein, bevor du eine Soundmessung machst.
+          #startbtn
+            button.btn.btn-primary.btn-sm.mt-3(id="messung" style="background:green" onclick="mitzaehlen = true; closePopup(); anzahlMessungenErhoehen(); document.getElementById('Div').style.display='none'; document.getElementById('volumeMeterEl').style.display='block'; document.getElementById('db').style.display='block'; document.getElementById('stopbtn').style.display='block';") Messung starten
+          meter#volumeMeterEl(high='0.25' max='0.3' value='0')
+          p
+          #stopbtn
+            button.btn.btn-primary.btn-sm(id="messungStoppen" onclick="mitzaehlen = false; document.getElementById('infobtn').style.display='block'; document.getElementById('volumeMeterEl').style.display='none'; document.getElementById('db').style.display='none'; document.getElementById('stopbtn').style.display='none';") Messung stoppen
+
+          #infobtn(style='display: none;')
+            button.btn.btn-primary.btn-sm.mt-3(onclick='openPopup()') Details
+    //- 3. Daten abschicken
+    .col-lg-4.col-xs-12.mb-3
+      .card.shadow.p-4.h-100
+        h2.card-title 3. OpenSenseMap
+        div.mt-3
+          | Füge deine Messung zur OpenSenseMap hinzu:
+          br
+          a.btn.btn-primary.btn-sm.mt-3(type='button' id="hinzufuegen") Hinzufügen
+          #FehlerDiv Sorry, du musst erst eine Soundmessung machen.
+          #FehlerDiv2 Sorry, du musst erst deinen Standort einlesen.
+          #FehlerDiv3 Sorry, du musst erst einen Namen eingeben.
+          p
+          #erfolgreichHochgeladen(style='display: none;') Die Messung wurde erfolgreich hochgeladen :)
+    #popup(style='display: none;')
+      h3 Informationen zur Messung:
+      p
+        | Gerätename: 
+        span#device-name
+      p
+        | OpenSenseBox ID: 
+        span#osb-id
+      p
+        | Standort: 
+        span#location
+      p
+        | <b>Durchschnittliche Lautstärke (dB): 
+        span#sound-level
+      p
+        | </b>Durchschnittliche Messungen pro Sekunde: 
+        span#measurement-mean        
+      button.btn.btn-secondary.btn-sm(onclick='closePopup()') Schließen
+
+      //- Leaflet in Card unterhalb hinzufügen
+    .col-lg-12.col-sm-12.mb-3
+      .card.shadow.p-4
+        .leaflet-container#map
+
+  //- Sense Box Ids in Card unterhalb hinzufügen
+  .col-lg-12.col-sm-12.mb-3
+    .card.shadow.p-4
+      h2.card-title SenseBox IDs
+      div#infoIDs
+
+  //- Skripte ausführen
+  script(src='/js/senseBoxIDs.js')
   script(src='/js/webaudio.js')
+  script(src='/js/leaflet.js')

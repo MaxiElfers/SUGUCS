@@ -12,10 +12,8 @@ block content
       img.img-fluid.rounded.mb-4.mb-lg-0(src="/images/muenster-altstadt.jpg" title="Der Prinzipalmarkt in Münster.© Münsterland e.V./Philipp Fölting")
 
     .col-lg-5
-      h1.font-weight-light Neuer Titel
       p
         | Lärmbelastung kann weitreichende Folgen für die Gesundheit der betroffenen Personen haben.  Daher findet regelmäßig eine Lärmkartierung statt, für die von offizieller Seite gemäß EU Umgebungslärmrichtlinie alle fünf Jahre die durchschnittliche Lärmbelastung  durch Straßen-, Schienen- und Flugverkehr sowie Industrie quellenspezifisch modelliert wird. Jedoch werden in der Lärmkartierung nur stärker befahrende Straßen abgebildet und die Gesamtlärmbelastung aus verschiedenen Quellen wird nicht dargestellt.  Hier besteht ein großes Potenzial für Citizen Science: Bürger*innen können zusätzliche Messungen beitragen und damit die Datengrundlage erheblich verbessern.
-      a.btn.btn-primary(href='#!') Ruf zur Aktion!
 
   // Call to Action
   .card.text-white.bg-success(style='--bs-bg-opacity: .75;').my-5.py-4.text-center
@@ -23,23 +21,10 @@ block content
       p.text-white.m-0
         | Schauen Sie sich verschiedene Lärmmessungen in Münster an und fügen Sie Eigene hinzu!
 
-  // Leaflet
-  .row.gx-10.gx-lg-3.justify-content-center
-    .col-md-8.mb-3
-      .card.center
-        .card-body
-          #map
-          div
-            | Click here to read in your personal 
-            span.Eingabe Browser-Coordinates
-            | : 
-            a.btn.btn-primary.btn-sm(onclick='getLocation()') Try It
-          p#demo
-
   // Content Row
   .row.gx-4.gx-lg-5
     .col-md-4.mb-5
-      .card.h-100
+      .card.h-100.shadow-lg
         .card-body
           h2.card-title Die Kalibrierung
           p.card-text
@@ -48,23 +33,19 @@ block content
           a.btn.btn-primary.btn-sm(href='/kalibrierung') zur Kalibrierung
 
     .col-md-4.mb-5
-      .card.h-100
+      .card.h-100.shadow-lg
         .card-body
           h2.card-title Die Messung
           p.card-text
-            | Nachdem ihr Mikrofon kalibiert wurde, können Sie mit einer eigenen Messung starten. [Anleitung]
+            | Nachdem ihr Mikrofon kalibiert wurde, können Sie mit einer eigenen Messung starten.
         .card-footer
           a.btn.btn-primary.btn-sm(href='/messung') zur Messung
 
     .col-md-4.mb-5
-      .card.h-100
+      .card.h-100.shadow-lg
         .card-body
           h2.card-title OpenSenseMap
           p.card-text
             | In der OpenSenseMap können Sie sich schon erhobenen Daten ansehen und erste Auswertungen bestaunen, aber auch selber Daten analysieren. 
         .card-footer
           a.btn.btn-primary.btn-sm(href='/map') zur OpenSenseMap
-
-
-  // Leaflet
-  script(src='/js/leaflet.js')
