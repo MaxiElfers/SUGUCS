@@ -3,58 +3,80 @@ extends layout
 block content
     h2 Analyse Seite
     br
-    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und Statistisch Analysieren
-    h5 Eingabe der SenseBox ID zur Abfrage und Visualisierung:
-    input#userInput(style="width: 30%", type='text' placeholder='Sensebox ID')
-    h5 Eingabe der SenseBoxID und SensorID zur Abfrage der letzten 100 gemessenen Werte
-    input#sid(style="width: 30%", type='text' placeholder='Sensor ID')
-    p
-    button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
-    p 
-    .row.justify-content-md-left
+    p Hier können Sie die gemessenen Werte einer gewünschten SenseBox räumlich und statistisch analysieren.
+    .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysemap
-                h3 Karte
-                p Karte zur Visualisierung der vom Nutzer verlangten Messtation
+                h3 1. Karte
+                p Karte zur Visualisierung aller SenseBoxen! Klicken Sie auf einen Marker auf der Karte, um den Namen und die für die Abfrage benötigte SenseBox ID herauszufinden!
                 br
                 #analysemap
-
+            br
+    .row
+        .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardplotting
-                h5 Plotting 
-                p Hier werden Plots dargestellt wie diese:
-                p Plot 1:
-                  img(src= ueblink , alt="")
-                p Plot 2:
-                  img(src= weblink , alt="")
-                  
+                h5 2. Plotting 
+                h6 Bitte geben Sie die erforderlichen Daten ein, um eine visuelle Analyse anhand von Plots darzustellen.
+                form(method='post', action='/map')
+                  .form-group.row
+                    .col-sm-6.mb-3.mb-sm-0
+                      h6 2.1 Eingabe der SenseBox ID (Beispiele: Senden: 60f077874fb91e001c71b3b1, TestBox: 63c3f0c9a122c30008268cc0)
+                      input#sbidinput.form-control(type='text' name='sbidinput' placeholder='Sensebox ID')
+                      h6 2.2. Eingabe der Start und Endzeit:
+                      h6 2.2.1 Startzeit: (Beispiel:2022-11-22T08:00)
+                      input#startInput(style="width: 100%", type='text' name='startInput' placeholder='Startzeit in YYYY-MM-DDThh:mm')
+                      h6 2.2.2 Endzeit: (Beispiel:2022-11-22T12:00)
+                      input#endInput(style="width: 100%", type='text' name='endInput' placeholder='Endzeit in YYYY-MM-DDThh:mm')
+                      
+                      h6 2.2.3 Wählen Sie aus, welche zusätzlichen Analysemethoden auf dem Plot angezeigt werden sollen:
+                        p Mittelwert: Durchschnitt:
+                          .form-check.form-check-inline.form-switch
+                            input#mittel(type='checkbox' class="form-check-input" name="mittel") 
+                          .form-check.form-check-inline.form-switch
+                            input#durch(type='checkbox' class="form-check-input" name="durch")
 
+                      h6 2.2.4 Wählen Sie aus, welche Tageszeiten auf dem Plot angezeigt werden sollen:
+                        p Tag: &nbsp &nbsp &nbsp &nbsp Nacht:
+                          .form-check.form-check-inline.form-switch
+                            input#tag(type='checkbox' class="form-check-input" name="tag") 
+                          .form-check.form-check-inline.form-switch
+                            input#nacht(type='checkbox' class="form-check-input" name="nacht")
+                    
+                      button.btn-dark(style="width: 30%") Bestätigen
+                br
+                .d-flex.align-items-center.justify-content-center#loading-element
+                  .spinner-border.text-primary
+                  | 
+                img(src=weblink, style="height: 50%; width: 70%", alt="", onload="hideLoadingElement()")
+                p Falls kein Plot angezeigt wird, der Ladekreis aber verschwunden ist, war Ihre Eingabe ungültig! Bei einem leeren Plot sind in der vorhandenen Zeitspanne keine gemessenen Daten vorhanden!
+
+    .row
         .col-lg-6.col-xs-12.mb-3
             .card.text-dark.p-4.border-success.cardanalysen
-                .card.text-dark.p-4.border-success.card
-                  h4 Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit
-                  h5 Eingabe der Start und Endzeit zur Abfrage und Ausgabe der in der Zeit gemessenen Lautstärken:
-                  h6 Startzeit:
-                  input#starttimeInput(style="width: 100%", type='text' placeholder='Startzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-23T08:00')
-                  h6 Endzeit:
-                  input#endtimeInput(style="width: 100%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm Beispiel:2022-11-22T10:00')
-                  button.btn-dark(style="width: 30%", onclick='fetchbox()') Submit
+                  h5 3. Anzeige aller gemessenen Werte eines nachgefragten Messstandorts mit Datum und Uhrzeit.
+                  h6 3.1 Eingabe der SenseBox ID zur Abfrage der letzten gemessenen Werte: (Beispiele: <br> Senden: 60f077874fb91e001c71b3b1 <br> TestBox: 63c3f0c9a122c30008268cc0)
+                  input#userinput.form-control(style="width: 55%" type='text' name='userinput' placeholder='Sensebox ID')
+                  
+                  h6 3.2. Eingabe der Start und Endzeit zur Abfrage und Ausgabe der in der Zeit gemessenen Lautstärken:
+                  h6 3.2.1 Startzeit: (Beispiel:2022-11-22T08:00)
+                  input#starttimeInput(style="width: 55%", type='text' placeholder='Startzeit in YYYY-MM-DDThh:mm')
+                  h6 3.2.2 Endzeit: (Beispiel:2022-11-22T12:00)
+                  input#endtimeInput(style="width: 55%", type='text' placeholder='Endzeit in YYYY-MM-DDThh:mm')
+                  button.btn-dark(style="width: 30%", onclick='fetchbox()') Bestätigen
                   br
+                  p Sollte keine Tabelle mit Datum und Dezibelwert erscheinen, hat die von Ihnen gewählte SenseBox keine Lautstärke Daten!
                   table#resultTable
                     tr
                       th
-                        | Datum der Messung
+                        | Datum der Messung:
                       th
-                        | Dezibelwert
+                        | Dezibelwert:
 
-                  br
-                  | Herunterladen der Lautstärkedaten:
-                  br
-                  a.i.fa.fa-download.button-dark#containerjson
-                  br
-                  p Herunterladen als CSV Datei:
-                  a.i.fa.fa-download.btn.btndownload.btn-dark(role='button', href='https://api.opensensemap.org/boxes/60f077874fb91e001c71b3b1/data/60f077874fb91e001c71b3b2?download=true&format=csv')
-                    
-                
+                  
+                  h4 Herunterladen der Lautstärkedaten:
+                  download#containercsv
+                  download#containerjson
+                  
     script.
         // Set active Button
         document.querySelectorAll(".active")[0].classList.remove("active");
