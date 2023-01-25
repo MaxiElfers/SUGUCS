@@ -105,15 +105,23 @@ function fetchbox() {
              */
             function drawTable(results) {
                 var table = document.getElementById("resultTable");
+                table.style.borderCollapse = "collapse";
                 //creates the Table with the direction an distances
                 for (var j = 0; j < results.length; j++) {
                     var newRow = table.insertRow(j + 1);
+                    newRow.style.border = "1px solid black";
+                    newRow.style.padding = "5px";
                     var cel1 = newRow.insertCell(0);
                     var cel2 = newRow.insertCell(1);
+                    cel1.style.border = "1px solid black";
+                    cel1.style.padding = "5px";
+                    cel2.style.border = "1px solid black";
+                    cel2.style.padding = "5px";
                     cel1.innerHTML = dbdata[j].createdAt;
                     cel2.innerHTML = dbdata[j].value;
                 }
             }
+
             /**
              * clearTable
              * @desc removes all table entries and rows except for the header.
@@ -176,15 +184,23 @@ function fetchbox() {
              */
             function drawTable(results) {
                 var table = document.getElementById("resultTable");
+                table.style.borderCollapse = "collapse";
                 //creates the Table with the direction an distances
                 for (var j = 0; j < results.length; j++) {
                     var newRow = table.insertRow(j + 1);
+                    newRow.style.border = "1px solid black";
+                    newRow.style.padding = "5px";
                     var cel1 = newRow.insertCell(0);
                     var cel2 = newRow.insertCell(1);
-                    cel1.innerHTML = timedata[j].createdAt;
-                    cel2.innerHTML = timedata[j].value;
+                    cel1.style.border = "1px solid black";
+                    cel1.style.padding = "5px";
+                    cel2.style.border = "1px solid black";
+                    cel2.style.padding = "5px";
+                    cel1.innerHTML = dbdata[j].createdAt;
+                    cel2.innerHTML = dbdata[j].value;
                 }
             }
+
             /**
              * clearTable
              * @desc removes all table entries and rows except for the header.
