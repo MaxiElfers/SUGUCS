@@ -19,6 +19,10 @@ Dazu brauchen Sie nur ihre User ID von der Kalibrierung, sowie eine Sense Box ID
 Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".  
 ***** Hier Text OpenSenseMap *****  
 
+# Lizenz
+
+Unsere Software folgt den Open Source Prinzipien und unterliegt der MIT Lizenz. Nutzern ist es erlaubt, die Software zu verwenden und zu bearbeiten, solange sie uns per Copyright Trademark angeben. Mehr Informationen dazu [hier](https://opensource.org/licenses/MIT)
+
 Wir wünschen Ihnen viel Spaß mit unserer App und danken Ihnen für Ihre Mithilfe!
 
 ---------------------------------- Arbeitsbereich -----------------------------------
