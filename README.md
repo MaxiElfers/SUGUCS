@@ -16,8 +16,9 @@ Haben Sie Ihr Gerät fertig kalibriert und wollen die Messung starten, so nutzen
 Bei der Messfunktion haben Sie die Möglichkeit eine eigene Messung zu erstellen und Ihre Kalibrierung auf diese Messung automatisch anzuwenden.
 Dazu brauchen Sie nur ihre User ID von der Kalibrierung, sowie eine Sense Box ID und den passenden Token, um anschließend Ihre kalibrierte Messung auf Open Sense Map bereistellen zu können.
 
-Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Open Sense Map".  
-***** Hier Text OpenSenseMap *****  
+Wenn Sie die Ergbnisse vergangener Messungen aller Teilnehmer einsehen wollen, so nutzen Sie bitte den Reiter "Analyse".  
+
+Bei der Analyse können Sie Lautstärkedaten, welche über die openSenseMap zur verfügung gestellt werden grafisch als Diagramme darstellen sowie diese in tabellarischer Form mit Datum und Uhrzeit anzeigen lassen und als CSV und JSON herunterladen.
 
 # Lizenz
 
